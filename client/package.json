@@ -13,6 +13,7 @@
 		"react-redux": "^4.0.6",
 		"redux": "^3.0.5",
 		"redux-thunk": "^1.0.3",
+		"@shoutem/ui": "^0.10.0",
 		"react-native-scrollable-tab-view": "^0.4.0"
 	},
 	"devDependencies": {
