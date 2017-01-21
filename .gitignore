@@ -23,4 +23,5 @@ library/SMSSDK/bin
 /gradlew
 *.bat
 *.log
+client/node_modules
 
