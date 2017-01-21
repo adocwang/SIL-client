@@ -1,7 +1,16 @@
-import React from 'react-native';
-import Root from './app/root';
+import React, { Component } from 'react';
+import {
+  AppRegistry,
+  View,
+	Text,
+} from 'react-native';
 
-const {
-    AppRegistry
-    } = React;
-AppRegistry.registerComponent('SiliconValleyBank', ()=>Root);
+export default class RootController extends Component {
+	render() {
+		return (
+			<View><Text>root................</Text></View>
+		);
+	}
+}
+
+AppRegistry.registerComponent('SiliconValleyBank', () => RootController);
