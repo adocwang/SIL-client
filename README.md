@@ -1,2 +1,2 @@
 # SIL-rn
-ReactNative of project Smart Investment Loan(SIL)
+Client of project Smart Investment Loan(SIL)
