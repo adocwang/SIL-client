@@ -5,7 +5,7 @@ import {
   InteractionManager
   } from 'react-native';
 
-//import MainContainer from '../containers/MainContainer';
+import LoginContainer from '../containers/LoginContainer';
 
 var {height, width} = Dimensions.get('window');
 
@@ -18,10 +18,10 @@ class Splash extends React.Component {
     const {navigator} = this.props;
     setTimeout(() => {
       InteractionManager.runAfterInteractions(() => {
-      //  navigator.resetTo({
-      //    component: MainContainer,
-      //    name: 'Main'
-      //  });
+        navigator.resetTo({
+          component: LoginContainer,
+          name: 'Login'
+        });
       });
     }, 1500);
   }
