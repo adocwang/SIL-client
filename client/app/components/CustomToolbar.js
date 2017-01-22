@@ -59,8 +59,8 @@ class CustomToolbar extends React.Component {
           actions={this.props.actions}
           onActionSelected={this.onActionSelected}
           onIconClicked={this.onIconClicked}
-          navIcon={this.props.navIcon ? this.props.navIcon : require('../img/icon_left.png')}
-          titleColor='#fff'
+          navIcon={this.props.navIcon ? this.props.navIcon : require('../img/back_arrow.png')}
+          titleColor='#909090'
           title={this.props.title}
         />
       );
@@ -70,7 +70,7 @@ class CustomToolbar extends React.Component {
 
 let styles = StyleSheet.create({
   toolbar: {
-    backgroundColor: '#FF0000',
+    backgroundColor: '#ffffff',
     height: 58
   }
 });

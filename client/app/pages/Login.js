@@ -12,9 +12,7 @@ import {
     InteractionManager,
     View
     } from 'react-native';
-import { FormLabel, FormInput } from 'react-native-elements'
 import CustomToolbar from '../components/CustomToolbar';
-import Button from '../components/Button';
 
 class Login extends React.Component {
     constructor (props) {
@@ -22,12 +20,12 @@ class Login extends React.Component {
     }
 
     componentDidMount () {
-        const {dispatch} = this.props;
-        dispatch(fetchTest());
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(fetchTest());
-        });
-       console.log(this.props)
+       // const {dispatch} = this.props;
+       // dispatch(fetchTest());
+       // InteractionManager.runAfterInteractions(() => {
+       //     dispatch(fetchTest());
+       // });
+       //console.log(this.props)
     }
 
 
@@ -36,41 +34,49 @@ class Login extends React.Component {
         return (
             <View style={styles.container}>
                 <CustomToolbar
-                    title="登录"
+                    title="激活账户"
                     navigator={navigator}
                 />
-                    <View style={{flex: 1, alignItems: 'center'}}>
-                        <Image
-                            style={{width: 110, height: 110, marginTop: 50}}
-                            source={require('../img/about_logo.png')}
-                        />
-                     </View>
-                <Text style={{fontSize: 16, textAlign: 'center', color: '#aaaaaa', marginTop: 5}}>
-                    {this.props.test.data}
-                </Text>
+                <View style={{height:1}}>
+                    <Text style={{flex:1, flexDirection: 'row',backgroundColor:'#ECEDF1'}}></Text>
+                </View>
+
+                <View style={{height:105,alignItems: 'center'}}>
+                    <Image
+                        style={{ width: 134, height: 45,marginTop:30}}
+                        source={require('../img/login_logo.png')}
+                    />
+                </View>
+                <View style={{height:2, flexDirection:'row'}}>
+                    <View
+                        style={{flex:3, backgroundColor:'#15499A'}}
+                    />
+                    <View
+                        style={{flex:1, backgroundColor:'#D93741'}}
+                    />
+                </View>
+
                 <View style={styles.inputview}>
                     <View style={styles.rowview}>
                     <TextInput style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
-                        <View style={{alignItems:'center',flex:1,justifyContent:'center'}}><Text style={styles.sendMsg}>发送验证码</Text></View>
+                        <View style={{flex:1,height:30, borderRadius:15,borderColor:'#15499A',borderWidth: 1,marginTop:20,}}>
+                            <Text style={styles.sendMsg}>发送验证码</Text></View>
                         </View>
+                    <View style={styles.rowview}>
                     <TextInput style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                        <View style={{flex:1,height:30,marginTop:20}}>
+                            <Text style={styles.lightblue}>120‘后重新获取</Text></View>
+                        </View>
+                    <Text style={styles.redtxt}>验证码输入错误,请重新输入</Text>
                     <TextInput style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
                 </View>
 
                 <View style={styles.buttomview}>
                     <View style={styles.buttonview}>
-                        <Text style={styles.logintext}>登 录</Text>
+                        <Text style={styles.logintext}>激活账户</Text>
                     </View>
-
-                    <View style={styles.emptyview}></View>
-
-                    <View style={styles.bottombtnsview}>
-                        <View style={styles.bottomleftbtnview}>
-                            <Text style={styles.bottombtn}>无法登录？</Text>
-                        </View>
-                        <View style={styles.bottomrightbtnview}>
-                            <Text style={styles.bottombtn}>新用户</Text>
-                        </View>
+                    <View style={{flexDirection: 'row',justifyContent: 'center'}}>
+                    <Text style={styles.lightblue}>无法登录？</Text>
                     </View>
                 </View>
             </View>
@@ -82,7 +88,7 @@ class Login extends React.Component {
 let styles = StyleSheet.create({
     container: {
         flex: 1,//可拉伸
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#FFFFFF',
     },
     header: {//头部高度
         height: 50,
@@ -95,7 +101,6 @@ let styles = StyleSheet.create({
     },
     avatarview: {//登录图标区域
         height: 150,
-        backgroundColor: '#ECEDF1',
         justifyContent: 'center',
     },
     avatarimage: {//登录图标
@@ -104,7 +109,10 @@ let styles = StyleSheet.create({
         alignSelf: 'center'
     },
     inputview: {//用户名/密码区域
-        height: 150,
+        height: 200,
+        marginTop:30,
+        marginLeft:10,
+        marginRight:10
     },
     rowview:{
         flexDirection:'row'
@@ -113,37 +121,38 @@ let styles = StyleSheet.create({
         flex: 2,
         borderWidth: 0,
         fontSize: 16,
+
     },
     sendMsg: {//用户名/密码输入框
         flex: 1,
         fontSize: 16,
         textAlign: 'center',
         textAlignVertical:'center',
+        color:'#15499A'
     },
     dividerview: {//分割线区域
         flexDirection: 'row',
     },
     divider: {
-        flex: 1,
-        height: 1,
         backgroundColor: '#ECEDF1'
     },
     buttomview: {
-        backgroundColor: '#ECEDF1',
         flex: 1,
+        marginTop:30
     },
     buttonview: {
         flexDirection: 'row',
-        backgroundColor: '#1DBAF1',
         margin: 10,
         borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
+        borderColor:'#15499A',
+        borderWidth: 1,
     },
     logintext: {
         alignSelf:'center',
         fontSize: 17,
-        color: '#FFFFFF',
+        color: '#15499A',
         marginTop: 10,
         marginBottom: 10,
     },
@@ -171,6 +180,12 @@ let styles = StyleSheet.create({
         fontSize: 15,
         color: '#1DBAF1',
     },
+    lightblue:{
+        fontSize: 14,color: '#4A90E2'
+    },
+    redtxt:{
+        fontSize: 14,color: '#D0021B',marginLeft:5
+    }
 });
 
 export default Login;
