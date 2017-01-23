@@ -10,9 +10,11 @@ import {
     TextInput,
     Linking,
     InteractionManager,
+    TouchableHighlight,
     View
     } from 'react-native';
 import CustomToolbar from '../components/CustomToolbar';
+import MainContainer from '../containers/MainContainer';
 
 class Login extends React.Component {
     constructor (props) {
@@ -25,9 +27,19 @@ class Login extends React.Component {
        // InteractionManager.runAfterInteractions(() => {
        //     dispatch(fetchTest());
        // });
-       //console.log(this.props)
+       console.log(this.props)
     }
 
+    onActiveBtnClick(){
+        console.log(this.props);
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.resetTo({
+                component: MainContainer,
+                name: 'Main'
+            });
+        });
+    }
 
     render () {
         const {navigator} = this.props;
@@ -72,9 +84,11 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.buttomview}>
-                    <View style={styles.buttonview}>
-                        <Text style={styles.logintext}>激活账户</Text>
+                    <TouchableHighlight onPress={this.onActiveBtnClick.bind(this)}>
+                    <View style={styles.buttonview} >
+                        <Text style={styles.logintext} >激活账户</Text>
                     </View>
+                    </TouchableHighlight>
                     <View style={{flexDirection: 'row',justifyContent: 'center'}}>
                     <Text style={styles.lightblue}>无法登录？</Text>
                     </View>
