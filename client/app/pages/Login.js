@@ -13,7 +13,7 @@ import {
     TouchableHighlight,
     View
     } from 'react-native';
-import CustomToolbar from '../components/CustomToolbar';
+import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
 
 class Login extends React.Component {
@@ -45,7 +45,7 @@ class Login extends React.Component {
         const {navigator} = this.props;
         return (
             <View style={styles.container}>
-                <CustomToolbar
+                <PageToolbar
                     title="激活账户"
                     navigator={navigator}
                 />
