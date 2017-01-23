@@ -7,6 +7,7 @@ import {ToastShort} from '../utils/ToastUtils';
 
 import Splash from '../pages/splash';
 import Login from '../pages/Login';
+import Main from '../pages/Main';
 import {NaviGoBack} from '../utils/CommonUtils';
 
 import {
@@ -64,8 +65,8 @@ class App extends React.Component {
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-            component: Splash,
-            name: 'Splash'
+            component: Main,
+            name: 'Main'
           }}
                 />
             </View>

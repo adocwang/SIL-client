@@ -13,6 +13,7 @@ import {
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
 import MainTabBar from '../components/MainTabBar';
 import CustomToolbar from '../components/CustomToolbar';
+import SearchBar from '../components/SearchBar';
 
 class Main extends React.Component {
     constructor() {
@@ -20,6 +21,9 @@ class Main extends React.Component {
 
     }
 
+    searchCompany(){
+        console.log('search');
+    }
 
     render () {
         return (
@@ -36,15 +40,23 @@ class Main extends React.Component {
 
             <ScrollableTabView
                 style={{marginTop: 20, }}
-                initialPage={1}
+                initialPage={0}
                 tabBarPosition="bottom"
                 renderTabBar={() => <MainTabBar />}
             >
 
                 <ScrollView tabLabel="ios-home" style={styles.tabView}>
-                    <View style={styles.card}>
-                        <Text>主页</Text>
-                    </View>
+                    <SearchBar
+                        onSearchChange={() => console.log('On Focus')}
+                        onSearch={this.searchCompany.bind(this)}
+                        height={30}
+                        onFocus={() => console.log('On Focus')}
+                        onBlur={() => console.log('On Blur')}
+                        placeholder={'Search...'}
+                        autoCorrect={false}
+                        padding={3}
+                        returnKeyType={'search'}
+                    />
                 </ScrollView>
                 <ScrollView tabLabel="ios-stats" style={styles.tabView}>
                     <View style={styles.card}>
