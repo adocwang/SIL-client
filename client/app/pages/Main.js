@@ -21,6 +21,7 @@ import CustomTabBar from '../components/CustomTabBar';
 import SearchBar from '../components/SearchBar';
 import TabNavigator from '../components/bottomtabbar/TabNavigator';
 import LoadingView from '../components/LoadingView';
+import Spanner from 'react-native-spinkit'
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -187,6 +188,7 @@ class Main extends React.Component {
         if (home.isLoadMore) {
             return (
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Spanner size={30} type='ThreeBounce' color='#c8c8c8'/>
                     <Text style={{textAlign: 'center', fontSize: 16}}>
                         加载中…
                     </Text>
