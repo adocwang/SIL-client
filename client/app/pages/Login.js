@@ -15,7 +15,7 @@ import {
     } from 'react-native';
 import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
-import ResetPwd from '../pages/ResetPwd';
+import ResetPwdContainer from '../containers/ResetPwdContainer';
 
 class Login extends React.Component {
     constructor (props) {
@@ -45,8 +45,8 @@ class Login extends React.Component {
     onResetPwdBtnClick(){
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.resetTo({
-                component: ResetPwd,
+            navigator.push({
+                component: ResetPwdContainer,
                 name: 'ResetPwd'
             });
         });
