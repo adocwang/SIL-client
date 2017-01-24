@@ -1,6 +1,7 @@
 /**
- * Created by kiefer on 2017/1/22.
+ * Created by kiefer on 2017/1/24.
  */
+
 import React from 'react';
 import {fetchTest} from '../actions/test';
 import {
@@ -12,26 +13,25 @@ import {
     InteractionManager,
     TouchableHighlight,
     View
-    } from 'react-native';
+} from 'react-native';
 import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
-import ResetPwd from '../pages/ResetPwd';
 
-class Login extends React.Component {
+class Active extends React.Component {
     constructor (props) {
         super(props);
     }
 
     componentDidMount () {
-       // const {dispatch} = this.props;
-       // dispatch(fetchTest());
-       // InteractionManager.runAfterInteractions(() => {
-       //     dispatch(fetchTest());
-       // });
-       console.log(this.props)
+        // const {dispatch} = this.props;
+        // dispatch(fetchTest());
+        // InteractionManager.runAfterInteractions(() => {
+        //     dispatch(fetchTest());
+        // });
+        console.log(this.props)
     }
 
-    onSubmitBtnClick(){
+    onActiveBtnClick(){
         console.log(this.props);
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
@@ -42,22 +42,12 @@ class Login extends React.Component {
         });
     }
 
-    onResetPwdBtnClick(){
-        const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.resetTo({
-                component: ResetPwd,
-                name: 'ResetPwd'
-            });
-        });
-    }
-
     render () {
         const {navigator} = this.props;
         return (
             <View style={styles.container}>
                 <PageToolbar
-                    title="登录"
+                    title="激活账户"
                     navigator={navigator}
                 />
                 <View style={{height:1}}>
@@ -80,22 +70,29 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.inputview}>
-                    <TextInput style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
+                    <View style={styles.rowview}>
+                        <TextInput style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
+                        <View style={{flex:1,height:30, borderRadius:15,borderColor:'#15499A',borderWidth: 1,marginTop:20,}}>
+                            <Text style={styles.sendMsg}>发送验证码</Text></View>
+                    </View>
+                    <View style={styles.rowview}>
+                        <TextInput style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                        <View style={{flex:1,height:30,marginTop:20}}>
+                            <Text style={styles.lightblue}>120‘后重新获取</Text></View>
+                    </View>
+                    <Text style={styles.redtxt}>验证码输入错误,请重新输入</Text>
                     <TextInput style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
                 </View>
 
                 <View style={styles.buttomview}>
-                    <TouchableHighlight onPress={this.onResetPwdBtnClick.bind(this)}>
-                    <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
-                        <Text style={styles.lightblue}>忘记密码？</Text>
-                    </View>
-                        </TouchableHighlight>
-                    <TouchableHighlight onPress={this.onSubmitBtnClick.bind(this)}>
-                    <View style={styles.buttonview} >
-                        <Text style={styles.logintext} >登录</Text>
-                    </View>
+                    <TouchableHighlight onPress={this.onActiveBtnClick.bind(this)}>
+                        <View style={styles.buttonview} >
+                            <Text style={styles.logintext} >激活账户</Text>
+                        </View>
                     </TouchableHighlight>
-
+                    <View style={{flexDirection: 'row',justifyContent: 'center'}}>
+                        <Text style={styles.lightblue}>无法登录？</Text>
+                    </View>
                 </View>
             </View>
         );
@@ -127,7 +124,7 @@ let styles = StyleSheet.create({
         alignSelf: 'center'
     },
     inputview: {//用户名/密码区域
-        height: 140,
+        height: 200,
         marginTop:30,
         marginLeft:10,
         marginRight:10
@@ -199,12 +196,11 @@ let styles = StyleSheet.create({
         color: '#1DBAF1',
     },
     lightblue:{
-        fontSize: 14,color: '#4A90E2',
-        marginBottom:10
+        fontSize: 14,color: '#4A90E2'
     },
     redtxt:{
         fontSize: 14,color: '#D0021B',marginLeft:5
     }
 });
 
-export default Login;
+export default Active;
