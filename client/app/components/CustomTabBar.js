@@ -3,13 +3,14 @@ import {
     StyleSheet,
     Text,
     View,
+    Image,
     TouchableOpacity,
     Animated
 } from 'react-native';
 import Button from './Button'
 
+
 const CustomTabBar = React.createClass({
-  tabIcons: [],
 
   propTypes: {
     goToPage: React.PropTypes.func,
@@ -40,6 +41,21 @@ const CustomTabBar = React.createClass({
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
+    var icon ;
+    switch (page){
+      case 0:
+        icon= require('../img/new_company_icon.png');
+        break;
+      case 1:
+        icon= require('../img/risk_icon.png');
+        break;
+      case 2:
+        icon= require('../img/trading_icon.png');
+        break
+      default:
+        icon= require('../img/new_company_icon.png');
+    }
+
     return <Button
         style={{flex: 1}}
         key={name}
@@ -48,11 +64,14 @@ const CustomTabBar = React.createClass({
         accessibilityTraits='button'
         onPress={() => this.props.goToPage(page)}
     >
+      <View style={{flex:1}}>
       <View style={[styles.tab, this.props.tabStyle]}>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-          {name}
-        </Text>
+        <Image source = {icon} style={{alignSelf:'center',}}/>
       </View>
+      <Text style={[{color: textColor, fontWeight, alignSelf:'center',paddingBottom:5}, textStyle, ]}>
+        {name}
+      </Text>
+        </View>
     </Button>;
   },
 
@@ -92,7 +111,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   tabs: {
-    height: 50,
+    height: 75,
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderWidth: 1,
