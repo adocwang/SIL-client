@@ -10,6 +10,8 @@ import {
     ScrollView,
     ListView,
     RefreshControl,
+    TouchableOpacity,
+    ProgressBarAndroid,
     InteractionManager
 } from 'react-native';
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
@@ -20,20 +22,194 @@ import SearchBar from '../components/SearchBar';
 import TabNavigator from '../components/bottomtabbar/TabNavigator';
 import LoadingView from '../components/LoadingView';
 
+var canLoadMore;
+var loadMoreTime = 0;
 
 class Main extends React.Component {
     constructor() {
         super()
+
         this.state = {
-            selectedTab:'home'
-        }
+            selectedTab:'home',
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            })
+        };
+        this.renderItem = this.renderItem.bind(this);
+        this.renderFooter = this.renderFooter.bind(this);
+        this.onScroll = this.onScroll.bind(this);
+        canLoadMore = false;
+    }
+    componentDidMount () {
+        console.log(this.props);
+        //const {dispatch} = this.props;
+        //InteractionManager.runAfterInteractions(() => {
+        //    _typeIds = [1, 2, 3, 4];
+        //    _typeIds.forEach((typeId) => {
+        //        dispatch(fetchReddit(false, true, typeId));
+        //    });
+        //});
+    }
+
+    componentWillReceiveProps (nextProps) {
+        //const {reddit} = this.props;
+        //if (reddit.isLoadMore && !nextProps.reddit.isLoadMore && !nextProps.reddit.isRefreshing) {
+        //    if (nextProps.reddit.noMore) {
+        //        ToastShort('没有更多数据了');
+        //    }
+        //}
     }
 
     searchCompany(){
         console.log('search');
     }
 
+    onRefresh (typeId) {
+        const {dispatch} = this.props;
+        canLoadMore = false;
+        //dispatch(fetchReddit(true, false, typeId));
+    }
+
+    onScroll () {
+        if (!canLoadMore) {
+            canLoadMore = true;
+        }
+    }
+
+    onEndReached (typeId) {
+        let time = Date.parse(new Date()) / 1000;
+        const {home} = this.props;
+        if (canLoadMore && time - loadMoreTime > 1) {
+            const {dispatch} = this.props;
+            //dispatch(fetchReddit(false, false, typeId, true, 25, reddit.redditAfter[typeId]));
+            canLoadMore = false;
+            loadMoreTime = Date.parse(new Date()) / 1000;
+        }
+    }
+
+
+    onPress (item) {
+        const {navigator} = this.props;
+        console.log(item);
+        //InteractionManager.runAfterInteractions(() => {
+        //    navigator.push({
+        //        component: WebViewContainer,
+        //        name: 'WebViewPage',
+        //        reddit: reddit
+        //    });
+        //});
+    }
+
+    //渲染每页内容
+    renderContent (dataSource, typeId) {
+        const {home} = this.props;
+        if (home.loading) {
+            return <LoadingView/>;
+        }
+        let isEmpty = home.pageList[typeId] == undefined || home.pageList[typeId].length == 0;
+        if (isEmpty) {
+            return (
+                <ScrollView
+                    automaticallyAdjustContentInsets={false}
+                    horizontal={false}
+                    contentContainerStyle={styles.no_data}
+                    style={{flex: 1}}
+                    refreshControl={
+            <RefreshControl
+              refreshing={home.isRefreshing}
+              onRefresh={this.onRefresh.bind(this, typeId)}
+              title="Loading..."
+              colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
+            />
+          }
+                >
+                    <View style={{alignItems: 'center'}}>
+                        <Text style={{fontSize: 16}}>
+                            正在与网络撕扯...
+                        </Text>
+                    </View>
+                </ScrollView>
+            );
+        }
+        return (
+            <ListView
+                initialListSize={1}
+                dataSource={dataSource}
+                renderRow={this.renderItem}
+                style={styles.listView}
+                onEndReached={this.onEndReached.bind(this, typeId)}
+                onEndReachedThreshold={10}
+                onScroll={this.onScroll}
+                renderFooter={this.renderFooter}
+                refreshControl={
+          <RefreshControl
+            refreshing={home.isRefreshing}
+            onRefresh={this.onRefresh.bind(this, typeId)}
+            title="Loading..."
+            colors={['#ff0000', '#ff0000', '#ff0000', '#ff0000']}
+          />
+        }
+            />
+        );
+    }
+
+
+    renderItem (item, sectionID, rowID) {
+        const thumbnail = item.img.lastIndexOf("http") >= 0 ? item.img : 'https://www.redditstatic.com/reddit404b.png';
+        console.log('render', item.img.lastIndexOf("http"));
+        return (
+            <TouchableOpacity onPress={this.onPress.bind(this, item)}>
+                <View style={styles.containerItem}>
+                    <Image
+                        style={{width: 88, height: 88, marginRight: 10,borderRadius:44}}
+                        source={{uri: thumbnail}}
+                    />
+                    <View style={{flex: 1, flexDirection: 'column'}}>
+                        <Text style={styles.title}>
+                            {item.title}
+                        </Text>
+                        <View style={{flex:1,flexDirection:'row'}}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <Text style={{flex: 1, fontSize: 14, color: '#ff0000', marginTop: 5, marginRight: 5}}>
+                                    {item.desc}
+                                </Text>
+                            </View>
+                        </View>
+
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
+    renderFooter () {
+        const {home} = this.props;
+        if (home.isLoadMore) {
+            return (
+                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{textAlign: 'center', fontSize: 16}}>
+                        加载中…
+                    </Text>
+                </View>
+            );
+        }
+    }
+
     render () {
+        const {home} = this.props;
+        console.log(this.props);
+        var lists = [];
+        home.catList.forEach((cat) => {
+            lists.push(
+                <View
+                    key={cat.id}
+                    tabLabel={cat.name}
+                    style={{flex: 1}}
+                >
+                    {this.renderContent(this.state.dataSource.cloneWithRows(home.pageList[cat.id] == undefined ? [] : home.pageList[cat.id]), cat.id)}
+                </View>);
+        });
+
         return (
             <View style={styles.container}>
                 <Image source={require('../img/toolbar_bg.png')}  style={{height:100,  flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
@@ -54,7 +230,7 @@ class Main extends React.Component {
                         renderSelectedIcon={() => <Image source={require("../img/home_icon.png")} />}
                         badgeText="1"
                         onPress={() => this.setState({ selectedTab: 'home' })}>
-                        <ScrollView tabLabel="ios-home" style={styles.tabView}>
+                        <View style={{flex:1}}>
                             <SearchBar
                                 onSearchChange={() => console.log('On Focus')}
                                 onSearch={this.searchCompany.bind(this)}
@@ -66,23 +242,14 @@ class Main extends React.Component {
                                 padding={3}
                                 returnKeyType={'search'}
                             />
-
                             <ScrollableTabView
-                                style={{marginTop: 20}}
+                                style={{marginTop: 20,flex:1}}
                                 renderTabBar={() => <CustomTabBar />}
                             >
-                                <View tabLabel='新增企业' style={styles.card}>
-                                    <Text style={{color:'#ff0000',fontSize:16}}>新增企业</Text>
-                                </View>
-                                <View tabLabel='风险信息' style={styles.card}>
-                                    <Text>风险信息</Text>
-                                </View>
-                                <View tabLabel='融资资讯' style={styles.card}>
-                                    <Text>融资资讯</Text>
-                                </View>
-                            </ScrollableTabView>
 
-                        </ScrollView>
+                                {lists}
+                            </ScrollableTabView>
+                    </View>
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'company'}
@@ -139,6 +306,49 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 3,
     },
+    containerItem: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fcfcfc',
+        padding: 10,
+        borderBottomColor: '#ddd',
+        borderBottomWidth: 1
+    },
+    title: {
+        flex: 3,
+        fontSize: 18,
+        textAlign: 'left',
+        color: 'black'
+    },
+    listView: {
+        backgroundColor: '#eeeeec'
+    },
+    no_data: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: 100
+    },
+    drawerContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd'
+    },
+    drawerIcon: {
+        width: 30,
+        height: 30,
+        marginLeft: 5
+    },
+    drawerText: {
+        fontSize: 18,
+        marginLeft: 15,
+        textAlign: 'center',
+        color: 'black'
+    }
 });
 
 export default Main;
