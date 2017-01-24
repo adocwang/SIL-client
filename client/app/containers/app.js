@@ -9,6 +9,7 @@ import Splash from '../pages/splash';
 import Login from '../pages/Login';
 import Main from '../pages/Main';
 import ResetPwd from '../pages/ResetPwd';
+import Test from '../pages/Test';
 import {NaviGoBack} from '../utils/CommonUtils';
 
 import {
@@ -66,8 +67,8 @@ class App extends React.Component {
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-            component: Splash,
-            name: 'Splash'
+            component: Main,
+            name: 'Main'
           }}
                 />
             </View>

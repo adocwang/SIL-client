@@ -8,17 +8,25 @@ import {
     Text,
     StyleSheet,
     ScrollView,
+    ListView,
+    RefreshControl,
     InteractionManager
 } from 'react-native';
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
 import MainTabBar from '../components/MainTabBar';
 import CustomToolbar from '../components/CustomToolbar';
+import CustomTabBar from '../components/CustomTabBar';
 import SearchBar from '../components/SearchBar';
+import TabNavigator from '../components/bottomtabbar/TabNavigator';
+import LoadingView from '../components/LoadingView';
+
 
 class Main extends React.Component {
     constructor() {
         super()
-
+        this.state = {
+            selectedTab:'home'
+        }
     }
 
     searchCompany(){
@@ -38,42 +46,72 @@ class Main extends React.Component {
                     </View>
                 </Image>
 
-            <ScrollableTabView
-                style={{marginTop: 20, }}
-                initialPage={0}
-                tabBarPosition="bottom"
-                renderTabBar={() => <MainTabBar />}
-            >
+                <TabNavigator  style={{marginTop: 20, }}>
+                    <TabNavigator.Item
+                        selected={this.state.selectedTab === 'home'}
+                        title="主页"
+                        renderIcon={() => <Image source={require("../img/home_icon_d.png")} />}
+                        renderSelectedIcon={() => <Image source={require("../img/home_icon.png")} />}
+                        badgeText="1"
+                        onPress={() => this.setState({ selectedTab: 'home' })}>
+                        <ScrollView tabLabel="ios-home" style={styles.tabView}>
+                            <SearchBar
+                                onSearchChange={() => console.log('On Focus')}
+                                onSearch={this.searchCompany.bind(this)}
+                                height={30}
+                                onFocus={() => console.log('On Focus')}
+                                onBlur={() => console.log('On Blur')}
+                                placeholder={'Search...'}
+                                autoCorrect={false}
+                                padding={3}
+                                returnKeyType={'search'}
+                            />
 
-                <ScrollView tabLabel="ios-home" style={styles.tabView}>
-                    <SearchBar
-                        onSearchChange={() => console.log('On Focus')}
-                        onSearch={this.searchCompany.bind(this)}
-                        height={30}
-                        onFocus={() => console.log('On Focus')}
-                        onBlur={() => console.log('On Blur')}
-                        placeholder={'Search...'}
-                        autoCorrect={false}
-                        padding={3}
-                        returnKeyType={'search'}
-                    />
-                </ScrollView>
-                <ScrollView tabLabel="ios-stats" style={styles.tabView}>
-                    <View style={styles.card}>
-                        <Text>企业</Text>
-                    </View>
-                </ScrollView>
-                <ScrollView tabLabel="ios-grid" style={styles.tabView}>
-                    <View style={styles.card}>
-                        <Text>应用</Text>
-                    </View>
-                </ScrollView>
-                <ScrollView tabLabel="ios-person" style={styles.tabView}>
-                    <View style={styles.card}>
-                        <Text>我的</Text>
-                    </View>
-                </ScrollView>
-            </ScrollableTabView>
+                            <ScrollableTabView
+                                style={{marginTop: 20}}
+                                renderTabBar={() => <CustomTabBar />}
+                            >
+                                <View tabLabel='新增企业' style={styles.card}>
+                                    <Text style={{color:'#ff0000',fontSize:16}}>新增企业</Text>
+                                </View>
+                                <View tabLabel='风险信息' style={styles.card}>
+                                    <Text>风险信息</Text>
+                                </View>
+                                <View tabLabel='融资资讯' style={styles.card}>
+                                    <Text>融资资讯</Text>
+                                </View>
+                            </ScrollableTabView>
+
+                        </ScrollView>
+                    </TabNavigator.Item>
+                    <TabNavigator.Item
+                        selected={this.state.selectedTab === 'company'}
+                        title="我的企业"
+                        renderIcon={() => <Image source={require("../img/company_icon_d.png")} />}
+                        renderSelectedIcon={() => <Image source={require("../img/company_icon.png")} />}
+                        //renderBadge={() => <CustomBadgeView />}
+                        onPress={() => this.setState({ selectedTab: 'company' })}>
+                        <Text>profile</Text>
+                    </TabNavigator.Item>
+                    <TabNavigator.Item
+                        selected={this.state.selectedTab === 'app'}
+                        title="应用"
+                        renderIcon={() => <Image source={require("../img/app_icon_d.png")} />}
+                        renderSelectedIcon={() => <Image source={require("../img/app_icon.png")} />}
+                        //renderBadge={() => <CustomBadgeView />}
+                        onPress={() => this.setState({ selectedTab: 'app' })}>
+                        <Text>profile</Text>
+                    </TabNavigator.Item>
+                    <TabNavigator.Item
+                        selected={this.state.selectedTab === 'person'}
+                        title="我的"
+                        renderIcon={() => <Image source={require("../img/person_icon_d.png")} />}
+                        renderSelectedIcon={() => <Image source={require("../img/person_icon.png")} />}
+                        //renderBadge={() => <CustomBadgeView />}
+                        onPress={() => this.setState({ selectedTab: 'person' })}>
+                        <Text>profile</Text>
+                    </TabNavigator.Item>
+                </TabNavigator>
             </View>
         );
     }
