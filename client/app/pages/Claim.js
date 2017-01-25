@@ -12,19 +12,35 @@ import {
     InteractionManager,
     TouchableHighlight,
     TouchableOpacity,
+    Button,
     View
 } from 'react-native';
 import CustomToolbar from '../components/CustomToolbar'
 
+import PopupDialog, {
+    DialogTitle,
+    DialogButton,
+    SlideAnimation,
+    ScaleAnimation,
+    DefaultAnimation,
+} from 'react-native-popup-dialog';
+const scaleAnimation = new ScaleAnimation();
+
 class Claim extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
-        if(this.props.route.params){
-            this.state =this.props.route.params
+        if (this.props.route.params) {
+            this.state = this.props.route.params
         }
+        this.openScaleAnimationDialog = this.openScaleAnimationDialog.bind(this);
+        this.onClaimBtnClick = this.onClaimBtnClick.bind(this);
     }
 
-    componentDidMount () {
+    openScaleAnimationDialog() {
+        this.scaleAnimationDialog.openDialog();
+    }
+
+    componentDidMount() {
         // const {dispatch} = this.props;
         // dispatch(fetchTest());
         // InteractionManager.runAfterInteractions(() => {
@@ -33,15 +49,15 @@ class Claim extends React.Component {
         console.log(this.props)
     }
 
-    onClaimBtnClick(){
+    onClaimBtnClick() {
+        this.scaleAnimationDialog.closeDialog();
+    }
+
+    onDistributeBtnClick() {
 
     }
 
-    onDistributeBtnClick(){
-
-    }
-
-    render () {
+    render() {
         const {navigator} = this.props;
 
         return (
@@ -68,18 +84,41 @@ class Claim extends React.Component {
                     </View>
                 </View>
                 <View style={styles.containerOption}>
-                    <TouchableOpacity onPress={this.onClaimBtnClick.bind(this)}>
-                        <View style={styles.buttonview} >
-                            <Text style={styles.btntext} >认领</Text>
+                    <TouchableOpacity onPress={this.openScaleAnimationDialog}>
+                        <View style={styles.buttonview}>
+                            <Text style={styles.btntext}>认领</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={this.onDistributeBtnClick.bind(this)}>
-                        <View style={styles.buttonview} >
-                            <Text style={styles.btntext} >分配</Text>
+                    <TouchableOpacity onPress={ this.openScaleAnimationDialog}>
+                        <View style={styles.buttonview}>
+                            <Text style={styles.btntext}>分配</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
+
+                <PopupDialog
+                    ref={(popupDialog) => {this.scaleAnimationDialog = popupDialog;}}
+                    dialogAnimation={scaleAnimation}
+                    height={170}
+                    dialogTitle={<DialogTitle style={{fontSize:18}} title="确认认领" />}
+
+                  >
+                    <View style={{flex:1}}>
+                        <Text style={{fontSize:18,marginTop:10,marginLeft:10}}>是否认领{this.state.item.title}?</Text>
+                        <View style={{flexDirection:'row',flex:1,marginTop:10,justifyContent:'flex-end'}}>
+                            <DialogButton style={{fontSize:18}}
+                            text='确认'
+                             onPress={this.onClaimBtnClick}/>
+                            <DialogButton style={{fontSize:18}}
+                                          text='取消'
+                                    onPress={() => {
+                                        this.scaleAnimationDialog.closeDialog();
+                                        }}/>
+                            </View>
+                    </View>
+                </PopupDialog>
+
 
             </View>
         );
@@ -110,15 +149,15 @@ let styles = StyleSheet.create({
     buttonview: {
         flexDirection: 'row',
         margin: 10,
-        width:120,
+        width: 120,
         borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor:'#15499A',
+        borderColor: '#15499A',
         borderWidth: 1,
     },
     btntext: {
-        alignSelf:'center',
+        alignSelf: 'center',
         fontSize: 17,
         color: '#15499A',
         marginTop: 10,

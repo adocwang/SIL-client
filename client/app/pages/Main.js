@@ -166,7 +166,7 @@ class Main extends React.Component {
 
     renderItem (item, sectionID, rowID) {
         const thumbnail = item.img.lastIndexOf("http") >= 0 ? item.img : 'https://www.redditstatic.com/reddit404b.png';
-        console.log('render', item.img.lastIndexOf("http"));
+
         return (
             <TouchableOpacity onPress={this.onPress.bind(this, item)}>
                 <View style={styles.containerItem}>

@@ -61,7 +61,7 @@ class CustomToolbar extends React.Component {
                     style={{ width: 10, height: 17,marginTop:25}}
                     source={require('../img/back_arrow_white.png')}
                 /></TouchableOpacity>
-              <Text style={{fontSize: 14, color: '#ffffff',marginTop:23,marginLeft:10}}>认领</Text>
+              <Text style={{fontSize: 16, color: '#ffffff',marginTop:22,marginLeft:10}}>认领</Text>
             </View>
           </Image>
         </View>
