@@ -16,12 +16,12 @@ import {
 } from 'react-native';
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
 import MainTabBar from '../components/MainTabBar';
-import CustomToolbar from '../components/CustomToolbar';
 import CustomTabBar from '../components/CustomTabBar';
 import SearchBar from '../components/SearchBar';
 import TabNavigator from '../components/bottomtabbar/TabNavigator';
 import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'
+import ClaimContainer from '../containers/ClaimContainer'
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -34,7 +34,7 @@ class Main extends React.Component {
             selectedTab:'home',
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
-            })
+            }),
         };
         this.renderItem = this.renderItem.bind(this);
         this.renderFooter = this.renderFooter.bind(this);
@@ -92,13 +92,22 @@ class Main extends React.Component {
     onPress (item) {
         const {navigator} = this.props;
         console.log(item);
-        //InteractionManager.runAfterInteractions(() => {
-        //    navigator.push({
-        //        component: WebViewContainer,
-        //        name: 'WebViewPage',
-        //        reddit: reddit
-        //    });
-        //});
+        let _this = this;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: ClaimContainer,
+                name: 'Claim',
+                params: {
+                    item: item,
+                    //回调!从SecondPageComponent获取user
+                    getUser: function(user) {
+                        _this.setState({
+                            user: user
+                        })
+                    }
+                },
+            });
+        });
     }
 
     //渲染每页内容
