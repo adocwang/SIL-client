@@ -11,6 +11,7 @@ import {
     Linking,
     InteractionManager,
     TouchableHighlight,
+    TouchableOpacity,
     View
     } from 'react-native';
 import PageToolbar from '../components/PageToolBar';
@@ -85,16 +86,16 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.buttomview}>
-                    <TouchableHighlight onPress={this.onResetPwdBtnClick.bind(this)}>
+                    <TouchableOpacity onPress={this.onResetPwdBtnClick.bind(this)}>
                     <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
                         <Text style={styles.lightblue}>忘记密码？</Text>
                     </View>
-                        </TouchableHighlight>
-                    <TouchableHighlight onPress={this.onSubmitBtnClick.bind(this)}>
+                        </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onSubmitBtnClick.bind(this)}>
                     <View style={styles.buttonview} >
                         <Text style={styles.logintext} >登录</Text>
                     </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
 
                 </View>
             </View>
