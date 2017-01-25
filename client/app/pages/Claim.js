@@ -13,9 +13,11 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Button,
+    ScrollView,
     View
 } from 'react-native';
 import CustomToolbar from '../components/CustomToolbar'
+import CheckBox from 'react-native-check-box'
 
 import PopupDialog, {
     DialogTitle,
@@ -33,13 +35,17 @@ class Claim extends React.Component {
             this.state = this.props.route.params
         }
         this.openScaleAnimationDialog = this.openScaleAnimationDialog.bind(this);
+        this.openChooseScaleAnimationDialog = this.openChooseScaleAnimationDialog.bind(this);
         this.onClaimBtnClick = this.onClaimBtnClick.bind(this);
+        this.onBankChoose = this.onBankChoose.bind(this);
     }
 
     openScaleAnimationDialog() {
         this.scaleAnimationDialog.openDialog();
     }
-
+    openChooseScaleAnimationDialog() {
+        this.chooseScaleAnimationDialog.openDialog();
+    }
     componentDidMount() {
         // const {dispatch} = this.props;
         // dispatch(fetchTest());
@@ -51,6 +57,9 @@ class Claim extends React.Component {
 
     onClaimBtnClick() {
         this.scaleAnimationDialog.closeDialog();
+    }
+    onBankChoose() {
+        //this.chooseScaleAnimationDialog.closeDialog();
     }
 
     onDistributeBtnClick() {
@@ -90,7 +99,7 @@ class Claim extends React.Component {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={ this.openScaleAnimationDialog}>
+                    <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
                         <View style={styles.buttonview}>
                             <Text style={styles.btntext}>分配</Text>
                         </View>
@@ -116,6 +125,45 @@ class Claim extends React.Component {
                                         this.scaleAnimationDialog.closeDialog();
                                         }}/>
                             </View>
+                    </View>
+                </PopupDialog>
+
+                <PopupDialog
+                    ref={(choosePopupDialog) => {this.chooseScaleAnimationDialog = choosePopupDialog;}}
+                    dialogAnimation={scaleAnimation}
+                    height={170}
+                    dialogTitle={<DialogTitle style={{fontSize:18}} title="选择支行" />}
+
+                >
+                    <View style={{flex:1}}>
+                        <ScrollView style={{padding:10,marginBottom:20}}>
+                          <View>
+                              <CheckBox
+                                  style={{flex: 1, padding: 10}}
+                                  onClick={()=>this.onBankChoose('1')}
+                                  isChecked={true}
+                                  rightText={'测试支行1'}
+                                  checkedImage={<Image source={require('../img/check_box_icon.png')} />}
+                                  unCheckedImage={<Image source={require('../img/check_box_icon_d.png')} />}
+                              />
+                              <CheckBox
+                                  style={{flex: 1, padding: 10}}
+                                  onClick={()=>this.onBankChoose('1')}
+                                  isChecked={false}
+                                  rightText={'测试支行2'}
+                                  checkedImage={<Image source={require('../img/check_box_icon.png')} />}
+                                  unCheckedImage={<Image source={require('../img/check_box_icon_d.png')} />}
+                              />
+                              <CheckBox
+                                  style={{flex: 1, padding: 10}}
+                                  onClick={()=>this.onBankChoose('1')}
+                                  isChecked={false}
+                                  rightText={'测试支行3'}
+                                  checkedImage={<Image source={require('../img/check_box_icon.png')} />}
+                                  unCheckedImage={<Image source={require('../img/check_box_icon_d.png')} />}
+                              />
+                          </View>
+                        </ScrollView>
                     </View>
                 </PopupDialog>
 
