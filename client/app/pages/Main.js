@@ -23,7 +23,7 @@ import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
 import ApplicationContainer from '../containers/ApplicationContainer'
-import Application from '../pages/Application.js'
+
 var canLoadMore;
 var loadMoreTime = 0;
 
@@ -280,6 +280,7 @@ class Main extends React.Component {
                         //renderBadge={() => <CustomBadgeView />}
                         onPress={() => this.setState({ selectedTab: 'app' })}>
                         <ApplicationContainer navigator={this.props.navigator}/>
+
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'person'}
