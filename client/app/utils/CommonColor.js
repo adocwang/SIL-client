@@ -1,0 +1,9 @@
+export const defaultBgColor = "#F5F5F5"
+export const defaultLightRedColor = "#eb4f38"
+export const defaultLightGray = "#aaa"
+export const defaultLineColor = "#eee"
+export const defaultGreenColor = "#3fa785"
+export const defaultDarkLineColor = "#ddd"
+export const defaultBlackColor = "#333" //247 179 62
+export const defaultOrangeColor= "#e7a33e"
+export const defaultSecondBlackColor = "#888"
