@@ -1,6 +1,7 @@
 'use strict';
 
 export function NaviGoBack (navigator) {
+  console.log( navigator.getCurrentRoutes());
   if (navigator && navigator.getCurrentRoutes().length > 1) {
     navigator.pop();
     return true;

@@ -6,6 +6,11 @@ import LoadingViewAndroid from  '../components/LoadingView';
 import {ToastShort} from '../utils/ToastUtils';
 
 import Splash from '../pages/splash';
+import Login from '../pages/Login';
+import Main from '../pages/Main';
+import MainContainer from '../containers/MainContainer';
+import ResetPwd from '../pages/ResetPwd';
+import Test from '../pages/Test';
 import {NaviGoBack} from '../utils/CommonUtils';
 
 import {
@@ -54,7 +59,7 @@ class App extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <StatusBar
-                    backgroundColor="#FF0000"
+                    backgroundColor="#000000"
                     barStyle="default"
                 />
                 <Navigator
@@ -63,8 +68,8 @@ class App extends React.Component {
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-            component: Splash,
-            name: 'Splash'
+            component: MainContainer,
+            name: 'Main'
           }}
                 />
             </View>

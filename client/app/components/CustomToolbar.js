@@ -1,36 +1,42 @@
-'use strict';
-
-import React from 'react';
+/**
+ * Created by kiefer on 2017/1/23.
+ */
+import React, { PropTypes } from 'react';
 import {
-  StyleSheet,
-  PropTypes,
-  ToolbarAndroid
-  } from 'react-native';
-import StyleSheetPropType from 'StyleSheetPropType';
-import ViewStylePropTypes from 'ViewStylePropTypes';
-
+    StyleSheet,
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+} from 'react-native';
 import {NaviGoBack} from '../utils/CommonUtils';
 
-let ViewStylePropType = StyleSheetPropType(ViewStylePropTypes);
+const styles = StyleSheet.create({
+  container: {
+
+  },
+
+});
 
 const propTypes = {
   title: PropTypes.string,
   actions: PropTypes.array,
   navigator: PropTypes.object,
-  onActionSelected: PropTypes.func,
   onIconClicked: PropTypes.func,
   navIcon: PropTypes.number,
   customView: PropTypes.object
-};
+}
 
 class CustomToolbar extends React.Component {
-  constructor (props) {
+
+
+  constructor(props) {
     super(props);
     this.onIconClicked = this.onIconClicked.bind(this);
-    this.onActionSelected = this.onActionSelected.bind(this);
   }
 
-  onIconClicked () {
+  onIconClicked() {
+    console.log(this.props);
     if (this.props.onIconClicked) {
       this.props.onIconClicked();
     } else {
@@ -41,40 +47,27 @@ class CustomToolbar extends React.Component {
     }
   }
 
-  onActionSelected (position) {
-    this.props.onActionSelected();
-  }
 
-  render () {
-    const {navigator} = this.props;
-    if (this.props.customView) {
-      return (
-        <ToolbarAndroid style={styles.toolbar}>
-          {this.props.customView}
-        </ToolbarAndroid>
-      )
-    } else {
-      return (
-        <ToolbarAndroid
-          style={styles.toolbar}
-          actions={this.props.actions}
-          onActionSelected={this.onActionSelected}
-          onIconClicked={this.onIconClicked}
-          navIcon={this.props.navIcon ? this.props.navIcon : require('../img/icon_left.png')}
-          titleColor='#fff'
-          title={this.props.title}
-        />
-      );
-    }
+  render() {
+
+    return (
+        <View style={styles.container}>
+          <Image source={require('../img/toolbar_bg.png')}
+                 style={{height:100,  flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
+            <View
+                style={{flexDirection: 'row', alignItems: 'flex-start',justifyContent: 'center',marginLeft:26,marginRight:26}}>
+              <TouchableOpacity onPress={this.onIconClicked}>
+                <Image
+                    style={{ width: 10, height: 17,marginTop:25}}
+                    source={require('../img/back_arrow_white.png')}
+                /></TouchableOpacity>
+              <Text style={{fontSize: 16, color: '#ffffff',marginTop:22,marginLeft:10}}>认领</Text>
+            </View>
+          </Image>
+        </View>
+    );
   }
 }
-
-let styles = StyleSheet.create({
-  toolbar: {
-    backgroundColor: '#FF0000',
-    height: 58
-  }
-});
 
 CustomToolbar.propTypes = propTypes;
 
@@ -85,4 +78,4 @@ CustomToolbar.defaultProps = {
   actions: []
 };
 
-export default CustomToolbar;
+export default  CustomToolbar

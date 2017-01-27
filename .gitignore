@@ -19,8 +19,8 @@ library/SMSSDK/bin
 *.iws
 .gradle/
 *.apk
-/gradle/
-/gradlew
+client/android/gradle/
+client/android/gradlew
 *.bat
 *.log
 client/node_modules
