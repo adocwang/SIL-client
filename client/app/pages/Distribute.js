@@ -47,6 +47,10 @@ class Distribute extends React.Component {
 
     }
 
+    onSubmit(){
+        console.log('onOperateClicked')
+    }
+
     render() {
         const {navigator} = this.props;
 
@@ -54,6 +58,8 @@ class Distribute extends React.Component {
             <View style={styles.container}>
                 <CustomToolbar
                     title="分配"
+                    operate="确认"
+                    onOperateClicked={()=>this.onSubmit()}
                     navigator={navigator}/>
                 <View style={{height:55,justifyContent:'center',paddingLeft:20}}>
                     <Text style={{color:'#000000',fontSize:16}}>选择客户经理</Text>

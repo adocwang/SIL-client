@@ -60,6 +60,7 @@ class Claim extends React.Component {
         this.scaleAnimationDialog.closeDialog();
     }
     onBankChoose(userId) {
+        this.chooseScaleAnimationDialog.closeDialog();
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
