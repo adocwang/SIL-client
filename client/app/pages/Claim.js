@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import CustomToolbar from '../components/CustomToolbar'
 import CheckBox from 'react-native-check-box'
+import DistributeContainer from '../containers/DistributeContainer'
 
 import PopupDialog, {
     DialogTitle,
@@ -58,7 +59,14 @@ class Claim extends React.Component {
     onClaimBtnClick() {
         this.scaleAnimationDialog.closeDialog();
     }
-    onBankChoose() {
+    onBankChoose(userId) {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: DistributeContainer,
+                name: 'Distribute'
+            });
+        });
         //this.chooseScaleAnimationDialog.closeDialog();
     }
 
