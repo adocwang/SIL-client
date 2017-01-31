@@ -43,7 +43,7 @@ class Main extends React.Component {
         canLoadMore = false;
     }
     componentDidMount () {
-        console.log(this.props);
+        //console.log(this.props);
         //const {dispatch} = this.props;
         //InteractionManager.runAfterInteractions(() => {
         //    _typeIds = [1, 2, 3, 4];
@@ -107,7 +107,7 @@ class Main extends React.Component {
 
     onPress (item) {
         const {navigator} = this.props;
-        console.log(item);
+       // console.log(item);
         let _this = this;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({

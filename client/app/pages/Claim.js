@@ -53,7 +53,7 @@ class Claim extends React.Component {
         // InteractionManager.runAfterInteractions(() => {
         //     dispatch(fetchTest());
         // });
-        console.log(this.props)
+        //console.log(this.props)
     }
 
     onClaimBtnClick() {

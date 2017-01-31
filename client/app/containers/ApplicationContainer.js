@@ -12,7 +12,6 @@ class ApplicationContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    console.log(state);
     const {appliaction} = state;
     return {
         appliaction
