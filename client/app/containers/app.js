@@ -7,6 +7,7 @@ import {ToastShort} from '../utils/ToastUtils';
 
 import Splash from '../pages/splash';
 import Login from '../pages/Login';
+import Active from '../pages/Active';
 import Main from '../pages/Main';
 import MainContainer from '../containers/MainContainer';
 import ResetPwd from '../pages/ResetPwd';
@@ -68,8 +69,8 @@ class App extends React.Component {
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-            component: MainContainer,
-            name: 'Main'
+            component: Active,
+            name: 'Active'
           }}
                 />
             </View>

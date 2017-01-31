@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
+import CountDown from '../components/CountDown'
 
 class Active extends React.Component {
     constructor (props) {
@@ -40,6 +41,10 @@ class Active extends React.Component {
                 name: 'Main'
             });
         });
+    }
+
+    onSendMsgCode(){
+        console.log('onSendMsgCode');
     }
 
     render () {
@@ -72,13 +77,18 @@ class Active extends React.Component {
                 <View style={styles.inputview}>
                     <View style={styles.rowview}>
                         <TextInput style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
-                        <View style={{flex:1,height:30, borderRadius:15,borderColor:'#15499A',borderWidth: 1,marginTop:20,}}>
-                            <Text style={styles.sendMsg}>发送验证码</Text></View>
+
+                        <CountDown
+                            onPress={this.onSendMsgCode.bind(this)} //default null
+                            text={'发送验证码'} //default ''
+                            time={60} //default 60
+                            buttonStyle={{marginTop:10}}
+                            textStyle={{color:'#15499A'}} //default black
+                            disabledTextStyle={{color:'#15499A'}} //default gray
+                        />
                     </View>
                     <View style={styles.rowview}>
                         <TextInput style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
-                        <View style={{flex:1,height:30,marginTop:20}}>
-                            <Text style={styles.lightblue}>120‘后重新获取</Text></View>
                     </View>
                     <Text style={styles.redtxt}>验证码输入错误,请重新输入</Text>
                     <TextInput style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
