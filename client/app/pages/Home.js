@@ -233,7 +233,7 @@ class Home extends React.Component {
                             />
                             <ScrollableTabView
                                 style={{marginTop: 20,flex:1}}
-                                renderTabBar={() => <CustomTabBar />}
+                                renderTabBar={() => <CustomTabBar redCounts={[1,2,3]} />}
                             >
 
                                 {lists}
