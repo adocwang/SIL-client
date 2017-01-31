@@ -51,5 +51,10 @@ const initialState = {
 };
 
 export default function home (state = initialState, action) {
-    return state
+    switch (action.type) {
+        case types.UPDATE_HOME_INFO:
+            return Object.assign({}, state, action.data);
+        default:
+            return state;
+    }
 }

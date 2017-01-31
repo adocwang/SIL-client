@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import CustomToolbar from '../components/CustomToolbar'
 import CheckBox from 'react-native-check-box'
-
+import {notifyUpdate} from '../actions/home'
 
 
 class Distribute extends React.Component {
@@ -49,8 +49,9 @@ class Distribute extends React.Component {
 
     onSubmit(){
         const {navigator} = this.props;
-        const {home} = this.props;
+        const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
+            dispatch(notifyUpdate({companyInfoUpdate:true}));
             navigator.popToTop();
         });
     }
