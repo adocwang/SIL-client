@@ -224,7 +224,7 @@ class Main extends React.Component {
 
         return (
             <View style={styles.container}>
-                <Image source={require('../img/toolbar_bg.png')}  style={{height:100,  flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
+                <Image source={require('../img/toolbar_bg.png')}  style={{height:100,  width:null, flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
                     <View style={{flexDirection: 'row', alignItems: 'flex-start',justifyContent: 'center',marginLeft:26,marginRight:26}}>
                     <Image
                         style={{ width: 28, height: 28,marginTop:25}}

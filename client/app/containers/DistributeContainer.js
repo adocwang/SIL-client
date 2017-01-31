@@ -16,9 +16,9 @@ class DistributeContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {localUser} = state;
+    const {home} = state;
     return {
-        localUser
+        home
     }
 }
 

@@ -13,7 +13,6 @@ import {NaviGoBack} from '../utils/CommonUtils';
 
 const styles = StyleSheet.create({
   container: {
-
   },
 
 });
@@ -58,9 +57,8 @@ class CustomToolbar extends React.Component {
   render() {
 
     return (
-        <View style={styles.container}>
           <Image source={require('../img/toolbar_bg.png')}
-                 style={{height:100,  flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
+                 style={{height:100, width:null, flexDirection: 'row',resizeMode: Image.resizeMode.stretch}}>
             <View
                 style={{flexDirection: 'row', alignItems: 'flex-start',justifyContent: 'center',marginLeft:26}}>
               <TouchableOpacity onPress={this.onIconClicked}>
@@ -77,7 +75,6 @@ class CustomToolbar extends React.Component {
                 </TouchableOpacity>
             </View>
           </Image>
-        </View>
     );
   }
 }

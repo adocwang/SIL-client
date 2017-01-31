@@ -68,8 +68,8 @@ class App extends React.Component {
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-            component: MainContainer,
-            name: 'Main'
+            component: Login,
+            name: 'Login'
           }}
                 />
             </View>

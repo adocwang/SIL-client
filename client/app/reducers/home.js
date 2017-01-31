@@ -46,7 +46,8 @@ const initialState = {
     noMore: false,
     catList:homeTabCat,
     pageList: {1:mockCompanyInfo,2:mockCompanyInfo,3:mockCompanyInfo},
-    pageAfter: {1: '', 2: '', 3: ''}
+    pageAfter: {1: '', 2: '', 3: ''},
+    companyInfoUpdate:false
 };
 
 export default function home (state = initialState, action) {

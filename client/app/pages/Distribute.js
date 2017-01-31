@@ -48,7 +48,11 @@ class Distribute extends React.Component {
     }
 
     onSubmit(){
-        console.log('onOperateClicked')
+        const {navigator} = this.props;
+        const {home} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.popToTop();
+        });
     }
 
     render() {
