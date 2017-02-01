@@ -84,7 +84,7 @@ class Main extends React.Component {
                         style={{ width: 28, height: 28,marginTop:25}}
                         source={require('../img/default_avatar.png')}
                     />
-                        <Text  style={{fontSize: 14, color: '#ffffff',marginTop:30,marginLeft:10}}>您好,唐万兵</Text>
+                        <Text  style={{fontSize: 14, color: '#ffffff',marginTop:30,marginLeft:10}}>您好,{this.props.auth.true_name}</Text>
                     </View>
                 </Image>
 

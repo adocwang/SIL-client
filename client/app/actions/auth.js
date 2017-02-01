@@ -27,6 +27,12 @@ export function fetchLogin (paramsMap) {
     }
 }
 
+export function loadLocalUser (user) {
+    return {
+        type:types.LOAD_LOCAL_USER,
+        data:user
+    }
+}
 
 function loginSuccess (data) {
     return {

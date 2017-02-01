@@ -2,7 +2,9 @@
 //test
 export const FETCH_REDDIT_LIST = 'FETCH_ARTICLE_LIST';
 
-//登录成功
+export const LOAD_LOCAL_USER ='LOAD_LOCAL_USER';
+
+//登录
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_LOADING = 'LOGIN_LOADING';
 

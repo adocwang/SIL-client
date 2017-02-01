@@ -18,6 +18,8 @@ export default function auth (state = initialState, action) {
             return Object.assign({}, state, action.data);
         case types.LOGIN_LOADING:
             return Object.assign({}, state, action.data);
+        case types.LOAD_LOCAL_USER:
+            return Object.assign({}, state, action.data);
         default:
             return state;
     }
