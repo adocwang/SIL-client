@@ -16,6 +16,8 @@ export default function auth (state = initialState, action) {
     switch (action.type) {
         case types.LOGIN_SUCCESS:
             return Object.assign({}, state, action.data);
+        case types.LOGIN_LOADING:
+            return Object.assign({}, state, action.data);
         default:
             return state;
     }

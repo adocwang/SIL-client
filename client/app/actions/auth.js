@@ -10,6 +10,7 @@ import * as host from '../constants/Urls';
 export function fetchLogin (paramsMap) {
     console.log('fetchLogin',paramsMap)
     return dispatch => {
+        dispatch(loginLoding());
         return postRequest(host.PASSWORD_LOGIN_URL ,paramsMap)
             .then((data) => {
                 if(data.code == 2007){
@@ -34,7 +35,7 @@ function loginSuccess (data) {
     }
 }
 
-function loginLoding (data) {
+function loginLoding () {
     return {
         type: types.LOGIN_LOADING,
         data: {loading:true},

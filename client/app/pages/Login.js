@@ -19,13 +19,15 @@ import MainContainer from '../containers/MainContainer';
 import ResetPwdContainer from '../containers/ResetPwdContainer';
 import {ToastShort} from '../utils/ToastUtils';
 import {fetchLogin} from '../actions/auth'
+import Spanner from 'react-native-spinkit'
 
 class Login extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
             password:'12348765',
-            phone:'15828516285'
+            phone:'15828516285',
+            loading:false
         };
     }
 
@@ -45,6 +47,7 @@ class Login extends React.Component {
         //    }
         //}
         if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
+            this.setState({loading:false});
             const {navigator} = nextProps;
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
@@ -81,6 +84,7 @@ class Login extends React.Component {
 
         const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
+            this.setState({loading:true});
             dispatch(fetchLogin(this.state));
         });
 
@@ -141,6 +145,11 @@ class Login extends React.Component {
                     </TouchableOpacity>
 
                 </View>
+                {
+                    this.state.loading?<View style={styles.overlay} >
+                        <Spanner size={50} type='ThreeBounce' color='#15499A'/>
+                    </View>:<View></View>
+                }
             </View>
         );
     }
@@ -248,6 +257,17 @@ let styles = StyleSheet.create({
     },
     redtxt:{
         fontSize: 14,color: '#D0021B',marginLeft:5
+    },
+    overlay:{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        alignItems:'center',
+        justifyContent:'center'
+
     }
 });
 
