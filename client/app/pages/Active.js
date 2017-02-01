@@ -17,10 +17,16 @@ import {
 import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
 import CountDown from '../components/CountDown'
+import {fetchSmsCode} from  '../actions/auth'
 
 class Active extends React.Component {
     constructor (props) {
         super(props);
+        this.state = {
+            phone:'15828516285',
+            code:'',
+            password:''
+        };
     }
 
     componentDidMount () {
@@ -44,7 +50,11 @@ class Active extends React.Component {
     }
 
     onSendMsgCode(){
-        console.log('onSendMsgCode');
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({loading:true});
+            dispatch(fetchSmsCode(this.state.phone));
+        });
     }
 
     render () {
@@ -76,7 +86,7 @@ class Active extends React.Component {
 
                 <View style={styles.inputview}>
                     <View style={styles.rowview}>
-                        <TextInput style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
+                        <TextInput onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
 
                         <CountDown
                             onPress={this.onSendMsgCode.bind(this)} //default null

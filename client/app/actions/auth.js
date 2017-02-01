@@ -28,10 +28,24 @@ export function fetchLogin (paramsMap) {
 }
 
 export function fetchLogout (token) {
+    console.log('fetchLogout',token);
     return dispatch => {
         return getRequest(host.USER_LOGOUT,token)
             .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+            })
+    }
+}
 
+export function fetchSmsCode (phone) {
+    console.log('fetchSmsCode');
+    return dispatch => {
+        return postRequest(host.SEND_LOGIN_SMS ,{phone:phone},'iamsuperman')
+            .then((data) => {
+                console.log(data);
             })
             .catch((error) => {
                 ToastShort(error.message);

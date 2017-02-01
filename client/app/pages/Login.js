@@ -20,6 +20,7 @@ import ResetPwdContainer from '../containers/ResetPwdContainer';
 import {ToastShort} from '../utils/ToastUtils';
 import {fetchLogin} from '../actions/auth'
 import Spanner from 'react-native-spinkit'
+import ActiveContainer from '../containers/ActiveContainer'
 
 class Login extends React.Component {
     constructor (props) {
@@ -109,6 +110,17 @@ class Login extends React.Component {
         });
     }
 
+    onActiveBtnClick(){
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: ActiveContainer,
+                name: 'Active'
+            });
+        });
+    }
+
+
     render () {
         const {navigator} = this.props;
         return (
@@ -142,15 +154,21 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.buttomview}>
+
                     <TouchableOpacity onPress={this.onResetPwdBtnClick.bind(this)}>
                     <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
                         <Text style={styles.lightblue}>忘记密码？</Text>
                     </View>
-                        </TouchableOpacity>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={this.onSubmitBtnClick.bind(this)}>
                     <View style={styles.buttonview} >
                         <Text style={styles.logintext} >登录</Text>
                     </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onActiveBtnClick.bind(this)}>
+                        <View style={{flexDirection: 'row',justifyContent: 'center'}}>
+                            <Text style={styles.lightblue}>激活账户</Text>
+                        </View>
                     </TouchableOpacity>
 
                 </View>
@@ -218,7 +236,7 @@ let styles = StyleSheet.create({
     },
     buttomview: {
         flex: 1,
-        marginTop:30
+        marginTop:10
     },
     buttonview: {
         flexDirection: 'row',
