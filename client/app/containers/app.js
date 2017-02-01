@@ -6,7 +6,7 @@ import LoadingViewAndroid from  '../components/LoadingView';
 import {ToastShort} from '../utils/ToastUtils';
 
 import Splash from '../pages/splash';
-import Login from '../pages/Login';
+import LoginContainer from '../containers/LoginContainer';
 import Active from '../pages/Active';
 import Main from '../pages/Main';
 import MainContainer from '../containers/MainContainer';
@@ -69,7 +69,7 @@ class App extends React.Component {
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-            component: Login,
+            component: LoginContainer,
             name: 'Login'
           }}
                 />

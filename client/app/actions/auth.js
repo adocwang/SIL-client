@@ -8,14 +8,22 @@ import {postRequest} from '../utils/HttpServices';
 import * as host from '../constants/Urls';
 
 export function fetchLogin (paramsMap) {
+    console.log('fetchLogin',paramsMap)
+    return dispatch => {
         return postRequest(host.PASSWORD_LOGIN_URL ,paramsMap)
             .then((data) => {
-                console.log(data);
-                dispatch(loginSuccess(data.data));
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else if(data.code ==2003){
+                    ToastShort('密码错误');
+                }else if(data.code ==0){
+                    dispatch(loginSuccess(data.data));
+                }
             })
             .catch((error) => {
                 ToastShort(error.message);
             })
+    }
 }
 
 
@@ -23,5 +31,12 @@ function loginSuccess (data) {
     return {
         type: types.LOGIN_SUCCESS,
         data: data,
+    }
+}
+
+function loginLoding (data) {
+    return {
+        type: types.LOGIN_LOADING,
+        data: {loading:true},
     }
 }

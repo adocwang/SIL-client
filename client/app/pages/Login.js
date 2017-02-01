@@ -18,7 +18,7 @@ import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
 import ResetPwdContainer from '../containers/ResetPwdContainer';
 import {ToastShort} from '../utils/ToastUtils';
-import {fetchLogin} from '../actions/login'
+import {fetchLogin} from '../actions/auth'
 
 class Login extends React.Component {
     constructor (props) {
@@ -37,6 +37,37 @@ class Login extends React.Component {
        // });
     }
 
+    componentWillReceiveProps (nextProps) {
+        //const {reddit} = this.props;
+        //if (reddit.isLoadMore && !nextProps.reddit.isLoadMore && !nextProps.reddit.isRefreshing) {
+        //    if (nextProps.reddit.noMore) {
+        //        ToastShort('没有更多数据了');
+        //    }
+        //}
+        if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
+            const {navigator} = nextProps;
+            InteractionManager.runAfterInteractions(() => {
+                navigator.resetTo({
+                    component: MainContainer,
+                    name: 'Main'
+                });
+            });
+        }
+    }
+
+    shouldComponentUpdate(){
+        console.log('first shouldComponentUpdate is here');
+        return true;
+    }
+    componentWillUpdate(){
+        console.log('first componentWillUpdate is here');
+    }
+
+    componentDidUpdate(){
+        console.log('first componentDidUpdate is here');
+    }
+
+
     onSubmitBtnClick(){
         console.log(this.state);
         if(!(/^1[34578]\d{9}$/.test(this.state.phone))){
@@ -48,14 +79,11 @@ class Login extends React.Component {
             return false;
         }
 
-        fetchLogin(this.state);
-        //const {navigator} = this.props;
-        //InteractionManager.runAfterInteractions(() => {
-        //    navigator.resetTo({
-        //        component: MainContainer,
-        //        name: 'Main'
-        //    });
-        //});
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchLogin(this.state));
+        });
+
     }
 
     onResetPwdBtnClick(){

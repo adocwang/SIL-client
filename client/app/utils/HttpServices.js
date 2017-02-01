@@ -14,3 +14,7 @@ export function postRequest (url,paramsMap) {
   }).then(response=>response.json());
 }
 
+export function request (url) {
+  console.info("url=", url);
+  return fetch(url).then(response=>response.json());
+}
