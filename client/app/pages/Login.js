@@ -17,10 +17,16 @@ import {
 import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
 import ResetPwdContainer from '../containers/ResetPwdContainer';
+import {ToastShort} from '../utils/ToastUtils';
+import {fetchLogin} from '../actions/login'
 
 class Login extends React.Component {
     constructor (props) {
         super(props);
+        this.state = {
+            password:'12348765',
+            phone:'15828516285'
+        };
     }
 
     componentDidMount () {
@@ -29,18 +35,27 @@ class Login extends React.Component {
        // InteractionManager.runAfterInteractions(() => {
        //     dispatch(fetchTest());
        // });
-       console.log(this.props)
     }
 
     onSubmitBtnClick(){
-        console.log(this.props);
-        const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.resetTo({
-                component: MainContainer,
-                name: 'Main'
-            });
-        });
+        console.log(this.state);
+        if(!(/^1[34578]\d{9}$/.test(this.state.phone))){
+            ToastShort('手机号码有误，请重填');
+            return false;
+        }
+        if(this.state.password==''){
+            ToastShort('密码不能为空');
+            return false;
+        }
+
+        fetchLogin(this.state);
+        //const {navigator} = this.props;
+        //InteractionManager.runAfterInteractions(() => {
+        //    navigator.resetTo({
+        //        component: MainContainer,
+        //        name: 'Main'
+        //    });
+        //});
     }
 
     onResetPwdBtnClick(){
@@ -81,8 +96,8 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.inputview}>
-                    <TextInput style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
-                    <TextInput style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                    <TextInput   onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
+                    <TextInput   onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
                 </View>
 
                 <View style={styles.buttomview}>
@@ -137,7 +152,7 @@ let styles = StyleSheet.create({
         flexDirection:'row'
     },
     textinput: {//用户名/密码输入框
-        flex: 2,
+        flex: 1,
         borderWidth: 0,
         fontSize: 16,
 
