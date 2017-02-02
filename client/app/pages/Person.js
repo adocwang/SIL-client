@@ -18,6 +18,7 @@ import LoginContainer from '../containers/LoginContainer';
 import {ToastShort} from '../utils/ToastUtils';
 import {fetchLogout} from '../actions/auth'
 import Spanner from 'react-native-spinkit'
+import realm from '../components/realm'
 
 class Person extends React.Component {
     constructor (props) {
@@ -68,9 +69,11 @@ class Person extends React.Component {
                 component: LoginContainer,
                 name: 'Login'
             });
-            // 删除单个数据
-            storage.remove({
-                key: 'user'
+
+            realm.write(() => {
+                let user = realm.objects('User');
+                realm.delete(user); // Deletes all books
+                console.log('User',user);
             });
         });
     }

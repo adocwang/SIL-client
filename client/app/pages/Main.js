@@ -56,20 +56,17 @@ class Main extends React.Component {
         //        ToastShort('没有更多数据了');
         //    }
         //}
-        console.log('first componentWillReceiveProps is here');
+        console.log('Main componentWillReceiveProps is here');
         console.log(nextProps);
     }
 
     shouldComponentUpdate(){
-        console.log('first shouldComponentUpdate is here');
         return true;
     }
     componentWillUpdate(){
-        console.log('first componentWillUpdate is here');
     }
 
     componentDidUpdate(){
-        console.log('first componentDidUpdate is here');
     }
 
     searchCompany(){

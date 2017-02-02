@@ -42,7 +42,6 @@ class Home extends React.Component {
         canLoadMore = false;
     }
     componentDidMount () {
-        console.log(this.props);
     }
 
     componentWillReceiveProps (nextProps) {

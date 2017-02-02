@@ -2,7 +2,7 @@
  * Created by kiefer on 2017/2/1.
  */
 import * as types from '../constants/ActionTypes';
-
+import realm from '../components/realm'
 const initialState = {
     id: 0,
     phone:'',
@@ -15,6 +15,14 @@ const initialState = {
 export default function auth (state = initialState, action) {
     switch (action.type) {
         case types.LOGIN_SUCCESS:
+            try {
+                realm.write(() => {
+                    realm.create('User', action.data);
+                });
+            }catch (err){
+                console.log('realm error',err);
+            }
+
             return Object.assign({}, state, action.data);
         case types.LOGIN_LOADING:
             return Object.assign({}, state, action.data);

@@ -8,7 +8,6 @@ import {postRequest,getRequest} from '../utils/HttpServices';
 import * as host from '../constants/Urls';
 
 export function fetchLogin (paramsMap) {
-    console.log('fetchLogin',paramsMap)
     return dispatch => {
         dispatch(loginLoding());
         return postRequest(host.PASSWORD_LOGIN_URL ,paramsMap,'iamsuperman')
@@ -28,7 +27,6 @@ export function fetchLogin (paramsMap) {
 }
 
 export function fetchLogout (token) {
-    console.log('fetchLogout',token);
     return dispatch => {
         return getRequest(host.USER_LOGOUT,token)
             .then((data) => {

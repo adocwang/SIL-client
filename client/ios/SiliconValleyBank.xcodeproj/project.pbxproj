@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -37,6 +36,9 @@
 		CEB46BE17ED241FBA1C4F913 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F44FD581C7384A3A9FF50A1D /* MaterialCommunityIcons.ttf */; };
 		DEAB4575AAC34D979D83FDCD /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D59414E930CA42548C647AD5 /* FontAwesome.ttf */; };
 		ECB8E28FD6A741979906EE0D /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EEEB8C8E2C7841D6B3D62279 /* Zocial.ttf */; };
+		997A73BB983546F69192D6C8 /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 221D793E646844BBBD83D7DB /* libRealmReact.a */; };
+		5CCFE36A223C47D4A09B37D1 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1917089E287F4CCFB873D9EE /* libc++.tbd */; };
+		9DAF0CFA76A040B2BEA2ED81 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34FF0E379D12402080EB87FA /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -278,6 +280,10 @@
 		EEEB8C8E2C7841D6B3D62279 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		F44FD581C7384A3A9FF50A1D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		FD3812143CA846E8896BCDB7 /* libRNSpinkit.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSpinkit.a; sourceTree = "<group>"; };
+		156DFAA171BE4F4C9E31F9D8 /* RealmReact.xcodeproj */ = {isa = PBXFileReference; name = "RealmReact.xcodeproj"; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		221D793E646844BBBD83D7DB /* libRealmReact.a */ = {isa = PBXFileReference; name = "libRealmReact.a"; path = "libRealmReact.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		1917089E287F4CCFB873D9EE /* libc++.tbd */ = {isa = PBXFileReference; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
+		34FF0E379D12402080EB87FA /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +313,9 @@
 				2CD1D453B8851FBD11BAA7D2 /* libPods-SiliconValleyBank.a in Frameworks */,
 				46B15A6927244EB79E601661 /* libRNVectorIcons.a in Frameworks */,
 				866EC73C5BDC4B30BD1A72FD /* libRNSpinkit.a in Frameworks */,
+				997A73BB983546F69192D6C8 /* libRealmReact.a in Frameworks */,
+				5CCFE36A223C47D4A09B37D1 /* libc++.tbd in Frameworks */,
+				9DAF0CFA76A040B2BEA2ED81 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +441,8 @@
 			isa = PBXGroup;
 			children = (
 				A9EDBDEB3B19018AEB32509F /* libPods-SiliconValleyBank.a */,
+				1917089E287F4CCFB873D9EE /* libc++.tbd */,
+				34FF0E379D12402080EB87FA /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -461,6 +472,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				3057ED00E1EC430FA2F67CC9 /* RNVectorIcons.xcodeproj */,
 				1A2FA9A3DE9B404F9B00E510 /* RNSpinkit.xcodeproj */,
+				156DFAA171BE4F4C9E31F9D8 /* RealmReact.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1009,6 +1021,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SiliconValleyBank.app/SiliconValleyBank";
@@ -1025,6 +1038,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);

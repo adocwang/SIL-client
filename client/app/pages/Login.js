@@ -38,7 +38,6 @@ class Login extends React.Component {
        // InteractionManager.runAfterInteractions(() => {
        //     dispatch(fetchTest());
        // });
-        console.log(storage);
     }
 
     componentWillReceiveProps (nextProps) {
@@ -51,13 +50,6 @@ class Login extends React.Component {
         if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
             this.setState({loading:false});
             const {navigator} = nextProps;
-            storage.save({
-                key: 'user',  // 注意:请不要在key中使用_下划线符号!
-                rawData: nextProps.auth,
-                // 如果不指定过期时间，则会使用defaultExpires参数
-                // 如果设为null，则永不过期
-                expires: null
-            });
 
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
@@ -69,15 +61,12 @@ class Login extends React.Component {
     }
 
     shouldComponentUpdate(){
-        console.log('first shouldComponentUpdate is here');
         return true;
     }
     componentWillUpdate(){
-        console.log('first componentWillUpdate is here');
     }
 
     componentDidUpdate(){
-        console.log('first componentDidUpdate is here');
     }
 
 
