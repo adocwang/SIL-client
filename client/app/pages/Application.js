@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {View,StyleSheet,Text,Image,TouchableWithoutFeedback,Navigator} from 'react-native'
 import LoanCalculatorContainer from '../containers/LoanCalculatorContainer'
+import CollectionContainer from '../containers/CollectionContainer'
 class Application extends Component {
 
  constructor(props) {
@@ -14,19 +15,27 @@ class Application extends Component {
       case 0:
         this.turnLoadCalculator()
         break;
+      case 2:
+        this.turnToCollection()
+        break
       default:
-
     }
   }
 
   turnLoadCalculator() {
-    console.log("跳转贷款计算器");
     const {navigator} = this.props
-    console.log(navigator);
     navigator.push({
         component: LoanCalculatorContainer,
         name: 'LoanCalculatorContainer',
     });
+  }
+
+  turnToCollection() {
+    const {navigator} = this.props
+    navigator.push({
+      component: CollectionContainer,
+      name: 'CollectionContainer'
+    })
   }
 
   render() {

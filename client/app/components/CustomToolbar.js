@@ -15,6 +15,12 @@ const styles = StyleSheet.create({
   container: {
 
   },
+  rightView: {
+    marginLeft:200,
+    width: 100,
+    height: 20,
+    backgroundColor: "orange",
+  },
 
 });
 
@@ -33,6 +39,7 @@ class CustomToolbar extends React.Component {
   constructor(props) {
     super(props);
     this.onIconClicked = this.onIconClicked.bind(this);
+    this.rightClicked = this.rightClicked.bind(this)
   }
 
   onIconClicked() {
@@ -47,6 +54,10 @@ class CustomToolbar extends React.Component {
     }
   }
 
+  rightClicked() {
+    this.props.rightClosure()
+  }
+
 
   render() {
 
@@ -55,14 +66,22 @@ class CustomToolbar extends React.Component {
           <Image source={require('../img/toolbar_bg.png')}
                  style={{height:100,  flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
             <View
-                style={{flexDirection: 'row', alignItems: 'flex-start',justifyContent: 'center',marginLeft:26,marginRight:26}}>
+                style={{flexDirection: 'row', flex:1,alignItems: 'center',justifyContent: 'flex-start',marginLeft:15}}>
               <TouchableOpacity onPress={this.onIconClicked}>
                 <Image
-                    style={{ width: 10, height: 17,marginTop:25}}
+                    style={{ width: 10, height: 17}}
                     source={require('../img/back_arrow_white.png')}
                 /></TouchableOpacity>
-              <Text style={{fontSize: 16, color: '#ffffff',marginTop:22,marginLeft:10}}>认领</Text>
+              <Text style={{fontSize: 16,marginLeft:10}}>认领</Text>
+
+              <TouchableOpacity onPress={this.rightClicked}>
+              <View style={styles.rightView}>
+                <Text>{this.props.rightTitle}</Text>
+              </View>
+            </TouchableOpacity>
+
             </View>
+
           </Image>
         </View>
     );
@@ -77,5 +96,6 @@ CustomToolbar.defaultProps = {
   title: '',
   actions: []
 };
+
 
 export default  CustomToolbar

@@ -1,14 +1,31 @@
-const React = require('react');
-const ReactNative = require('react-native');
-const {
- TouchableOpacity,
-  View,
-} = ReactNative;
+import React,{Component,PropTypes} from 'react';
+import {View,StyleSheet,Text,Image,TouchableWithoutFeedback,Navigator,ListView} from 'react-native'
 
-const Button = (props) => {
-  return <TouchableOpacity {...props}>
-    {props.children}
-  </TouchableOpacity>;
-};
+class Button extends Component {
 
-module.exports = Button;
+ onPress() {
+   const {onPress} = this.props
+   onPress()
+ }
+
+  render() {
+    const {style,title,titleStyle,onPress} = this.props
+    const bgStyles = [style,styles.bg]
+    return(
+      <TouchableWithoutFeedback onPress={this.onPress.bind(this)}>
+        <View style={bgStyles}>
+          <Text style={titleStyle}>{title}</Text>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  bg: {
+    alignItems: "center",
+    justifyContent:"center"
+  }
+})
+
+export default Button
