@@ -1,24 +1,24 @@
 /**
- * Created by kiefer on 2017/1/22.
+ * Created by kiefer on 2017/1/31.
  */
 import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import Main from '../pages/Main';
+import Home from '../pages/Home';
 
 class MainContainer extends Component {
     render () {
         return (
-            <Main {...this.props} />
+            <Home {...this.props} />
         );
     }
 }
 
 function mapStateToProps (state) {
-    const {home,auth} = state;
+    const {home} = state;
     return {
-        home,auth
+        home
     }
 }
 

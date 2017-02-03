@@ -5,13 +5,15 @@ import React from 'react';
 import LoadingViewAndroid from  '../components/LoadingView';
 import {ToastShort} from '../utils/ToastUtils';
 
-import Splash from '../pages/splash';
-import Login from '../pages/Login';
+import SplashContainer from '../containers/SplashContainer';
+import LoginContainer from '../containers/LoginContainer';
+import Active from '../pages/Active';
 import Main from '../pages/Main';
 import MainContainer from '../containers/MainContainer';
 import ResetPwd from '../pages/ResetPwd';
 import Test from '../pages/Test';
 import {NaviGoBack} from '../utils/CommonUtils';
+
 
 import {
     StyleSheet,
@@ -22,6 +24,8 @@ import {
     } from 'react-native';
 
 var _navigator, isRemoved = false;
+
+
 
 class App extends React.Component {
     constructor (props) {
@@ -68,8 +72,8 @@ class App extends React.Component {
                     configureScene={this.configureScene}
                     renderScene={this.renderScene}
                     initialRoute={{
-            component: MainContainer,
-            name: 'Main'
+            component: SplashContainer,
+            name: 'Splash'
           }}
                 />
             </View>

@@ -17,10 +17,19 @@ import {
 import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
 import ResetPwdContainer from '../containers/ResetPwdContainer';
+import {ToastShort} from '../utils/ToastUtils';
+import {fetchLogin} from '../actions/auth'
+import Spanner from 'react-native-spinkit'
+import ActiveContainer from '../containers/ActiveContainer'
 
 class Login extends React.Component {
     constructor (props) {
         super(props);
+        this.state = {
+            password:'12348765',
+            phone:'15828516285',
+            loading:false
+        };
     }
 
     componentDidMount () {
@@ -29,18 +38,55 @@ class Login extends React.Component {
        // InteractionManager.runAfterInteractions(() => {
        //     dispatch(fetchTest());
        // });
-       console.log(this.props)
     }
 
-    onSubmitBtnClick(){
-        console.log(this.props);
-        const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.resetTo({
-                component: MainContainer,
-                name: 'Main'
+    componentWillReceiveProps (nextProps) {
+        //const {reddit} = this.props;
+        //if (reddit.isLoadMore && !nextProps.reddit.isLoadMore && !nextProps.reddit.isRefreshing) {
+        //    if (nextProps.reddit.noMore) {
+        //        ToastShort('没有更多数据了');
+        //    }
+        //}
+        if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
+            this.setState({loading:false});
+            const {navigator} = nextProps;
+
+            InteractionManager.runAfterInteractions(() => {
+                navigator.resetTo({
+                    component: MainContainer,
+                    name: 'Main'
+                });
             });
+        }
+    }
+
+    shouldComponentUpdate(){
+        return true;
+    }
+    componentWillUpdate(){
+    }
+
+    componentDidUpdate(){
+    }
+
+
+    onSubmitBtnClick(){
+        console.log(this.state);
+        if(!(/^1[34578]\d{9}$/.test(this.state.phone))){
+            ToastShort('手机号码有误，请重填');
+            return false;
+        }
+        if(this.state.password==''){
+            ToastShort('密码不能为空');
+            return false;
+        }
+
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({loading:true});
+            dispatch(fetchLogin(this.state));
         });
+
     }
 
     onResetPwdBtnClick(){
@@ -52,6 +98,17 @@ class Login extends React.Component {
             });
         });
     }
+
+    onActiveBtnClick(){
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: ActiveContainer,
+                name: 'Active'
+            });
+        });
+    }
+
 
     render () {
         const {navigator} = this.props;
@@ -81,23 +138,34 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.inputview}>
-                    <TextInput style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
-                    <TextInput style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                    <TextInput   onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
+                    <TextInput   onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
                 </View>
 
                 <View style={styles.buttomview}>
+
                     <TouchableOpacity onPress={this.onResetPwdBtnClick.bind(this)}>
                     <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
                         <Text style={styles.lightblue}>忘记密码？</Text>
                     </View>
-                        </TouchableOpacity>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={this.onSubmitBtnClick.bind(this)}>
                     <View style={styles.buttonview} >
                         <Text style={styles.logintext} >登录</Text>
                     </View>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onActiveBtnClick.bind(this)}>
+                        <View style={{flexDirection: 'row',justifyContent: 'center'}}>
+                            <Text style={styles.lightblue}>激活账户</Text>
+                        </View>
+                    </TouchableOpacity>
 
                 </View>
+                {
+                    this.state.loading?<View style={styles.overlay} >
+                        <Spanner size={50} type='ThreeBounce' color='#15499A'/>
+                    </View>:<View></View>
+                }
             </View>
         );
     }
@@ -137,7 +205,7 @@ let styles = StyleSheet.create({
         flexDirection:'row'
     },
     textinput: {//用户名/密码输入框
-        flex: 2,
+        flex: 1,
         borderWidth: 0,
         fontSize: 16,
 
@@ -157,7 +225,7 @@ let styles = StyleSheet.create({
     },
     buttomview: {
         flex: 1,
-        marginTop:30
+        marginTop:10
     },
     buttonview: {
         flexDirection: 'row',
@@ -205,6 +273,17 @@ let styles = StyleSheet.create({
     },
     redtxt:{
         fontSize: 14,color: '#D0021B',marginLeft:5
+    },
+    overlay:{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        alignItems:'center',
+        justifyContent:'center'
+
     }
 });
 

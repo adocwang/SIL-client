@@ -9,6 +9,7 @@ import App from './containers/app';
 
 const store = configureStore();
 
+
 class Root extends React.Component {
     render () {
         return (
