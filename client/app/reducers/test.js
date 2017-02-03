@@ -16,10 +16,6 @@ export default function test (state = initialState, action) {
             return Object.assign({}, state, {
                 data:action.data
             });
-        case types.RECEIVE_REDDIT_LIST:
-            return Object.assign({}, state, {
-
-            });
         default:
             return state;
     }

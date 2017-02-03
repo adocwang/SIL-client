@@ -12,7 +12,6 @@ export default class VLCalculator extends Component {
       <CustomToolbar title="现场采集" navigator={this.props.navigator} />
       <View style={styles.topView}>
       <Text>融资金额</Text>
-      <TextInput>
       </View>
       </View>
     )

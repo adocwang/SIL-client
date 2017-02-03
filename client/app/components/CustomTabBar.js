@@ -16,6 +16,7 @@ const CustomTabBar = React.createClass({
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
     tabs: React.PropTypes.array,
+    redCounts:React.PropTypes.array,
     underlineColor: React.PropTypes.string,
     underlineHeight: React.PropTypes.number,
     backgroundColor: React.PropTypes.string,
@@ -32,6 +33,7 @@ const CustomTabBar = React.createClass({
       underlineColor: 'navy',
       backgroundColor: null,
       underlineHeight: 4,
+      redCounts:[0,0,0]
     };
   },
 
@@ -65,12 +67,23 @@ const CustomTabBar = React.createClass({
         onPress={() => this.props.goToPage(page)}
     >
       <View style={{flex:1}}>
+        {
+          this.props.redCounts[page] > 0 &&
+          <View style={{alignItems:'flex-end',paddingRight:20}}>
+          <Image style={{alignItems:'center'}} source={require('../img/new_message.png')}>
+            <Text  style={{color:'#ffffff',paddingLeft:2}}>{this.props.redCounts[page]}</Text>
+          </Image>
+          </View>
+        }
+
       <View style={[styles.tab, this.props.tabStyle]}>
         <Image source = {icon} style={{alignSelf:'center',}}/>
-      </View>
+
+        </View>
       <Text style={[{color: textColor, fontWeight, alignSelf:'center',paddingBottom:5}, textStyle, ]}>
         {name}
       </Text>
+
         </View>
     </Button>;
   },

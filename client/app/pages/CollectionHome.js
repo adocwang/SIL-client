@@ -43,7 +43,7 @@ class CollectionHome extends Component {
     const {navigator} = this.props
     return(
       <View style={styles.container}>
-      <CustomToolbar title="现场采集" navigator={navigator} rightTitle="确认" rightClosure={this.rightTitleClicked}/>
+        <CustomToolbar title="现场采集" navigator={this.props.navigator} operate="保存" onOperateClicked={this.rightTitleClicked}/>
       <Text style={styles.head}>选择采集公司</Text>
         <ListView dataSource={this.state.dataSource} style={styles.listView}
         renderRow={(rowData,sectionID,rowID)=>

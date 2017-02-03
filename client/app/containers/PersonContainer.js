@@ -1,18 +1,16 @@
 /**
- * Created by kiefer on 2017/1/22.
+ * Created by kiefer on 2017/2/1.
  */
-'use strict';
-
 import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import Login from '../pages/Login';
+import Person from '../pages/Person';
 
-class LoginContainer extends Component {
+class PersonContainer extends Component {
     render () {
         return (
-            <Login {...this.props} />
+            <Person {...this.props} />
         );
     }
 }
@@ -24,4 +22,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps)(LoginContainer);
+export default connect(mapStateToProps)(PersonContainer);

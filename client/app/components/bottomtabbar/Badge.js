@@ -70,5 +70,6 @@ let styles = StyleSheet.create({
     borderColor: '#fefefe',
     borderRadius: 17 / 2,
     overflow: 'hidden',
+    paddingTop:2
   },
 });

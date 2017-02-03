@@ -12,7 +12,6 @@ class LoanCalculatorContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    console.log(state);
     const {loanCalculator} = state;
     return {
         loanCalculator

@@ -62,7 +62,7 @@ chargeExit(index) {
   render() {
     return(
       <View style={styles.container}>
-      <CustomToolbar title="现场采集" navigator={this.props.navigator} rightTitle="保存" rightClosure={this.rightTitleClicked}/>
+      <CustomToolbar title="现场采集" navigator={this.props.navigator} operate="保存" onOperateClicked={this.rightTitleClicked}/>
       <View style={styles.topView}>
       <Text style={styles.topTitle}>深圳市英威有限公司</Text>
       </View>

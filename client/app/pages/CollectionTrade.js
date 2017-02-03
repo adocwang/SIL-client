@@ -83,7 +83,7 @@ didClickedSave() {
     }
     return(
       <View style={styles.container}>
-      <CustomToolbar title="现场采集" navigator={this.props.navigator} rightTitle="保存" rightClosure={this.rightTitleClicked}/>
+        <CustomToolbar title="现场采集" navigator={this.props.navigator} operate="保存" onOperateClicked={this.rightTitleClicked}/>
       <View style={styles.topView}>
       <Text style={styles.topTitle}>行业分类</Text>
       </View>

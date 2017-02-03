@@ -46,9 +46,15 @@ const initialState = {
     noMore: false,
     catList:homeTabCat,
     pageList: {1:mockCompanyInfo,2:mockCompanyInfo,3:mockCompanyInfo},
-    pageAfter: {1: '', 2: '', 3: ''}
+    pageAfter: {1: '', 2: '', 3: ''},
+    companyInfoUpdate:false
 };
 
 export default function home (state = initialState, action) {
-    return state
+    switch (action.type) {
+        case types.UPDATE_HOME_INFO:
+            return Object.assign({}, state, action.data);
+        default:
+            return state;
+    }
 }
