@@ -21,6 +21,7 @@ import {ToastShort} from '../utils/ToastUtils';
 import {fetchLogin} from '../actions/auth'
 import Spanner from 'react-native-spinkit'
 import ActiveContainer from '../containers/ActiveContainer'
+import Loading from '../components/Loading'
 
 class Login extends React.Component {
     constructor (props) {
@@ -162,9 +163,7 @@ class Login extends React.Component {
 
                 </View>
                 {
-                    this.state.loading?<View style={styles.overlay} >
-                        <Spanner size={50} type='ThreeBounce' color='#15499A'/>
-                    </View>:<View></View>
+                    this.state.loading?<Loading/>:<View></View>
                 }
             </View>
         );
@@ -274,17 +273,6 @@ let styles = StyleSheet.create({
     redtxt:{
         fontSize: 14,color: '#D0021B',marginLeft:5
     },
-    overlay:{
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        alignItems:'center',
-        justifyContent:'center'
-
-    }
 });
 
 export default Login;

@@ -11,21 +11,26 @@ import {
     TextInput,
     Linking,
     InteractionManager,
-    TouchableHighlight,
+    TouchableOpacity,
+    ScrollView,
     View
 } from 'react-native';
 import PageToolbar from '../components/PageToolBar';
 import MainContainer from '../containers/MainContainer';
 import CountDown from '../components/CountDown'
-import {fetchSmsCode} from  '../actions/auth'
+import {fetchSmsCode,fetchSmsLogin,fetchUserSet} from  '../actions/auth'
+import Loading from '../components/Loading'
+import {ToastShort} from '../utils/ToastUtils';
 
 class Active extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            phone:'15828516285',
-            code:'',
-            password:''
+            phone:'13547926578',
+            code:'6666',
+            password:'111111',
+            loading:false,
+            showTips:false
         };
     }
 
@@ -35,24 +40,65 @@ class Active extends React.Component {
         // InteractionManager.runAfterInteractions(() => {
         //     dispatch(fetchTest());
         // });
-        console.log(this.props)
+
+    }
+
+    componentWillReceiveProps (nextProps) {
+        console.log('componentWillReceiveProps',nextProps);
+        this.setState({loading:nextProps.auth.loading})
+        if(this.props.auth.id == 0 && nextProps.auth.id!=0 && nextProps.auth.token!=''){
+            const {dispatch} = this.props;
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(fetchUserSet({user_id:nextProps.auth.id,password:this.state.password},nextProps.auth.token));
+            });
+        }else if(this.props.auth.id != 0 && this.props.auth.token !=''){
+            const {navigator} = this.props;
+            InteractionManager.runAfterInteractions(() => {
+                navigator.resetTo({
+                    component: MainContainer,
+                    name: 'Main'
+                });
+            });
+        }
+    }
+
+    onShowTipsBtnClick(){
+        this.setState({showTips:true})
     }
 
     onActiveBtnClick(){
-        console.log(this.props);
-        const {navigator} = this.props;
+        if(!(/^1[34578]\d{9}$/.test(this.state.phone))){
+            ToastShort('手机号码有误，请重填');
+            return false;
+        }
+        if(this.state.password==''){
+            ToastShort('密码不能为空');
+            return false;
+        }
+        if(this.state.code==''){
+            ToastShort('验证码不能为空');
+            return false;
+        }
+
+        this.setState({loading: true});
+        const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.resetTo({
-                component: MainContainer,
-                name: 'Main'
-            });
+            dispatch(fetchSmsLogin({phone:this.state.phone,code:this.state.code}));
         });
+
+
+        //const {navigator} = this.props;
+        //InteractionManager.runAfterInteractions(() => {
+        //    navigator.resetTo({
+        //        component: MainContainer,
+        //        name: 'Main'
+        //    });
+        //});
     }
 
     onSendMsgCode(){
         const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            this.setState({loading:true});
             dispatch(fetchSmsCode(this.state.phone));
         });
     }
@@ -68,6 +114,9 @@ class Active extends React.Component {
                 <View style={{height:1}}>
                     <Text style={{flex:1, flexDirection: 'row',backgroundColor:'#ECEDF1'}}></Text>
                 </View>
+
+                <ScrollView>
+
 
                 <View style={{height:105,alignItems: 'center'}}>
                     <Image
@@ -98,22 +147,31 @@ class Active extends React.Component {
                         />
                     </View>
                     <View style={styles.rowview}>
-                        <TextInput style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                        <TextInput onChangeText={(code) => this.setState({code})} value={this.state.code} style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
                     </View>
-                    <Text style={styles.redtxt}>验证码输入错误,请重新输入</Text>
-                    <TextInput style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                    <TextInput  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
                 </View>
 
                 <View style={styles.buttomview}>
-                    <TouchableHighlight onPress={this.onActiveBtnClick.bind(this)}>
+                        <TouchableOpacity onPress={this.onActiveBtnClick.bind(this)}>
                         <View style={styles.buttonview} >
                             <Text style={styles.logintext} >激活账户</Text>
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onShowTipsBtnClick.bind(this)}>
                     <View style={{flexDirection: 'row',justifyContent: 'center'}}>
-                        <Text style={styles.lightblue}>无法登录？</Text>
+                        <Text style={styles.lightblue}>没有收到验证码？</Text>
                     </View>
+                    </TouchableOpacity>
                 </View>
+                    {this.state.showTips? <View style={{alignItems:'center',marginTop:20}}>
+                        <Text style={{fontSize:12,color:'#626262'}}>1.手机号码输入错误。</Text>
+                        <Text style={{fontSize:12,color:'#626262'}}>2.手机号未被预设置为账号，请联系管理员。</Text>
+                    </View>:<View/>}
+                </ScrollView>
+                {
+                    this.state.loading?<Loading/>:<View></View>
+                }
             </View>
         );
     }

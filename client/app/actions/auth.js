@@ -19,16 +19,18 @@ export function fetchLogin (paramsMap) {
                 }else if(data.code ==0){
                     dispatch(loginSuccess(data.data));
                 }
+                dispatch(hideLoading());
             })
             .catch((error) => {
                 ToastShort(error.message);
+                dispatch(hideLoading());
             })
     }
 }
 
 export function fetchLogout (token) {
     return dispatch => {
-        return getRequest(host.USER_LOGOUT,token)
+        return getRequest(host.USER_LOGOUT_URL,token)
             .then((data) => {
                 console.log(data);
             })
@@ -39,9 +41,8 @@ export function fetchLogout (token) {
 }
 
 export function fetchSmsCode (phone) {
-    console.log('fetchSmsCode');
     return dispatch => {
-        return postRequest(host.SEND_LOGIN_SMS ,{phone:phone},'iamsuperman')
+        return postRequest(host.SEND_LOGIN_SMS_URL ,{phone:phone},'')
             .then((data) => {
                 console.log(data);
             })
@@ -50,6 +51,58 @@ export function fetchSmsCode (phone) {
             })
     }
 }
+
+
+export function fetchSmsLogin(paramsMap){
+    console.log('fetchSmsLogin',paramsMap);
+    return dispatch => {
+        return postRequest(host.SMS_LOGIN_URL ,paramsMap,'')
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else if(data.code == 2006){
+                    ToastShort('短信验证码已用');
+                }else if(data.code == 2005){
+                    ToastShort('短信验证码错误');
+                }else if(data.code ==0){
+                    dispatch(smsLoginSuccess(data.data));
+                }
+                dispatch(hideLoading());
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+                dispatch(hideLoading());
+            })
+    }
+}
+
+export function fetchUserSet(paramsMap,token){
+    console.log('fetchUserSet',paramsMap,token);
+    return dispatch => {
+        return postRequest(host.USER_SET_URL ,paramsMap,token)
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else if(data.code ==0){
+                    dispatch(setUserInfoSuccess());
+                }else{
+                    dispatch(setUserInfoSuccess());
+                }
+                dispatch(hideLoading());
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+                dispatch(hideLoading());
+            })
+    }
+}
+
 
 export function loadLocalUser (user) {
     return {
@@ -65,9 +118,32 @@ function loginSuccess (data) {
     }
 }
 
+function smsLoginSuccess(data){
+    return {
+        type: types.SMS_LOGIN_SUCCESS,
+        data: data,
+    }
+}
+
+function setUserInfoSuccess(){
+    return{
+        type: types.SET_USER_INFO_SUCCESS,
+        data: {loading:false},
+    }
+}
+
+function hideLoading(){
+    return{
+        type: types.HIDE_LOADING,
+        data: {loading:false},
+    }
+}
+
 function loginLoding () {
     return {
         type: types.LOGIN_LOADING,
         data: {loading:true},
     }
 }
+
+

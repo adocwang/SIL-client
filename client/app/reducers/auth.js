@@ -38,6 +38,13 @@ export default function auth (state = initialState, action) {
             return Object.assign({}, state, action.data);
         case types.LOAD_LOCAL_USER:
             return Object.assign({}, state, action.data);
+        case types.SMS_LOGIN_SUCCESS:
+            return Object.assign({}, state, action.data);
+        case types.SET_USER_INFO_SUCCESS:
+            return Object.assign({}, state, action.data);
+        case types.HIDE_LOADING:
+            console.log('HIDE_LOADING',action.data);
+            return Object.assign({}, state, action.data);
         default:
             return state;
     }
