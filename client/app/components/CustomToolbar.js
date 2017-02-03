@@ -41,6 +41,7 @@ class CustomToolbar extends React.Component {
     super(props);
 
     this.onOperateClicked = this.onOperateClicked.bind(this);
+    this.onIconClicked = this.onIconClicked.bind(this);
   }
 
   onIconClicked() {
@@ -68,19 +69,19 @@ class CustomToolbar extends React.Component {
                  style={{height:100, width:null, flexDirection: 'row',resizeMode: Image.resizeMode.stretch}}>
             <View
 
-                style={{flexDirection: 'row', alignItems: 'flex-start',justifyContent: 'center',marginLeft:26}}>
+                style={{flexDirection: 'row', alignItems: 'center',marginLeft:26}}>
               <TouchableOpacity onPress={this.onIconClicked}>
                 <Image
                     style={{ width: 10, height: 17}}
                     source={require('../img/back_arrow_white.png')}
                 /></TouchableOpacity>
 
-              <Text style={{fontSize: 16, color: '#ffffff',marginTop:22,marginLeft:10}}>{this.props.title}</Text>
+              <Text style={{fontSize: 16, color: '#ffffff',marginLeft:10}}>{this.props.title}</Text>
             </View>
             <View
-                style={{flexDirection: 'row', flex:1,alignItems: 'flex-start',justifyContent: 'flex-end',marginRight:30}}>
+                style={{flexDirection: 'row', flex:1,alignItems: 'center',justifyContent: 'flex-end',marginRight:30}}>
               <TouchableOpacity onPress={this.onOperateClicked}>
-            <Text style={{fontSize: 16, color: '#ffffff',marginTop:22}}>{this.props.operate}</Text>
+            <Text style={{fontSize: 16, color: '#ffffff'}}>{this.props.operate}</Text>
                 </TouchableOpacity>
             </View>
 

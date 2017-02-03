@@ -70,8 +70,8 @@ const CustomTabBar = React.createClass({
         {
           this.props.redCounts[page] > 0 &&
           <View style={{alignItems:'flex-end',paddingRight:20}}>
-          <Image style={{alignItems:'center'}} source={require('../img/new_message.png')}>
-            <Text  style={{color:'#ffffff',paddingLeft:2}}>{this.props.redCounts[page]}</Text>
+          <Image style={{alignItems:'center',width:15,height:14}} source={require('../img/new_message.png')}>
+            {/*<Text  style={{color:'#ffffff',paddingLeft:2}}>{this.props.redCounts[page]}</Text>*/}
           </Image>
           </View>
         }
