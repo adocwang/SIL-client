@@ -121,7 +121,7 @@ function loginSuccess (data) {
 
 function smsLoginSuccess(data){
     return {
-        type: types.SMS_LOGIN_SUCCESS,
+        type: types.LOGIN_SUCCESS,
         data: data,
     }
 }

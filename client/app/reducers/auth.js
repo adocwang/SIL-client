@@ -31,14 +31,10 @@ export default function auth (state = initialState, action) {
                 // 如果设为null，则永不过期
                 expires: null
             });
-
-
             return Object.assign({}, state, action.data);
         case types.LOGIN_LOADING:
             return Object.assign({}, state, action.data);
         case types.LOAD_LOCAL_USER:
-            return Object.assign({}, state, action.data);
-        case types.SMS_LOGIN_SUCCESS:
             return Object.assign({}, state, action.data);
         case types.SET_USER_INFO_SUCCESS:
             return Object.assign({}, state, action.data);

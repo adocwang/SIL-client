@@ -44,7 +44,6 @@ class Active extends React.Component {
     }
 
     componentWillReceiveProps (nextProps) {
-        console.log('componentWillReceiveProps',nextProps);
         this.setState({loading:false});
 
         if(this.props.auth.id == 0 && nextProps.auth.id!=0 && nextProps.auth.token!=''){

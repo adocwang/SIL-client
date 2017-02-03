@@ -22,6 +22,7 @@ import ClaimContainer from '../containers/ClaimContainer'
 import ApplicationContainer from '../containers/ApplicationContainer'
 import HomeContainer from '../containers/HomeContainer'
 import PersonContainer from '../containers/PersonContainer'
+import UserEnterpriseContainer from '../containers/UserEnterpriseContainer'
 
 
 class Main extends React.Component {
@@ -29,7 +30,7 @@ class Main extends React.Component {
         super()
 
         this.state = {
-            selectedTab:'home',
+            selectedTab:'company',
         };
 
     }
@@ -100,7 +101,7 @@ class Main extends React.Component {
                         renderSelectedIcon={() => <Image source={require("../img/company_icon.png")} />}
                         //renderBadge={() => <CustomBadgeView />}
                         onPress={() => this.setState({ selectedTab: 'company' })}>
-                        <Text>profile</Text>
+                        <UserEnterpriseContainer navigator={this.props.navigator} />
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'app'}
