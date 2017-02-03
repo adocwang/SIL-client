@@ -191,7 +191,7 @@ class UserEnterprise extends React.Component {
 
                 <ScrollableTabView
                     style={{flex:1}}
-                    renderTabBar={() => <UserEnterpriseTabBar  />}
+                    renderTabBar={() => <UserEnterpriseTabBar redCounts={[1,2,3]} />}
                 >
 
                     {lists}

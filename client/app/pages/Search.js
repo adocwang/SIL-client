@@ -14,7 +14,6 @@ import {
     InteractionManager
 } from 'react-native';
 import CustomToolbar from '../components/CustomToolbar';
-import SearchBar from '../components/SearchBar';
 import ClaimContainer from '../containers/ClaimContainer'
 import {ToastShort} from '../utils/ToastUtils';
 import {fetchSearch} from '../actions/home';

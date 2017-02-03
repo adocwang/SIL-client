@@ -14,7 +14,6 @@ import {
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
 import MainTabBar from '../components/MainTabBar';
 import CustomTabBar from '../components/CustomTabBar';
-import SearchBar from '../components/SearchBar';
 import TabNavigator from '../components/bottomtabbar/TabNavigator';
 import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'

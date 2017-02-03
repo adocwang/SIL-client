@@ -96,16 +96,19 @@ const UserEnterpriseTabBar = React.createClass({
             <View style={{flex:1}}>
                 {
                     this.props.redCounts[page] > 0 ?
-                    <View style={{alignItems:'flex-end',paddingRight:20}}>
+                    <View style={{alignItems:'flex-end',paddingRight:10}}>
                         <Image style={{alignItems:'center',width:15,height:14}} source={require('../img/new_message.png')}>
                             {/*<Text  style={{color:'#ffffff',paddingLeft:2}}>{this.props.redCounts[page]}</Text>*/}
                         </Image>
                     </View>: <View style={{alignItems:'flex-end',paddingRight:20,width:15,height:14}}></View>
                 }
 
-                <View style={[styles.tab, this.props.tabStyle]}>
+                <View style={[styles.tab, this.props.tabStyle,{flexDirection:'row'}]}>
+                    {page!=0 ?<Image source = {require('../img/line_right.png')} style={{alignSelf:'center',marginRight:10}}/>
+                    :<View style={{width:30,alignSelf:'center',marginRight:10}}/>}
                     <Image source = {icon} style={{alignSelf:'center',}}/>
-
+                    {page!=4 ?  <Image source = {require('../img/line_left.png')} style={{alignSelf:'center',marginLeft:10}}/>
+                        :<View style={{width:30,alignSelf:'center',marginRight:10}}/>}
                 </View>
                 <Text style={[{color: textColor, fontWeight, alignSelf:'center',paddingBottom:15}, textStyle, ]}>
                     {name}
@@ -122,7 +125,7 @@ const UserEnterpriseTabBar = React.createClass({
             position: 'absolute',
             width: containerWidth / numberOfTabs,
             height: this.props.underlineHeight,
-            backgroundColor: this.props.underlineColor,
+            backgroundColor: 'transparent',
             bottom: 0,
         };
 
@@ -146,7 +149,6 @@ const UserEnterpriseTabBar = React.createClass({
 const styles = StyleSheet.create({
     tab: {
         flex: 1,
-        alignItems: 'center',
         justifyContent: 'center',
         paddingBottom: 10,
     },
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
         height: 75,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        borderWidth: 1,
+        borderWidth: 0,
         borderTopWidth: 0,
         borderLeftWidth: 0,
         borderRightWidth: 0,
