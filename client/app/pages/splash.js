@@ -55,8 +55,8 @@ class Splash extends React.Component {
       setTimeout(() => {
         InteractionManager.runAfterInteractions(() => {
           navigator.resetTo({
-            component: ActiveContainer,
-            name: 'Active'
+            component: LoginContainer,
+            name: 'Login'
           });
         });
       }, 1000);

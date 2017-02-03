@@ -48,8 +48,9 @@ class Login extends React.Component {
         //        ToastShort('没有更多数据了');
         //    }
         //}
+        this.setState({loading:false});
+
         if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
-            this.setState({loading:false});
             const {navigator} = nextProps;
 
             InteractionManager.runAfterInteractions(() => {
@@ -72,7 +73,6 @@ class Login extends React.Component {
 
 
     onSubmitBtnClick(){
-        console.log(this.state);
         if(!(/^1[34578]\d{9}$/.test(this.state.phone))){
             ToastShort('手机号码有误，请重填');
             return false;

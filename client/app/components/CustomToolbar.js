@@ -39,12 +39,8 @@ class CustomToolbar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.onIconClicked = this.onIconClicked.bind(this);
-<<<<<<< HEAD
-    this.rightClicked = this.rightClicked.bind(this)
-=======
+
     this.onOperateClicked = this.onOperateClicked.bind(this);
->>>>>>> a6598afe2abbd348d855c7a88aa993d0bb7b05a8
   }
 
   onIconClicked() {
@@ -59,45 +55,26 @@ class CustomToolbar extends React.Component {
     }
   }
 
-<<<<<<< HEAD
-  rightClicked() {
-    this.props.rightClosure()
-  }
 
-
-=======
   onOperateClicked() {
     if (this.props.onOperateClicked) {
       this.props.onOperateClicked();
     }
   }
->>>>>>> a6598afe2abbd348d855c7a88aa993d0bb7b05a8
   render() {
 
     return (
           <Image source={require('../img/toolbar_bg.png')}
                  style={{height:100, width:null, flexDirection: 'row',resizeMode: Image.resizeMode.stretch}}>
             <View
-<<<<<<< HEAD
-                style={{flexDirection: 'row', flex:1,alignItems: 'center',justifyContent: 'flex-start',marginLeft:15}}>
-=======
+
                 style={{flexDirection: 'row', alignItems: 'flex-start',justifyContent: 'center',marginLeft:26}}>
->>>>>>> a6598afe2abbd348d855c7a88aa993d0bb7b05a8
               <TouchableOpacity onPress={this.onIconClicked}>
                 <Image
                     style={{ width: 10, height: 17}}
                     source={require('../img/back_arrow_white.png')}
                 /></TouchableOpacity>
-<<<<<<< HEAD
-              <Text style={{fontSize: 16,marginLeft:10}}>认领</Text>
 
-              <TouchableOpacity onPress={this.rightClicked}>
-              <View style={styles.rightView}>
-                <Text>{this.props.rightTitle}</Text>
-              </View>
-            </TouchableOpacity>
-
-=======
               <Text style={{fontSize: 16, color: '#ffffff',marginTop:22,marginLeft:10}}>{this.props.title}</Text>
             </View>
             <View
@@ -105,7 +82,6 @@ class CustomToolbar extends React.Component {
               <TouchableOpacity onPress={this.onOperateClicked}>
             <Text style={{fontSize: 16, color: '#ffffff',marginTop:22}}>{this.props.operate}</Text>
                 </TouchableOpacity>
->>>>>>> a6598afe2abbd348d855c7a88aa993d0bb7b05a8
             </View>
 
           </Image>

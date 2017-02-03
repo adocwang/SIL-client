@@ -45,13 +45,14 @@ class Active extends React.Component {
 
     componentWillReceiveProps (nextProps) {
         console.log('componentWillReceiveProps',nextProps);
-        this.setState({loading:nextProps.auth.loading})
+        this.setState({loading:false});
+
         if(this.props.auth.id == 0 && nextProps.auth.id!=0 && nextProps.auth.token!=''){
             const {dispatch} = this.props;
             InteractionManager.runAfterInteractions(() => {
                 dispatch(fetchUserSet({user_id:nextProps.auth.id,password:this.state.password},nextProps.auth.token));
             });
-        }else if(this.props.auth.id != 0 && this.props.auth.token !=''){
+        }else if(this.props.auth.id != 0 && this.props.auth.token !='' && nextProps.auth.code!=undefined && nextProps.auth.code==0){
             const {navigator} = this.props;
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({

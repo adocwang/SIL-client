@@ -89,12 +89,13 @@ export function fetchUserSet(paramsMap,token){
                     ToastShort('缺少参数');
                 }else  if(data.code == 407){
                     ToastShort('无权限');
-                }else if(data.code ==0){
-                    dispatch(setUserInfoSuccess());
-                }else{
-                    dispatch(setUserInfoSuccess());
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
                 }
-                dispatch(hideLoading());
+                dispatch({
+                    type: types.SET_USER_INFO_SUCCESS,
+                    data: {code:data.code},
+                });
             })
             .catch((error) => {
                 ToastShort(error.message);
