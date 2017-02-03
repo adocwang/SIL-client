@@ -52,7 +52,6 @@ class Login extends React.Component {
 
         if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
             const {navigator} = nextProps;
-
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
                     component: MainContainer,
@@ -139,8 +138,8 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.inputview}>
-                    <TextInput   onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
-                    <TextInput   onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                    <TextInput   onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' />
+                    <TextInput   onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} />
                 </View>
 
                 <View style={styles.buttomview}>

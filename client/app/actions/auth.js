@@ -9,7 +9,6 @@ import * as host from '../constants/Urls';
 
 export function fetchLogin (paramsMap) {
     return dispatch => {
-        dispatch(loginLoding());
         return postRequest(host.PASSWORD_LOGIN_URL ,paramsMap,'iamsuperman')
             .then((data) => {
                 if(data.code == 2007){
@@ -30,6 +29,7 @@ export function fetchLogin (paramsMap) {
 
 export function fetchLogout (token) {
     return dispatch => {
+        dispatch(clearAuth());
         return getRequest(host.USER_LOGOUT_URL,token)
             .then((data) => {
                 console.log(data);
@@ -126,10 +126,10 @@ function smsLoginSuccess(data){
     }
 }
 
-function setUserInfoSuccess(){
+function clearAuth(){
     return{
-        type: types.SET_USER_INFO_SUCCESS,
-        data: {loading:false},
+        type: types.CLEAR_AUTH,
+        data: {},
     }
 }
 

@@ -11,5 +11,7 @@ export const LOGIN_LOADING = 'LOGIN_LOADING';
 export const SET_USER_INFO_SUCCESS = 'SET_USER_INFO_SUCCESS';
 export const HIDE_LOADING = 'HIDE_LOADING'
 
+export const CLEAR_AUTH ='CLEAR_AUTH'
+
 //首页action
 export const UPDATE_HOME_INFO = 'UPDATE_HOME_INFO';
