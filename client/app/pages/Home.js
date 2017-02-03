@@ -22,6 +22,8 @@ import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
 import ApplicationContainer from '../containers/ApplicationContainer'
+import SearchContainer from '../containers/SearchContainer'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -39,6 +41,7 @@ class Home extends React.Component {
         this.renderItem = this.renderItem.bind(this);
         this.renderFooter = this.renderFooter.bind(this);
         this.onScroll = this.onScroll.bind(this);
+        this.onSearchCompany = this.onSearchCompany.bind(this);
         canLoadMore = false;
     }
     componentDidMount () {
@@ -57,8 +60,14 @@ class Home extends React.Component {
     componentDidUpdate(){
     }
 
-    searchCompany(){
-        console.log('search');
+    onSearchCompany(){
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: SearchContainer,
+                name: 'Search',
+            });
+        });
     }
 
     onRefresh (typeId) {
@@ -218,18 +227,16 @@ class Home extends React.Component {
 
         return (
                 <View style={styles.container}>
-
-                            <SearchBar
-                                onSearchChange={() => console.log('On Focus')}
-                                onSearch={this.searchCompany.bind(this)}
-                                height={30}
-                                onFocus={() => console.log('On Focus')}
-                                onBlur={() => console.log('On Blur')}
-                                placeholder={'Search...'}
-                                autoCorrect={false}
-                                padding={3}
-                                returnKeyType={'search'}
-                            />
+                    <TouchableOpacity onPress={this.onSearchCompany}>
+                            <View   style={styles.searchBar}>
+                                <Text style={styles.searchBarInput}>输入企业名称</Text>
+                                <View style={{marginLeft:10,paddingRight:10}}>
+                                    <Icon
+                                        name={'md-search'} size={30}
+                                        color={'#737373'}
+                                    /></View>
+                            </View>
+                    </TouchableOpacity>
                             <ScrollableTabView
                                 style={{marginTop: 20,flex:1}}
                                 renderTabBar={() => <CustomTabBar redCounts={[1,2,3]} />}
@@ -306,7 +313,26 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         textAlign: 'center',
         color: 'black'
-    }
+    },
+    searchBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        borderColor: '#2133A7',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderRadius:30,
+        height: 40,
+        marginLeft: 10,
+        marginRight:10
+    },
+    searchBarInput: {
+        flex: 1,
+        fontWeight: 'normal',
+        color: '#9B9B9B',
+        paddingLeft:10,
+        backgroundColor: 'transparent',
+    },
 });
 
 export default Home;

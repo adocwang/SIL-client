@@ -15,3 +15,4 @@ export const CLEAR_AUTH ='CLEAR_AUTH'
 
 //首页action
 export const UPDATE_HOME_INFO = 'UPDATE_HOME_INFO';
+export const FETCH_COMPANY_LIST = 'FETCH_COMPANY_LIST';

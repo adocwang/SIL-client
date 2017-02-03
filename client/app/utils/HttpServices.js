@@ -2,13 +2,13 @@
 import * as host from '../constants/Urls';
 
 export function postRequest (url,paramsMap,token) {
-  console.info("url=", url);
+  console.info("url=", url,{'token':token});
   return fetch(host.BASE_URL + url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'extra':{'token':token}
+      'extra':JSON.stringify({'token':token})
     },
     body: JSON.stringify(paramsMap)
   }).then(response=>response.json());

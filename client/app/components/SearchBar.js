@@ -109,9 +109,6 @@ export default class SearchBar extends React.Component {
             placeholderColor
             } = this.props;
 
-        let { iconSize } = this.props
-
-        iconSize = typeof iconSize !== 'undefined' ? iconSize : height * 0.5
 
         return (
             <View
@@ -139,6 +136,7 @@ export default class SearchBar extends React.Component {
                         onBlur={this._onBlur}
                         onChangeText={onSearchChange}
                         placeholder={placeholder}
+                        value={'测试1科技有限公司'}
                         placeholderTextColor={placeholderColor}
                         underlineColorAndroid="transparent"
                         style={
