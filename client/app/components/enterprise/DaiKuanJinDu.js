@@ -79,12 +79,9 @@ const DaiKuanJinDu = React.createClass({
                 break
         }
 
-        return <Button
-            style={{flex: 1}}
+        return <View
             key={name}
-            accessible={true}
-            accessibilityLabel={name}
-            accessibilityTraits='button'
+            style={{flex: 1}}
         >
             <View style={{flex:1}}>
 
@@ -99,7 +96,7 @@ const DaiKuanJinDu = React.createClass({
                 </Text>
 
             </View>
-        </Button>;
+        </View>;
     },
 
     render() {

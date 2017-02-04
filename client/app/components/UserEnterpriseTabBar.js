@@ -85,13 +85,13 @@ const UserEnterpriseTabBar = React.createClass({
                 break
         }
 
-        return <Button
+        return <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)}>
+            <View
             style={{flex: 1}}
-            key={name}
+
             accessible={true}
             accessibilityLabel={name}
             accessibilityTraits='button'
-            onPress={() => this.props.goToPage(page)}
         >
             <View style={{flex:1}}>
                 {
@@ -115,7 +115,7 @@ const UserEnterpriseTabBar = React.createClass({
                 </Text>
 
             </View>
-        </Button>;
+        </View></TouchableOpacity>;
     },
 
     render() {
