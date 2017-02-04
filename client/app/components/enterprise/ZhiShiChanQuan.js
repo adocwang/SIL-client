@@ -1,6 +1,9 @@
 /**
  * Created by kiefer on 2017/2/4.
  */
+/**
+ * Created by kiefer on 2017/2/4.
+ */
 'use strict';
 import React from 'react'
 import {
@@ -11,7 +14,7 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 
-class CommonInfo extends React.Component {
+class ZhiShiChanQuan extends React.Component {
     render () {
         return(
 
@@ -19,15 +22,8 @@ class CommonInfo extends React.Component {
                 <Col>
                     <Row>
                         <View style={styles.common_item}>
-                            <Image source = {require('../../img/gongshangxinxi.png')}/>
-                            <Text style={styles.common_item_text}>工商信息</Text>
-                        </View>
-                    </Row>
-                    <View style={styles.row_divider}/>
-                    <Row>
-                        <View style={styles.common_item}>
-                        <Image source = {require('../../img/qiyeliantu.png')}/>
-                        <Text style={styles.common_item_text}>企业链图</Text>
+                            <Image source = {require('../../img/shangbiaoxinxi.png')}/>
+                            <Text style={styles.common_item_text}>商标信息</Text>
                         </View>
                     </Row>
                 </Col>
@@ -35,15 +31,18 @@ class CommonInfo extends React.Component {
                 <Col>
                     <Row>
                         <View style={styles.common_item}>
-                            <Image source = {require('../../img/biangengjilu.png')}/>
-                            <Text style={styles.common_item_text}>变更记录</Text>
+                            <Image source = {require('../../img/zhuanlixinxi.png')}/>
+                            <Text style={styles.common_item_text}>专利信息</Text>
                         </View>
                     </Row>
-                    <View style={styles.row_divider}/>
+
+                </Col>
+                <View style={styles.col_divider}/>
+                <Col>
                     <Row>
                         <View style={styles.common_item}>
-                            <Image source = {require('../../img/guanxigupu.png')}/>
-                            <Text style={styles.common_item_text}>关系股谱</Text>
+                            <Image source = {require('../../img/zhuzuoquan.png')}/>
+                            <Text style={styles.common_item_text}>著作权</Text>
                         </View>
                     </Row>
                 </Col>
@@ -51,15 +50,8 @@ class CommonInfo extends React.Component {
                 <Col>
                     <Row>
                         <View style={styles.common_item}>
-                            <Image source = {require('../../img/touziguanxi.png')}/>
-                            <Text style={styles.common_item_text}>投资关系</Text>
-                        </View>
-                    </Row>
-                    <View style={styles.row_divider}/>
-                    <Row>
-                        <View style={styles.common_item}>
-                            <Image source = {require('../../img/guquanjiegou.png')}/>
-                            <Text style={styles.common_item_text}>股权结构</Text>
+                            <Image source = {require('../../img/zizhirenzheng.png')}/>
+                            <Text style={styles.common_item_text}>资质认证</Text>
                         </View>
                     </Row>
                 </Col>
@@ -97,4 +89,4 @@ let styles = StyleSheet.create({
     }
 });
 
-export default CommonInfo;
+export default ZhiShiChanQuan;

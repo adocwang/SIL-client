@@ -22,6 +22,9 @@ import CustomToolbar from '../../components/CustomToolbar'
 import Bar from '../../components/BarCollapsible'
 import DaiKuanJinDu from '../../components/enterprise/DaiKuanJinDu'
 import CommonInfo from '../../components/enterprise/CommonInfo'
+import ZhiShiChanQuan from '../../components/enterprise/ZhiShiChanQuan'
+import JingYingXinXi from '../../components/enterprise/JingYingXinXi'
+import FengXianXinXi from '../../components/enterprise/FengXianXinXi'
 import { Col, Row, Grid } from "react-native-easy-grid";
 
 class Claim extends React.Component {
@@ -56,7 +59,7 @@ class Claim extends React.Component {
                 <Text style={styles.desc}>唐欣 | ¥2000.00万 | 成立5-10年</Text>
                 <Text style={styles.cat}>互联网   信息技术  >></Text>
                 </View>
-                <ScrollView>
+                <ScrollView style={{marginBottom:20}}>
                 <Bar
                     title='贷款受理进度'
                     collapsible={true}
@@ -88,17 +91,30 @@ class Claim extends React.Component {
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>sahjdjahsd</Text>
+                    <Text>融资资讯</Text>
                 </Bar>
+                 <Bar
+                        title='知识产权'
+                        collapsible={true}
+                        show={true}
+                        iconCollapsed='angle-right'
+                        iconOpened='angle-down'
+                        style={styles.bar}
+                        titleStyle={styles.bar_title}
+                    >
+                        <ZhiShiChanQuan/>
+                  </Bar>
+
                 <Bar
                     title='风险信息'
                     collapsible={true}
+                    show={true}
                     iconCollapsed='angle-right'
                     iconOpened='angle-down'
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>sahjdjahsd</Text>
+                    <FengXianXinXi />
                 </Bar>
                 <Bar
                     title='贷款信息'
@@ -108,7 +124,7 @@ class Claim extends React.Component {
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>sahjdjahsd</Text>
+                    <Text>贷款信息</Text>
                 </Bar>
                 <Bar
                     title='还款方式'
@@ -118,7 +134,7 @@ class Claim extends React.Component {
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>sahjdjahsd</Text>
+                    <Text>还款方式</Text>
                 </Bar>
                 <Bar
                     title='抵押物资'
@@ -128,7 +144,7 @@ class Claim extends React.Component {
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>sahjdjahsd</Text>
+                    <Text>抵押物资</Text>
                 </Bar>
                 <Bar
                     title='期权要素'
@@ -138,17 +154,18 @@ class Claim extends React.Component {
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>sahjdjahsd</Text>
+                    <Text>期权要素</Text>
                 </Bar>
                 <Bar
                     title='经营信息'
                     collapsible={true}
+                    show={true}
                     iconCollapsed='angle-right'
                     iconOpened='angle-down'
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>sahjdjahsd</Text>
+                    <JingYingXinXi />
                 </Bar>
                 </ScrollView>
             </View>
