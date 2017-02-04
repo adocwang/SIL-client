@@ -36,9 +36,9 @@ class BarCollapsible extends Component {
             ).start();
 
             this.setState({
-                icon: this.props.iconActive || 'plus',
-                iconCollapsed: this.props.iconCollapsed || 'plus',
-                iconOpened: this.props.iconOpened || 'minus',
+                icon: this.props.iconActive || 'angle-right',
+                iconCollapsed: this.props.iconCollapsed || 'angle-right',
+                iconOpened: this.props.iconOpened || 'angle-down',
                 title: this.props.title
             });
         } else {
@@ -47,7 +47,7 @@ class BarCollapsible extends Component {
             });
         }
 
-        this._tintColor = this.props.tintColor || '#FFF';
+        this._tintColor = this.props.tintColor || '#2133A7';
         this._iconSize = this.props.iconSize || 30;
     }
 

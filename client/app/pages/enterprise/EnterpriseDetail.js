@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import CustomToolbar from '../../components/CustomToolbar'
 import Bar from '../../components/BarCollapsible'
-
+import DaiKuanJinDu from '../../components/DaiKuanJinDu'
 
 class Claim extends React.Component {
     constructor(props) {
@@ -54,17 +54,99 @@ class Claim extends React.Component {
                 <Text style={styles.desc}>唐欣 | ¥2000.00万 | 成立5-10年</Text>
                 <Text style={styles.cat}>互联网   信息技术  >></Text>
                 </View>
+                <ScrollView>
                 <Bar
-                    title='My title'
+                    title='贷款受理进度'
                     collapsible={true}
-                    iconCollapsed='chevron-thin-right'
-                    iconOpened='chevron-thin-down'
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                   <Text>sahjdjahsd</Text>
+                  <DaiKuanJinDu activeTab={1} backgroundColor='#ffffff'/>
                 </Bar>
 
+                <Bar
+                    title='常用信息'
+                    collapsible={true}
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
+                    style={styles.bar}
+                    titleStyle={styles.bar_title}
+                >
+                    <Text>sahjdjahsd</Text>
+                </Bar>
+                <Bar
+                    title='融资资讯'
+                    collapsible={true}
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
+                    style={styles.bar}
+                    titleStyle={styles.bar_title}
+                >
+                    <Text>sahjdjahsd</Text>
+                </Bar>
+                <Bar
+                    title='风险信息'
+                    collapsible={true}
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
+                    style={styles.bar}
+                    titleStyle={styles.bar_title}
+                >
+                    <Text>sahjdjahsd</Text>
+                </Bar>
+                <Bar
+                    title='贷款信息'
+                    collapsible={true}
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
+                    style={styles.bar}
+                    titleStyle={styles.bar_title}
+                >
+                    <Text>sahjdjahsd</Text>
+                </Bar>
+                <Bar
+                    title='还款方式'
+                    collapsible={true}
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
+                    style={styles.bar}
+                    titleStyle={styles.bar_title}
+                >
+                    <Text>sahjdjahsd</Text>
+                </Bar>
+                <Bar
+                    title='抵押物资'
+                    collapsible={true}
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
+                    style={styles.bar}
+                    titleStyle={styles.bar_title}
+                >
+                    <Text>sahjdjahsd</Text>
+                </Bar>
+                <Bar
+                    title='期权要素'
+                    collapsible={true}
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
+                    style={styles.bar}
+                    titleStyle={styles.bar_title}
+                >
+                    <Text>sahjdjahsd</Text>
+                </Bar>
+                <Bar
+                    title='经营信息'
+                    collapsible={true}
+                    iconCollapsed='angle-right'
+                    iconOpened='angle-down'
+                    style={styles.bar}
+                    titleStyle={styles.bar_title}
+                >
+                    <Text>sahjdjahsd</Text>
+                </Bar>
+                </ScrollView>
             </View>
 
 
@@ -108,14 +190,29 @@ let styles = StyleSheet.create({
     },
     bar:{
         height:38,
-        backgroundColor:'#ffffff'
+        backgroundColor:'#ffffff',
+        marginTop:7,
+        marginBottom:3
     },
     bar_title:{
         fontSize:14,
         color:'#4a4a4a'
-    }
-
-
+    },
+    tab: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingBottom: 10,
+    },
+    tabs: {
+        height: 75,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        borderWidth: 0,
+        borderTopWidth: 0,
+        borderLeftWidth: 0,
+        borderRightWidth: 0,
+        borderBottomColor: '#ccc',
+    },
 
 });
 
