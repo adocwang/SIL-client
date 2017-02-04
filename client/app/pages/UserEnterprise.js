@@ -19,6 +19,7 @@ import UserEnterpriseTabBar from '../components/UserEnterpriseTabBar';
 import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
+import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -74,20 +75,12 @@ class UserEnterprise extends React.Component {
 
     onPress (item) {
         const {navigator} = this.props;
-        // console.log(item);
-        let _this = this;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
-                component: ClaimContainer,
-                name: 'Claim',
+                component: EnterpriseDetailContainer,
+                name: 'EnterpriseDetail',
                 params: {
                     item: item,
-                    //回调!从SecondPageComponent获取user
-                    getUser: function(user) {
-                        _this.setState({
-                            user: user
-                        })
-                    }
                 },
             });
         });
