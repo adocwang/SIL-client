@@ -5,7 +5,7 @@ import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import Distribute from '../pages/Distribute';
+import Distribute from '../pages/homepage/Distribute';
 
 class DistributeContainer extends Component {
     render () {

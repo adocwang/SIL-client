@@ -1,9 +1,8 @@
 /**
- * Created by kiefer on 2017/1/24.
+ * Created by kiefer on 2017/1/22.
  */
-
 import React from 'react';
-import {fetchTest} from '../actions/test';
+import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,
@@ -11,48 +10,48 @@ import {
     TextInput,
     Linking,
     InteractionManager,
+    TouchableHighlight,
     TouchableOpacity,
-    ScrollView,
     View
-} from 'react-native';
-import PageToolbar from '../components/PageToolBar';
-import MainContainer from '../containers/MainContainer';
-import CountDown from '../components/CountDown'
-import {fetchSmsCode,fetchSmsLogin,fetchUserSet} from  '../actions/auth'
-import Loading from '../components/Loading'
-import {ToastShort} from '../utils/ToastUtils';
+    } from 'react-native';
+import PageToolbar from '../../components/PageToolBar';
+import MainContainer from '../../containers/MainContainer';
+import ResetPwdContainer from '../../containers/ResetPwdContainer';
+import {ToastShort} from '../../utils/ToastUtils';
+import {fetchLogin} from '../../actions/auth'
+import Spanner from 'react-native-spinkit'
+import ActiveContainer from '../../containers/ActiveContainer'
+import Loading from '../../components/Loading'
 
-class Active extends React.Component {
+class Login extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            phone:'13547926578',
-            code:'6666',
-            password:'111111',
-            loading:false,
-            showTips:false
+            password:'12348765',
+            phone:'15828516285',
+            loading:false
         };
     }
 
     componentDidMount () {
-        // const {dispatch} = this.props;
-        // dispatch(fetchTest());
-        // InteractionManager.runAfterInteractions(() => {
-        //     dispatch(fetchTest());
-        // });
-
+       // const {dispatch} = this.props;
+       // dispatch(fetchTest());
+       // InteractionManager.runAfterInteractions(() => {
+       //     dispatch(fetchTest());
+       // });
     }
 
     componentWillReceiveProps (nextProps) {
+        //const {reddit} = this.props;
+        //if (reddit.isLoadMore && !nextProps.reddit.isLoadMore && !nextProps.reddit.isRefreshing) {
+        //    if (nextProps.reddit.noMore) {
+        //        ToastShort('没有更多数据了');
+        //    }
+        //}
         this.setState({loading:false});
 
-        if(this.props.auth.id == 0 && nextProps.auth.id!=0 && nextProps.auth.token!=''){
-            const {dispatch} = this.props;
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(fetchUserSet({user_id:nextProps.auth.id,password:this.state.password},nextProps.auth.token));
-            });
-        }else if(this.props.auth.id != 0 && this.props.auth.token !='' && nextProps.auth.code!=undefined && nextProps.auth.code==0){
-            const {navigator} = this.props;
+        if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
+            const {navigator} = nextProps;
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
                     component: MainContainer,
@@ -62,11 +61,17 @@ class Active extends React.Component {
         }
     }
 
-    onShowTipsBtnClick(){
-        this.setState({showTips:true})
+    shouldComponentUpdate(){
+        return true;
+    }
+    componentWillUpdate(){
     }
 
-    onActiveBtnClick(){
+    componentDidUpdate(){
+    }
+
+
+    onSubmitBtnClick(){
         if(!(/^1[34578]\d{9}$/.test(this.state.phone))){
             ToastShort('手机号码有误，请重填');
             return false;
@@ -75,53 +80,52 @@ class Active extends React.Component {
             ToastShort('密码不能为空');
             return false;
         }
-        if(this.state.code==''){
-            ToastShort('验证码不能为空');
-            return false;
-        }
 
-        this.setState({loading: true});
         const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            dispatch(fetchSmsLogin({phone:this.state.phone,code:this.state.code}));
+            this.setState({loading:true});
+            dispatch(fetchLogin(this.state));
         });
 
-
-        //const {navigator} = this.props;
-        //InteractionManager.runAfterInteractions(() => {
-        //    navigator.resetTo({
-        //        component: MainContainer,
-        //        name: 'Main'
-        //    });
-        //});
     }
 
-    onSendMsgCode(){
-        const {dispatch} = this.props;
+    onResetPwdBtnClick(){
+        const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            dispatch(fetchSmsCode(this.state.phone));
+            navigator.push({
+                component: ResetPwdContainer,
+                name: 'ResetPwd'
+            });
         });
     }
+
+    onActiveBtnClick(){
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: ActiveContainer,
+                name: 'Active'
+            });
+        });
+    }
+
 
     render () {
         const {navigator} = this.props;
         return (
             <View style={styles.container}>
                 <PageToolbar
-                    title="激活账户"
+                    title="登录"
                     navigator={navigator}
                 />
                 <View style={{height:1}}>
                     <Text style={{flex:1, flexDirection: 'row',backgroundColor:'#ECEDF1'}}></Text>
                 </View>
 
-                <ScrollView>
-
-
                 <View style={{height:105,alignItems: 'center'}}>
                     <Image
                         style={{ width: 134, height: 45,marginTop:30}}
-                        source={require('../img/login_logo.png')}
+                        source={require('../../img/login_logo.png')}
                     />
                 </View>
                 <View style={{height:2, flexDirection:'row'}}>
@@ -134,41 +138,29 @@ class Active extends React.Component {
                 </View>
 
                 <View style={styles.inputview}>
-                    <View style={styles.rowview}>
-                        <TextInput onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
-
-                        <CountDown
-                            onPress={this.onSendMsgCode.bind(this)} //default null
-                            text={'发送验证码'} //default ''
-                            time={60} //default 60
-                            buttonStyle={{marginTop:10}}
-                            textStyle={{color:'#15499A'}} //default black
-                            disabledTextStyle={{color:'#15499A'}} //default gray
-                        />
-                    </View>
-                    <View style={styles.rowview}>
-                        <TextInput onChangeText={(code) => this.setState({code})} value={this.state.code} style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
-                    </View>
-                    <TextInput  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                    <TextInput   onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' />
+                    <TextInput   onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} />
                 </View>
 
                 <View style={styles.buttomview}>
-                        <TouchableOpacity onPress={this.onActiveBtnClick.bind(this)}>
-                        <View style={styles.buttonview} >
-                            <Text style={styles.logintext} >激活账户</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.onShowTipsBtnClick.bind(this)}>
-                    <View style={{flexDirection: 'row',justifyContent: 'center'}}>
-                        <Text style={styles.lightblue}>没有收到验证码？</Text>
+
+                    <TouchableOpacity onPress={this.onResetPwdBtnClick.bind(this)}>
+                    <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
+                        <Text style={styles.lightblue}>忘记密码？</Text>
                     </View>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onSubmitBtnClick.bind(this)}>
+                    <View style={styles.buttonview} >
+                        <Text style={styles.logintext} >登录</Text>
+                    </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onActiveBtnClick.bind(this)}>
+                        <View style={{flexDirection: 'row',justifyContent: 'center'}}>
+                            <Text style={styles.lightblue}>激活账户</Text>
+                        </View>
+                    </TouchableOpacity>
+
                 </View>
-                    {this.state.showTips? <View style={{alignItems:'center',marginTop:20}}>
-                        <Text style={{fontSize:12,color:'#626262'}}>1.手机号码输入错误。</Text>
-                        <Text style={{fontSize:12,color:'#626262'}}>2.手机号未被预设置为账号，请联系管理员。</Text>
-                    </View>:<View/>}
-                </ScrollView>
                 {
                     this.state.loading?<Loading/>:<View></View>
                 }
@@ -202,7 +194,7 @@ let styles = StyleSheet.create({
         alignSelf: 'center'
     },
     inputview: {//用户名/密码区域
-        height: 200,
+        height: 140,
         marginTop:30,
         marginLeft:10,
         marginRight:10
@@ -211,7 +203,7 @@ let styles = StyleSheet.create({
         flexDirection:'row'
     },
     textinput: {//用户名/密码输入框
-        flex: 2,
+        flex: 1,
         borderWidth: 0,
         fontSize: 16,
 
@@ -231,7 +223,7 @@ let styles = StyleSheet.create({
     },
     buttomview: {
         flex: 1,
-        marginTop:30
+        marginTop:10
     },
     buttonview: {
         flexDirection: 'row',
@@ -274,11 +266,12 @@ let styles = StyleSheet.create({
         color: '#1DBAF1',
     },
     lightblue:{
-        fontSize: 14,color: '#4A90E2'
+        fontSize: 14,color: '#4A90E2',
+        marginBottom:10
     },
     redtxt:{
         fontSize: 14,color: '#D0021B',marginLeft:5
-    }
+    },
 });
 
-export default Active;
+export default Login;

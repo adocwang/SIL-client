@@ -11,7 +11,7 @@ import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import Claim from '../pages/Claim';
+import Claim from '../pages/homepage/Claim';
 
 class ClaimContainer extends Component {
     render () {

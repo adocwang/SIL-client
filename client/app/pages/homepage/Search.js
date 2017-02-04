@@ -13,11 +13,11 @@ import {
     TouchableOpacity,
     InteractionManager
 } from 'react-native';
-import CustomToolbar from '../components/CustomToolbar';
-import ClaimContainer from '../containers/ClaimContainer'
-import {ToastShort} from '../utils/ToastUtils';
-import {fetchSearch} from '../actions/home';
-import Icon from 'react-native-vector-icons/Ionicons';
+import CustomToolbar from '../../components/CustomToolbar';
+import ClaimContainer from '../../containers/ClaimContainer'
+import {ToastShort} from '../../utils/ToastUtils';
+import {fetchSearch} from '../../actions/home';
+import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
 
 class Search extends React.Component {
     constructor() {

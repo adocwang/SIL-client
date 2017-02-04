@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import {fetchTest} from '../actions/test';
+import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,
@@ -15,14 +15,14 @@ import {
     ScrollView,
     View
 } from 'react-native';
-import PageToolbar from '../components/PageToolBar';
-import MainContainer from '../containers/MainContainer';
-import CountDown from '../components/CountDown'
-import {fetchSmsCode,fetchSmsLogin,fetchUserSet} from  '../actions/auth'
-import Loading from '../components/Loading'
-import {ToastShort} from '../utils/ToastUtils';
+import PageToolbar from '../../components/PageToolBar';
+import MainContainer from '../../containers/MainContainer';
+import CountDown from '../../components/CountDown'
+import {fetchSmsCode,fetchSmsLogin,fetchUserSet} from  '../../actions/auth'
+import Loading from '../../components/Loading'
+import {ToastShort} from '../../utils/ToastUtils';
 
-class ResetPwd extends React.Component {
+class Active extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -44,14 +44,14 @@ class ResetPwd extends React.Component {
     }
 
     componentWillReceiveProps (nextProps) {
-        console.log('componentWillReceiveProps',nextProps);
-        this.setState({loading:nextProps.auth.loading})
+        this.setState({loading:false});
+
         if(this.props.auth.id == 0 && nextProps.auth.id!=0 && nextProps.auth.token!=''){
             const {dispatch} = this.props;
             InteractionManager.runAfterInteractions(() => {
                 dispatch(fetchUserSet({user_id:nextProps.auth.id,password:this.state.password},nextProps.auth.token));
             });
-        }else if(this.props.auth.id != 0 && this.props.auth.token !=''){
+        }else if(this.props.auth.id != 0 && this.props.auth.token !='' && nextProps.auth.code!=undefined && nextProps.auth.code==0){
             const {navigator} = this.props;
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
@@ -116,37 +116,54 @@ class ResetPwd extends React.Component {
                 </View>
 
                 <ScrollView>
-                    <View style={styles.inputview}>
-                        <View style={styles.rowview}>
-                            <TextInput onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
 
-                            <CountDown
-                                onPress={this.onSendMsgCode.bind(this)} //default null
-                                text={'发送验证码'} //default ''
-                                time={60} //default 60
-                                buttonStyle={{marginTop:10}}
-                                textStyle={{color:'#15499A'}} //default black
-                                disabledTextStyle={{color:'#15499A'}} //default gray
-                            />
-                        </View>
-                        <View style={styles.rowview}>
-                            <TextInput onChangeText={(code) => this.setState({code})} value={this.state.code} style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
-                        </View>
-                        <TextInput  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+
+                <View style={{height:105,alignItems: 'center'}}>
+                    <Image
+                        style={{ width: 134, height: 45,marginTop:30}}
+                        source={require('../../img/login_logo.png')}
+                    />
+                </View>
+                <View style={{height:2, flexDirection:'row'}}>
+                    <View
+                        style={{flex:3, backgroundColor:'#15499A'}}
+                    />
+                    <View
+                        style={{flex:1, backgroundColor:'#D93741'}}
+                    />
+                </View>
+
+                <View style={styles.inputview}>
+                    <View style={styles.rowview}>
+                        <TextInput onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
+
+                        <CountDown
+                            onPress={this.onSendMsgCode.bind(this)} //default null
+                            text={'发送验证码'} //default ''
+                            time={60} //default 60
+                            buttonStyle={{marginTop:10}}
+                            textStyle={{color:'#15499A'}} //default black
+                            disabledTextStyle={{color:'#15499A'}} //default gray
+                        />
                     </View>
+                    <View style={styles.rowview}>
+                        <TextInput onChangeText={(code) => this.setState({code})} value={this.state.code} style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                    </View>
+                    <TextInput  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                </View>
 
-                    <View style={styles.buttomview}>
+                <View style={styles.buttomview}>
                         <TouchableOpacity onPress={this.onActiveBtnClick.bind(this)}>
-                            <View style={styles.buttonview} >
-                                <Text style={styles.logintext} >激活账户</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.onShowTipsBtnClick.bind(this)}>
-                            <View style={{flexDirection: 'row',justifyContent: 'center'}}>
-                                <Text style={styles.lightblue}>没有收到验证码？</Text>
-                            </View>
-                        </TouchableOpacity>
+                        <View style={styles.buttonview} >
+                            <Text style={styles.logintext} >激活账户</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onShowTipsBtnClick.bind(this)}>
+                    <View style={{flexDirection: 'row',justifyContent: 'center'}}>
+                        <Text style={styles.lightblue}>没有收到验证码？</Text>
                     </View>
+                    </TouchableOpacity>
+                </View>
                     {this.state.showTips? <View style={{alignItems:'center',marginTop:20}}>
                         <Text style={{fontSize:12,color:'#626262'}}>1.手机号码输入错误。</Text>
                         <Text style={{fontSize:12,color:'#626262'}}>2.手机号未被预设置为账号，请联系管理员。</Text>
@@ -264,4 +281,4 @@ let styles = StyleSheet.create({
     }
 });
 
-export default ResetPwd;
+export default Active;

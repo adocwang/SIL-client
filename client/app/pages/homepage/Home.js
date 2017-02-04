@@ -15,14 +15,14 @@ import {
     InteractionManager
 } from 'react-native';
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
-import MainTabBar from '../components/MainTabBar';
-import CustomTabBar from '../components/CustomTabBar';
-import LoadingView from '../components/LoadingView';
+import MainTabBar from '../../components/MainTabBar';
+import CustomTabBar from '../../components/CustomTabBar';
+import LoadingView from '../../components/LoadingView';
 import Spanner from 'react-native-spinkit'
-import ClaimContainer from '../containers/ClaimContainer'
-import ApplicationContainer from '../containers/ApplicationContainer'
-import SearchContainer from '../containers/SearchContainer'
-import Icon from 'react-native-vector-icons/Ionicons';
+import ClaimContainer from '../../containers/ClaimContainer'
+import ApplicationContainer from '../../containers/ApplicationContainer'
+import SearchContainer from '../../containers/SearchContainer'
+import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
 
 var canLoadMore;
 var loadMoreTime = 0;

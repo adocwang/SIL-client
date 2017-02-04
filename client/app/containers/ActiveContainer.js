@@ -5,7 +5,7 @@ import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import Active from '../pages/Active';
+import Active from '../pages/auth/Active';
 
 class ActiveContainer extends Component {
     render () {
