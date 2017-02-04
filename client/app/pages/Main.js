@@ -89,7 +89,6 @@ class Main extends React.Component {
                         title="主页"
                         renderIcon={() => <Image source={require("../img/home_icon_d.png")} />}
                         renderSelectedIcon={() => <Image source={require("../img/home_icon.png")} />}
-                        badgeText="1"
                         onPress={() => this.setState({ selectedTab: 'home' })}>
                         <HomeContainer navigator={this.props.navigator} />
                     </TabNavigator.Item>

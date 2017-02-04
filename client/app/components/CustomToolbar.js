@@ -45,7 +45,6 @@ class CustomToolbar extends React.Component {
   }
 
   onIconClicked() {
-    console.log(this.props);
     if (this.props.onIconClicked) {
       this.props.onIconClicked();
     } else {

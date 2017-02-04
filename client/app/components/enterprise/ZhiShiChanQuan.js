@@ -1,9 +1,6 @@
 /**
  * Created by kiefer on 2017/2/4.
  */
-/**
- * Created by kiefer on 2017/2/4.
- */
 'use strict';
 import React from 'react'
 import {

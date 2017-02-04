@@ -25,6 +25,7 @@ import CommonInfo from '../../components/enterprise/CommonInfo'
 import ZhiShiChanQuan from '../../components/enterprise/ZhiShiChanQuan'
 import JingYingXinXi from '../../components/enterprise/JingYingXinXi'
 import FengXianXinXi from '../../components/enterprise/FengXianXinXi'
+import RongZiZiXun from '../../components/enterprise/RongZiZiXun'
 import { Col, Row, Grid } from "react-native-easy-grid";
 
 class Claim extends React.Component {
@@ -91,7 +92,7 @@ class Claim extends React.Component {
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>融资资讯</Text>
+                    <RongZiZiXun />
                 </Bar>
                  <Bar
                         title='知识产权'
