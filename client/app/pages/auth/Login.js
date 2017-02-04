@@ -145,10 +145,13 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.inputview}>
-                    <TextInput   onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' />
-                    <TextInput   onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} />
+                    <View style={{ borderBottomColor: '#15499A', borderBottomWidth: 1,flex:1}}>
+                        <TextInput  underlineColorAndroid='transparent'  onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' />
+                    </View>
+                    <View style={{ borderBottomColor: '#15499A', borderBottomWidth: 1,flex:1}}>
+                        <TextInput underlineColorAndroid='transparent'  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} />
+                    </View>
                 </View>
-
                 <View style={styles.buttomview}>
 
                     <TouchableOpacity onPress={this.onResetPwdBtnClick.bind(this)}>
@@ -201,7 +204,7 @@ let styles = StyleSheet.create({
         alignSelf: 'center'
     },
     inputview: {//用户名/密码区域
-        height: 140,
+        height: 120,
         marginTop:30,
         marginLeft:10,
         marginRight:10
