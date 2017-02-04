@@ -8,9 +8,9 @@ import {
     View,
     Image,
     TouchableOpacity,
-    Animated
+    Animated,
 } from 'react-native';
-import Button from './Button'
+import Button from './../Button'
 
 
 const DaiKuanJinDu = React.createClass({
@@ -44,37 +44,37 @@ const DaiKuanJinDu = React.createClass({
         switch (page){
             case 0:
                 if(isTabActive){
-                    icon= require('../img/yishouli_g.png');
+                    icon= require('../../img/yishouli_g.png');
                 }else{
-                    icon= require('../img/yishouli_d.png');
+                    icon= require('../../img/yishouli_d.png');
                 }
                 break;
             case 1:
                 if(isTabActive){
-                    icon= require('../img/shenpizhong_g.png');
+                    icon= require('../../img/shenpizhong_g.png');
                 }else{
-                    icon= require('../img/shenpizhong_d.png');
+                    icon= require('../../img/shenpizhong_d.png');
                 }
                 break;
             case 2:
                 if(isTabActive){
-                    icon= require('../img/shenpitongguo_g.png');
+                    icon= require('../../img/shenpitongguo_g.png');
                 }else{
-                    icon= require('../img/shenpitongguo_d.png');
+                    icon= require('../../img/shenpitongguo_d.png');
                 }
                 break
             case 3:
                 if(isTabActive){
-                    icon= require('../img/qianyue_g.png');
+                    icon= require('../../img/qianyue_g.png');
                 }else{
-                    icon= require('../img/qianyue_d.png');
+                    icon= require('../../img/qianyue_d.png');
                 }
                 break
             case 4:
                 if(isTabActive){
-                    icon= require('../img/fangkuan_g.png');
+                    icon= require('../../img/fangkuan_g.png');
                 }else{
-                    icon= require('../img/fangkuan_d.png');
+                    icon= require('../../img/fangkuan_d.png');
                 }
                 break
         }
@@ -90,8 +90,8 @@ const DaiKuanJinDu = React.createClass({
 
                 <View style={[styles.tab, this.props.tabStyle,]}>
                     <Image source = {icon} style={{alignSelf:'center',marginTop:20,height:15}}/>
-                    {isTabActive? <Image source = {require('../img/line_dot_green.png')} style={{alignSelf:'center',marginTop:5}}/>
-                    : <Image source = {require('../img/line_dot_gray.png')} style={{alignSelf:'center',marginTop:5}}/>}
+                    {isTabActive? <Image source = {require('../../img/line_dot_green.png')} style={{alignSelf:'center',marginTop:5}}/>
+                    : <Image source = {require('../../img/line_dot_gray.png')} style={{alignSelf:'center',marginTop:5}}/>}
 
                 </View>
                 <Text style={[{color: textColor, fontWeight, alignSelf:'center',paddingBottom:15,paddingTop:5}, textStyle, ]}>

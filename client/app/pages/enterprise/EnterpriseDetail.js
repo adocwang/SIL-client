@@ -20,7 +20,9 @@ import {
 } from 'react-native';
 import CustomToolbar from '../../components/CustomToolbar'
 import Bar from '../../components/BarCollapsible'
-import DaiKuanJinDu from '../../components/DaiKuanJinDu'
+import DaiKuanJinDu from '../../components/enterprise/DaiKuanJinDu'
+import CommonInfo from '../../components/enterprise/CommonInfo'
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 class Claim extends React.Component {
     constructor(props) {
@@ -58,6 +60,7 @@ class Claim extends React.Component {
                 <Bar
                     title='贷款受理进度'
                     collapsible={true}
+                    show={true}
                     iconCollapsed='angle-right'
                     iconOpened='angle-down'
                     style={styles.bar}
@@ -69,12 +72,13 @@ class Claim extends React.Component {
                 <Bar
                     title='常用信息'
                     collapsible={true}
+                    show={true}
                     iconCollapsed='angle-right'
                     iconOpened='angle-down'
                     style={styles.bar}
                     titleStyle={styles.bar_title}
                 >
-                    <Text>sahjdjahsd</Text>
+                    <CommonInfo/>
                 </Bar>
                 <Bar
                     title='融资资讯'

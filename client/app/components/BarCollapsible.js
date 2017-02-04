@@ -46,6 +46,12 @@ class BarCollapsible extends Component {
                 title: this.props.title
             });
         }
+        if(this.props.show){
+            this.setState({
+                show: true,
+                icon: 'angle-down'
+            });
+        }
 
         this._tintColor = this.props.tintColor || '#2133A7';
         this._iconSize = this.props.iconSize || 30;
@@ -117,7 +123,7 @@ var styles =  StyleSheet.create({
     bar: {
         alignItems: 'center',
         alignSelf: 'stretch',
-        backgroundColor: '#333',
+        backgroundColor: '#fff',
         flexDirection: 'row',
         height: 45,
     },
