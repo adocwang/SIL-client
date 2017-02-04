@@ -3,5 +3,4 @@ platform :ios, '10.0'
 target ‘SiliconValleyBank’ do
 pod 'JGProgressHUD', '~> 1.4'
 pod 'JPush', '~> 3.0.1'
-
 end

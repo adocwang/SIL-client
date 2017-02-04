@@ -38,6 +38,13 @@ class Login extends React.Component {
        // InteractionManager.runAfterInteractions(() => {
        //     dispatch(fetchTest());
        // });
+      //  const {navigator} = this.props;
+      //  InteractionManager.runAfterInteractions(() => {
+      //      navigator.resetTo({
+      //          component: MainContainer,
+      //          name: 'Main'
+      //      });
+      //  });
     }
 
     componentWillReceiveProps (nextProps) {

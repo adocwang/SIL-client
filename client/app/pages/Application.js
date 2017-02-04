@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {View,StyleSheet,Text,Image,TouchableWithoutFeedback,Navigator} from 'react-native'
 import LoanCalculatorContainer from '../containers/LoanCalculatorContainer'
 import CollectionContainer from '../containers/CollectionContainer'
+import VLCalculator from "./VLCalculator"
 class Application extends Component {
 
  constructor(props) {
@@ -17,6 +18,9 @@ class Application extends Component {
         break;
       case 2:
         this.turnToCollection()
+        break
+      case 3:
+        this.turnToVL()
         break
       default:
     }
@@ -35,6 +39,14 @@ class Application extends Component {
     navigator.push({
       component: CollectionContainer,
       name: 'CollectionContainer'
+    })
+  }
+
+  turnToVL() {
+    const {navigator} = this.props
+    navigator.push({
+      component: VLCalculator,
+      name: 'VLCalculator'
     })
   }
 

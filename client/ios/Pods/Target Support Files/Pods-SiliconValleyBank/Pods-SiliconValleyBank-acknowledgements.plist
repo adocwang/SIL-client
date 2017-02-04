@@ -14,6 +14,14 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>Copyright jpush.cn</string>
+			<key>Title</key>
+			<string>JCore</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
 Copyright (c) 2014-2016 Jonas Gessner
@@ -37,6 +45,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </string>
 			<key>Title</key>
 			<string>JGProgressHUD</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Copyright jpush.cn</string>
+			<key>Title</key>
+			<string>JPush</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

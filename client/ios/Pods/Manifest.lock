@@ -1,12 +1,18 @@
 PODS:
+  - JCore (1.1.0)
   - JGProgressHUD (1.4)
+  - JPush (3.0.1):
+    - JCore (~> 1.1.0)
 
 DEPENDENCIES:
   - JGProgressHUD (~> 1.4)
+  - JPush (~> 3.0.1)
 
 SPEC CHECKSUMS:
+  JCore: 7382f2c62e6fcf08305b735e91f0fb771f448d3d
   JGProgressHUD: 1617b0940cf80bb53e8f7d6f0fd69252ea45d6d4
+  JPush: 427daa60236d0faa9f379cd5bbeb923103162058
 
-PODFILE CHECKSUM: c9487d8eaa7e68e8673b733db12e7b6fb01d7275
+PODFILE CHECKSUM: cf8362909a71a51b2d9168cc7d97bfa7f2e7efd5
 
 COCOAPODS: 1.0.1
