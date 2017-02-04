@@ -7,7 +7,7 @@ import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import Login from '../pages/Login';
+import Login from '../pages/auth/Login';
 
 class LoginContainer extends Component {
     render () {

@@ -14,7 +14,6 @@ import {
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
 import MainTabBar from '../components/MainTabBar';
 import CustomTabBar from '../components/CustomTabBar';
-import SearchBar from '../components/SearchBar';
 import TabNavigator from '../components/bottomtabbar/TabNavigator';
 import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'
@@ -22,6 +21,7 @@ import ClaimContainer from '../containers/ClaimContainer'
 import ApplicationContainer from '../containers/ApplicationContainer'
 import HomeContainer from '../containers/HomeContainer'
 import PersonContainer from '../containers/PersonContainer'
+import UserEnterpriseContainer from '../containers/UserEnterpriseContainer'
 
 
 class Main extends React.Component {
@@ -29,7 +29,7 @@ class Main extends React.Component {
         super()
 
         this.state = {
-            selectedTab:'home',
+            selectedTab:'company',
         };
 
     }
@@ -100,7 +100,7 @@ class Main extends React.Component {
                         renderSelectedIcon={() => <Image source={require("../img/company_icon.png")} />}
                         //renderBadge={() => <CustomBadgeView />}
                         onPress={() => this.setState({ selectedTab: 'company' })}>
-                        <Text>profile</Text>
+                        <UserEnterpriseContainer navigator={this.props.navigator} />
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'app'}

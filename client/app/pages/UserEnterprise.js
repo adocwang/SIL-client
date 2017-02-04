@@ -1,5 +1,5 @@
 /**
- * Created by kiefer on 2017/1/31.
+ * Created by kiefer on 2017/2/3.
  */
 import React from 'react';
 import {
@@ -15,23 +15,19 @@ import {
     InteractionManager
 } from 'react-native';
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
-import MainTabBar from '../components/MainTabBar';
-import CustomTabBar from '../components/CustomTabBar';
-import SearchBar from '../components/SearchBar';
+import UserEnterpriseTabBar from '../components/UserEnterpriseTabBar';
 import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
-import ApplicationContainer from '../containers/ApplicationContainer'
 
 var canLoadMore;
 var loadMoreTime = 0;
 
-class Home extends React.Component {
+class UserEnterprise extends React.Component {
     constructor() {
         super()
 
         this.state = {
-            selectedTab:'home',
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
@@ -57,15 +53,6 @@ class Home extends React.Component {
     componentDidUpdate(){
     }
 
-    searchCompany(){
-        console.log('search');
-    }
-
-    onRefresh (typeId) {
-        const {dispatch} = this.props;
-        canLoadMore = false;
-        //dispatch(fetchReddit(true, false, typeId));
-    }
 
     onScroll () {
         if (!canLoadMore) {
@@ -75,7 +62,7 @@ class Home extends React.Component {
 
     onEndReached (typeId) {
         let time = Date.parse(new Date()) / 1000;
-        const {home} = this.props;
+        const {userenterprise} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
             const {dispatch} = this.props;
             //dispatch(fetchReddit(false, false, typeId, true, 25, reddit.redditAfter[typeId]));
@@ -108,11 +95,11 @@ class Home extends React.Component {
 
     //渲染每页内容
     renderContent (dataSource, typeId) {
-        const {home} = this.props;
-        if (home.loading) {
+        const {userenterprise} = this.props;
+        if (userenterprise.loading) {
             return <LoadingView/>;
         }
-        let isEmpty = home.pageList[typeId] == undefined || home.pageList[typeId].length == 0;
+        let isEmpty = userenterprise.pageList[typeId] == undefined || userenterprise.pageList[typeId].length == 0;
         if (isEmpty) {
             return (
                 <ScrollView
@@ -120,14 +107,6 @@ class Home extends React.Component {
                     horizontal={false}
                     contentContainerStyle={styles.no_data}
                     style={{flex: 1}}
-                    refreshControl={
-            <RefreshControl
-              refreshing={home.isRefreshing}
-              onRefresh={this.onRefresh.bind(this, typeId)}
-              title="Loading..."
-              colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
-            />
-          }
                 >
                     <View style={{alignItems: 'center'}}>
                         <Text style={{fontSize: 16}}>
@@ -146,21 +125,12 @@ class Home extends React.Component {
                 onEndReached={this.onEndReached.bind(this, typeId)}
                 onEndReachedThreshold={10}
                 onScroll={this.onScroll}
-                renderFooter={this.renderFooter}
-                refreshControl={
-          <RefreshControl
-            refreshing={home.isRefreshing}
-            onRefresh={this.onRefresh.bind(this, typeId)}
-            title="Loading..."
-            colors={['#ff0000', '#ff0000', '#ff0000', '#ff0000']}
-          />
-        }
-            />
+                renderFooter={this.renderFooter}/>
         );
     }
 
 
-    renderItem (item, sectionID, rowID) {
+    renderItem (item) {
         const thumbnail = item.img.lastIndexOf("http") >= 0 ? item.img : 'https://www.redditstatic.com/reddit404b.png';
 
         return (
@@ -189,8 +159,8 @@ class Home extends React.Component {
     }
 
     renderFooter () {
-        const {home} = this.props;
-        if (home.isLoadMore) {
+        const {userenterprise} = this.props;
+        if (userenterprise.isLoadMore) {
             return (
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <Spanner size={30} type='ThreeBounce' color='#c8c8c8'/>
@@ -203,41 +173,30 @@ class Home extends React.Component {
     }
 
     render () {
-        const {home} = this.props;
+        const {userenterprise} = this.props;
         var lists = [];
-        home.catList.forEach((cat) => {
+        userenterprise.catList.forEach((cat) => {
             lists.push(
                 <View
                     key={cat.id}
                     tabLabel={cat.name}
                     style={{flex: 1}}
                 >
-                    {this.renderContent(this.state.dataSource.cloneWithRows(home.pageList[cat.id] == undefined ? [] : home.pageList[cat.id]), cat.id)}
+                    {this.renderContent(this.state.dataSource.cloneWithRows(userenterprise.pageList[cat.id] == undefined ? [] : userenterprise.pageList[cat.id]), cat.id)}
                 </View>);
         });
 
         return (
-                <View style={styles.container}>
+            <View style={styles.container}>
 
-                            <SearchBar
-                                onSearchChange={() => console.log('On Focus')}
-                                onSearch={this.searchCompany.bind(this)}
-                                height={30}
-                                onFocus={() => console.log('On Focus')}
-                                onBlur={() => console.log('On Blur')}
-                                placeholder={'Search...'}
-                                autoCorrect={false}
-                                padding={3}
-                                returnKeyType={'search'}
-                            />
-                            <ScrollableTabView
-                                style={{marginTop: 20,flex:1}}
-                                renderTabBar={() => <CustomTabBar redCounts={[1,2,3]} />}
-                            >
+                <ScrollableTabView
+                    style={{flex:1}}
+                    renderTabBar={() => <UserEnterpriseTabBar redCounts={[1,2,3]} />}
+                >
 
-                                {lists}
-                            </ScrollableTabView>
-                 </View>
+                    {lists}
+                </ScrollableTabView>
+            </View>
         );
     }
 }
@@ -306,7 +265,26 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         textAlign: 'center',
         color: 'black'
-    }
+    },
+    searchBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        borderColor: '#2133A7',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderRadius:30,
+        height: 40,
+        marginLeft: 10,
+        marginRight:10
+    },
+    searchBarInput: {
+        flex: 1,
+        fontWeight: 'normal',
+        color: '#9B9B9B',
+        paddingLeft:10,
+        backgroundColor: 'transparent',
+    },
 });
 
-export default Home;
+export default UserEnterprise;

@@ -8,7 +8,7 @@ import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import ResetPwd from '../pages/ResetPwd';
+import ResetPwd from '../pages/auth/ResetPwd';
 
 class ResetPwdContainer extends Component {
     render () {

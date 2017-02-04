@@ -6,6 +6,7 @@ import {
   } from 'react-native';
 
 import LoginContainer from '../containers/LoginContainer';
+import ActiveContainer from '../containers/ActiveContainer';
 import MainContainer from '../containers/MainContainer';
 import {loadLocalUser} from '../actions/auth'
 //import realm from '../components/realm'

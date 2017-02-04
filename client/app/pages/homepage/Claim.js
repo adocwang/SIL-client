@@ -2,7 +2,7 @@
  * Created by kiefer on 2017/1/25.
  */
 import React from 'react';
-import {fetchTest} from '../actions/test';
+import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,
@@ -16,9 +16,9 @@ import {
     ScrollView,
     View
 } from 'react-native';
-import CustomToolbar from '../components/CustomToolbar'
+import CustomToolbar from '../../components/CustomToolbar'
 import CheckBox from 'react-native-check-box'
-import DistributeContainer from '../containers/DistributeContainer'
+import DistributeContainer from '../../containers/DistributeContainer'
 
 import PopupDialog, {
     DialogTitle,
@@ -152,24 +152,24 @@ class Claim extends React.Component {
                                   onClick={()=>this.onBankChoose('1')}
                                   isChecked={true}
                                   rightText={'测试支行1'}
-                                  checkedImage={<Image source={require('../img/check_box_icon.png')} />}
-                                  unCheckedImage={<Image source={require('../img/check_box_icon_d.png')} />}
+                                  checkedImage={<Image source={require('../../img/check_box_icon.png')} />}
+                                  unCheckedImage={<Image source={require('../../img/check_box_icon_d.png')} />}
                               />
                               <CheckBox
                                   style={{flex: 1, padding: 10}}
                                   onClick={()=>this.onBankChoose('1')}
                                   isChecked={false}
                                   rightText={'测试支行2'}
-                                  checkedImage={<Image source={require('../img/check_box_icon.png')} />}
-                                  unCheckedImage={<Image source={require('../img/check_box_icon_d.png')} />}
+                                  checkedImage={<Image source={require('../../img/check_box_icon.png')} />}
+                                  unCheckedImage={<Image source={require('../../img/check_box_icon_d.png')} />}
                               />
                               <CheckBox
                                   style={{flex: 1, padding: 10}}
                                   onClick={()=>this.onBankChoose('1')}
                                   isChecked={false}
                                   rightText={'测试支行3'}
-                                  checkedImage={<Image source={require('../img/check_box_icon.png')} />}
-                                  unCheckedImage={<Image source={require('../img/check_box_icon_d.png')} />}
+                                  checkedImage={<Image source={require('../../img/check_box_icon.png')} />}
+                                  unCheckedImage={<Image source={require('../../img/check_box_icon_d.png')} />}
                               />
                           </View>
                         </ScrollView>

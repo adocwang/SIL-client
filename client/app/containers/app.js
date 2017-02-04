@@ -7,10 +7,10 @@ import {ToastShort} from '../utils/ToastUtils';
 
 import SplashContainer from '../containers/SplashContainer';
 import LoginContainer from '../containers/LoginContainer';
-import Active from '../pages/Active';
+import Active from '../pages/auth/Active';
 import Main from '../pages/Main';
 import MainContainer from '../containers/MainContainer';
-import ResetPwd from '../pages/ResetPwd';
+import ResetPwd from '../pages/auth/ResetPwd';
 import Test from '../pages/Test';
 import {NaviGoBack} from '../utils/CommonUtils';
 

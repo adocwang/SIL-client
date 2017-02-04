@@ -2,7 +2,7 @@
  * Created by kiefer on 2017/1/22.
  */
 import React from 'react';
-import {fetchTest} from '../actions/test';
+import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,
@@ -14,13 +14,14 @@ import {
     TouchableOpacity,
     View
     } from 'react-native';
-import PageToolbar from '../components/PageToolBar';
-import MainContainer from '../containers/MainContainer';
-import ResetPwdContainer from '../containers/ResetPwdContainer';
-import {ToastShort} from '../utils/ToastUtils';
-import {fetchLogin} from '../actions/auth'
+import PageToolbar from '../../components/PageToolBar';
+import MainContainer from '../../containers/MainContainer';
+import ResetPwdContainer from '../../containers/ResetPwdContainer';
+import {ToastShort} from '../../utils/ToastUtils';
+import {fetchLogin} from '../../actions/auth'
 import Spanner from 'react-native-spinkit'
-import ActiveContainer from '../containers/ActiveContainer'
+import ActiveContainer from '../../containers/ActiveContainer'
+import Loading from '../../components/Loading'
 
 class Login extends React.Component {
     constructor (props) {
@@ -54,10 +55,10 @@ class Login extends React.Component {
         //        ToastShort('没有更多数据了');
         //    }
         //}
-        if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
-            this.setState({loading:false});
-            const {navigator} = nextProps;
+        this.setState({loading:false});
 
+        if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
+            const {navigator} = nextProps;
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
                     component: MainContainer,
@@ -78,7 +79,6 @@ class Login extends React.Component {
 
 
     onSubmitBtnClick(){
-        console.log(this.state);
         if(!(/^1[34578]\d{9}$/.test(this.state.phone))){
             ToastShort('手机号码有误，请重填');
             return false;
@@ -132,7 +132,7 @@ class Login extends React.Component {
                 <View style={{height:105,alignItems: 'center'}}>
                     <Image
                         style={{ width: 134, height: 45,marginTop:30}}
-                        source={require('../img/login_logo.png')}
+                        source={require('../../img/login_logo.png')}
                     />
                 </View>
                 <View style={{height:2, flexDirection:'row'}}>
@@ -145,8 +145,8 @@ class Login extends React.Component {
                 </View>
 
                 <View style={styles.inputview}>
-                    <TextInput   onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
-                    <TextInput   onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                    <TextInput   onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' />
+                    <TextInput   onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} />
                 </View>
 
                 <View style={styles.buttomview}>
@@ -169,9 +169,7 @@ class Login extends React.Component {
 
                 </View>
                 {
-                    this.state.loading?<View style={styles.overlay} >
-                        <Spanner size={50} type='ThreeBounce' color='#15499A'/>
-                    </View>:<View></View>
+                    this.state.loading?<Loading/>:<View></View>
                 }
             </View>
         );
@@ -281,17 +279,6 @@ let styles = StyleSheet.create({
     redtxt:{
         fontSize: 14,color: '#D0021B',marginLeft:5
     },
-    overlay:{
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        alignItems:'center',
-        justifyContent:'center'
-
-    }
 });
 
 export default Login;
