@@ -1,0 +1,117 @@
+/**
+ * Created by kiefer on 2017/2/5.
+ */
+/**
+ * Created by kiefer on 2017/2/5.
+ */
+'use strict';
+import React , { PropTypes }from 'react'
+import {
+    StyleSheet,
+    Image,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
+
+const propTypes = {
+    onClicked: PropTypes.func,
+}
+
+class RiskInfoItem extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render () {
+        return(
+            <TouchableOpacity onPress={()=>this.props.onClicked()}>
+                <View style={styles.containerItem}>
+                    <Image
+                        style={styles.img}
+                        source={{uri: this.props.img}}
+                    />
+                    <View style={styles.content}>
+                        <Text style={styles.title}>
+                            {this.props.title}
+                        </Text>
+                        <Text style={styles.desc}>
+                            {this.props.desc}
+                        </Text>
+                        <View style={styles.catContainer}>
+
+                            <View style={{backgroundColor:'#7ED321', borderRadius:10,padding:3,justifyContent:'center'}}>
+                                <Text style={styles.status}>
+                                    {this.props.status}
+                                </Text>
+                            </View>
+                            <View style={{borderWidth:1, borderRadius:10,padding:3,justifyContent:'center',borderColor:'#F21B35'}}>
+                                <Text style={styles.red_text}>
+                                   开庭公告
+                                </Text>
+                            </View>
+                        </View>
+
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+}
+
+let styles = StyleSheet.create({
+    containerItem: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
+        padding: 10,
+        marginBottom:2,
+        height:100,
+        paddingLeft:20
+    },
+    img:{
+        flex:1,
+        width: 40,
+        height: 40,
+    },
+    content:{
+        flex: 7,
+        flexDirection: 'column',
+        paddingLeft:10,
+        paddingTop:5
+    },
+    title:{
+        color:'#4A4A4A',
+        fontSize:16,
+        paddingTop:5
+    },
+    desc:{
+        color:'#9B9B9B',
+        fontSize:14,
+        paddingTop:3
+    },
+    cat:{
+        color:'#4A4A4A',
+        fontSize:12,
+    },
+    status:{
+        color:'#ffffff',
+        fontSize:12,
+    },
+    red_text:{
+      color:'#F21B35',
+      fontSize:12
+    },
+    catContainer:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        paddingTop:5,
+        paddingRight:10
+
+    }
+});
+
+export default RiskInfoItem;
