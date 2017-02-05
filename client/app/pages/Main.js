@@ -29,7 +29,7 @@ class Main extends React.Component {
         super()
 
         this.state = {
-            selectedTab:'company',
+            selectedTab:'home',
         };
 
     }
