@@ -125,7 +125,7 @@ var styles =  StyleSheet.create({
         alignSelf: 'stretch',
         backgroundColor: '#fff',
         flexDirection: 'row',
-        height: 45,
+        height: 50,
     },
 
     barWrapper: {
@@ -133,7 +133,7 @@ var styles =  StyleSheet.create({
     },
 
     icon: {
-        padding: 5,
+        padding: 3,
         width: 40
     },
 

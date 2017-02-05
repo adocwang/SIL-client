@@ -63,7 +63,6 @@ class Claim extends React.Component {
                 <Text style={styles.cat}>互联网   信息技术  >></Text>
                 </View>
                 <ScrollView style={{marginBottom:20}}>
-                    <View style={{flex:1}}>
                 <Bar
                     title='贷款受理进度'
                     collapsible={true}
@@ -171,7 +170,7 @@ class Claim extends React.Component {
                     titleStyle={styles.bar_title}
                 >
                     <JingYingXinXi />
-                </Bar></View>
+                </Bar>
                 </ScrollView>
             </View>
 
