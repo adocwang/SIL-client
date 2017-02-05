@@ -39,11 +39,12 @@ class CompanyInfoItem extends React.Component {
                                 <Text style={styles.cat}>
                                     {this.props.cat}
                                 </Text>
-                            <View style={{backgroundColor:'#7ED321', borderRadius:10,padding:3,justifyContent:'center'}}>
+                            {this.props.status &&  <View style={{backgroundColor:'#7ED321', borderRadius:10,padding:3,justifyContent:'center'}}>
                                 <Text style={styles.status}>
-                                    {this.props.status}
+                                {this.props.status}
                                 </Text>
-                            </View>
+                                </View>}
+
                         </View>
 
                     </View>
@@ -99,7 +100,8 @@ let styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         paddingTop:5,
-        paddingRight:10
+        paddingRight:10,
+        alignItems:'center'
 
     }
 });

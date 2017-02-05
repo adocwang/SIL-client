@@ -20,6 +20,7 @@ import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
+import CompanyInfoItem from '../components/home/CompanyInfoItem'
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -33,7 +34,6 @@ class UserEnterprise extends React.Component {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
         };
-        this.renderItem = this.renderItem.bind(this);
         this.renderFooter = this.renderFooter.bind(this);
         this.onScroll = this.onScroll.bind(this);
         canLoadMore = false;
@@ -113,7 +113,7 @@ class UserEnterprise extends React.Component {
             <ListView
                 initialListSize={1}
                 dataSource={dataSource}
-                renderRow={this.renderItem}
+                renderRow={(item)=>{  return <CompanyInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/> }}
                 style={styles.listView}
                 onEndReached={this.onEndReached.bind(this, typeId)}
                 onEndReachedThreshold={10}
@@ -123,33 +123,6 @@ class UserEnterprise extends React.Component {
     }
 
 
-    renderItem (item) {
-        const thumbnail = item.img.lastIndexOf("http") >= 0 ? item.img : 'https://www.redditstatic.com/reddit404b.png';
-
-        return (
-            <TouchableOpacity onPress={this.onPress.bind(this, item)}>
-                <View style={styles.containerItem}>
-                    <Image
-                        style={{width: 88, height: 88, marginRight: 10,borderRadius:44}}
-                        source={{uri: thumbnail}}
-                    />
-                    <View style={{flex: 1, flexDirection: 'column'}}>
-                        <Text style={styles.title}>
-                            {item.title}
-                        </Text>
-                        <View style={{flex:1,flexDirection:'row'}}>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Text style={{flex: 1, fontSize: 14, color: '#ff0000', marginTop: 5, marginRight: 5}}>
-                                    {item.desc}
-                                </Text>
-                            </View>
-                        </View>
-
-                    </View>
-                </View>
-            </TouchableOpacity>
-        );
-    }
 
     renderFooter () {
         const {userenterprise} = this.props;

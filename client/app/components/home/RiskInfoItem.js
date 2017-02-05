@@ -40,7 +40,7 @@ class RiskInfoItem extends React.Component {
                         </Text>
                         <View style={styles.catContainer}>
 
-                            <View style={{backgroundColor:'#7ED321', borderRadius:10,padding:3,justifyContent:'center'}}>
+                            <View style={{backgroundColor:'#7ED321', borderRadius:10,padding:2,justifyContent:'center'}}>
                                 <Text style={styles.status}>
                                     {this.props.status}
                                 </Text>
@@ -109,7 +109,8 @@ let styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         paddingTop:5,
-        paddingRight:10
+        paddingRight:10,
+        alignItems:'center'
 
     }
 });
