@@ -2,6 +2,7 @@ package com.siliconvalleybank;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import com.xiaomi.mipush.sdk.*;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 } else if (!TextUtils.isEmpty(message.getUserAccount())) {
                         mUserAccount = message.getUserAccount();
                 }
+                Log.e("xiaomiPush",message.getContent());
         }
 
         @Override

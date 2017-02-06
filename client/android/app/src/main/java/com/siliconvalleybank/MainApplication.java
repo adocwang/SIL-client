@@ -22,9 +22,9 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  public static final String APP_ID = "your appid";
-  public static final String APP_KEY = "your appkey";
-  public static final String TAG = "your packagename";
+  public static final String APP_ID = "2882303761517545535";
+  public static final String APP_KEY = "5701754572535";
+  public static final String TAG = "com.siliconvalleybank";
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
