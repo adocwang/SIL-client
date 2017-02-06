@@ -3,6 +3,7 @@ package com.siliconvalleybank;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+import com.siliconvalleybank.components.RxBus;
 import com.xiaomi.mipush.sdk.*;
 
 import java.util.List;
@@ -63,6 +64,7 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 } else if (!TextUtils.isEmpty(message.getUserAccount())) {
                         mUserAccount = message.getUserAccount();
                 }
+                RxBus.getDefault().send(message);
                 Log.e("xiaomiPush",message.getContent());
         }
 
