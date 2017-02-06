@@ -1,6 +1,8 @@
 package com.siliconvalleybank;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import com.siliconvalleybank.components.RxBus;
@@ -78,6 +80,23 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 } else if (!TextUtils.isEmpty(message.getUserAccount())) {
                         mUserAccount = message.getUserAccount();
                 }
+                Log.e("onNotificationMessage",message.getContent());
+                openActivity(context,message.getContent());
+
+        }
+
+        private void openActivity(final Context context,String content) {
+
+                Handler handler = new Handler(context.getMainLooper());
+                handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                                Intent intent = new Intent(context, MainActivity.class);
+                                intent.putExtra("from", "notify");
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.getApplicationContext().startActivity(intent);
+                        }
+                });
         }
 
         @Override

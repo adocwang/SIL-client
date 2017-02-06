@@ -62,33 +62,7 @@ class Splash extends React.Component {
       }, 1000);
     })
 
-    //let user = realm.objects('User');
-    //if(user.length >0 && user[0].id !=0){
-    //  const {dispatch} = this.props;
-    //  InteractionManager.runAfterInteractions(() => {
-    //    dispatch(loadLocalUser(user[0]));
-    //  });
-    //  const {navigator} = this.props;
-    //  setTimeout(() => {
-    //    InteractionManager.runAfterInteractions(() => {
-    //      navigator.resetTo({
-    //        component: MainContainer,
-    //        name: 'Main'
-    //      });
-    //    });
-    //  }, 1000);
-    //}else {
-    //  const {navigator} = this.props;
-    //  setTimeout(() => {
-    //    InteractionManager.runAfterInteractions(() => {
-    //      navigator.resetTo({
-    //        component: LoginContainer,
-    //        name: 'Login'
-    //      });
-    //    });
-    //  }, 1000);
-    //}
-    //console.log('User',user);
+
   }
 
   render () {
