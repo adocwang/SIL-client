@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {View,StyleSheet,Text,Image,TouchableWithoutFeedback,Navigator} from 'react-native'
-import LoanCalculatorContainer from '../containers/LoanCalculatorContainer'
-import CollectionContainer from '../containers/CollectionContainer'
+import LoanCalculatorContainer from '../../containers/LoanCalculatorContainer'
+import CollectionContainer from '../../containers/CollectionContainer'
 import VLCalculator from "./VLCalculator"
 class Application extends Component {
 
@@ -89,22 +89,22 @@ class ApplicationItem extends Component {
     const {index} = this.props.index
   switch (this.props.index) {
     case 0:
-        imgFile = require("../img/loanLogo.png")
+        imgFile = require("../../img/loanLogo.png")
         title = "贷款计算器"
         itemStyle = {width:35,height:20,marginTop:35}
         break;
     case 1:
-        imgFile = require("../img/hsLogo.png")
+        imgFile = require("../../img/hsLogo.png")
         title = "话术"
         itemStyle = {width:27,height:20,marginTop:35}
         break;
     case 2:
-        imgFile = require("../img/collectLogo.png")
+        imgFile = require("../../img/collectLogo.png")
         title = "现场采集"
         itemStyle = {width:30,height:20,marginTop:35}
         break;
     case 3:
-        imgFile = require("../img/calculatorLogo.png")
+        imgFile = require("../../img/calculatorLogo.png")
         title = "VL计算器"
         itemStyle = {width:15,height:20,marginTop:35}
         break;

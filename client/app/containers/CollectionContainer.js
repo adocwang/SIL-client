@@ -1,7 +1,7 @@
 'user strict'
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import CollectionHome from '../pages/CollectionHome.js'
+import CollectionHome from '../pages/application/CollectionHome.js'
 
 class CollectionContainer extends Component {
   render() {

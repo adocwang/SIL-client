@@ -1,33 +1,23 @@
 import React,{Component} from 'react';
-import {Dimensions,ScrollView,View,StyleSheet,Text,Image,TouchableWithoutFeedback,Navigator,ListView} from 'react-native'
-import LoanCalculatorContainer from '../containers/LoanCalculatorContainer'
-import CollectionContainer from '../containers/CollectionContainer'
-import CustomToolbar from '../components/CustomToolbar'
-import CommonColor from '../utils/CommonColor'
-import Takephoto from './TakePhoto'
-import Button from '../components/Button.ios.js'
+import {TextInput,Dimensions,ScrollView,View,StyleSheet,Text,Image,TouchableWithoutFeedback,Navigator,ListView} from 'react-native'
+import LoanCalculatorContainer from '../../containers/LoanCalculatorContainer'
+import CollectionContainer from '../../containers/CollectionContainer'
+import CustomToolbar from '../../components/CustomToolbar'
+import CommonColor from '../../utils/CommonColor'
+import Takephoto from '../TakePhoto'
+import Button from '../../components/Button.ios.js'
 import CollectionTrade from './CollectionTrade'
-class CollectionTakephoto extends Component {
+class AccountCertifice extends Component {
 
 
   constructor(props){
     super(props)
-    this.mustCellImgPath0 = null
-    this.mustCellImgPath1 = null
-    this.otherImgPath = []
+    this.otherImgPath = [""]
 
-    this.mustCellTakephoto = this.mustCellTakephoto.bind(this)
     this.changePhoto = this.changePhoto.bind(this)
     this.didClickedSave = this.didClickedSave.bind(this)
  }
 
-mustCellTakephoto(index,path) {
-  if(index == 0) {
-    this.mustCellImgPath0 = path
-  } else {
-    this.mustCellImgPath1 = path
-  }
-}
 
 changePhoto(paths) {
   this.otherImgPath = paths
@@ -50,91 +40,23 @@ didClickedSave() {
     <CustomToolbar title="现场采集" navigator={this.props.navigator} />
     <View style={styles.topView}>
     <Text style={styles.title}>营业执照</Text>
-    <Image source={require("../img/take_photo_icon.png")} style={styles.cameraImg}/>
+    <View style={styles.rightView}>
+    <Image source={require("../../img/take_photo_icon.png")} style={styles.cameraImg}/>
+    <Image source={require("../../img/write_icon.png")} style={styles.writeImg}/>
+    </View>
     </View>
     <ScrollView>
 
-    <TakephotoMustCell navigator={this.props.navigator} takephotoClosure={this.mustCellTakephoto}/>
     <AddPhoto changePhoto={this.changePhoto} navigator={this.props.navigator}/>
-      <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="保存" onPress={this.didClickedSave}/>
+    <TextInput multiline style={styles.inputView} placeholder="输入文字内容" underlineColorAndroid="transparent"/>
+    <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="保存" onPress={this.didClickedSave}/>
     </ScrollView>
     </View>
   )
   }
 }
 
-class TakephotoMustCell extends Component {
 
-  constructor(props){
-    super(props)
-    this.state={imgPath0: null,imgPath1:null}
-    this.takephoto = this.takephoto.bind(this)
-    this.takephotoClosure = this.takephotoClosure.bind(this)
-    this.selectedIndex = -1
-  }
-
-  takephotoClosure(path) {
-     const {takephotoClosure} = this.props
-     takephotoClosure(this.selectedIndex,path)
-     if(this.selectedIndex === 0) {
-       this.setState({imgPath0: path})
-     }
-     if(this.selectedIndex === 1) {
-       this.setState({imgPath1: path})
-     }
-
-  }
-
-  takephoto(index) {
-    this.selectedIndex = index
-    const {navigator} = this.props
-    console.log("11");
-
-    navigator.push({
-      name: "Takephoto",
-      component: Takephoto,
-      params:{
-        takephotoClosure: this.takephotoClosure,
-      }
-    })
-  }
-
-  render() {
-    var img0 = null
-    var imgStyle0 = null
-    if(this.state.imgPath0 == null) {
-      img0 = require("../img/default_img.png")
-      imgStyle0 = styles.mustCellImg
-    } else {
-      imgStyle0 = styles.mustCellImgS
-      img0 = {uri: this.state.imgPath0}
-    }
-    var img1 = null
-    var imgStyle1 = null
-    if(this.state.imgPath1 == null) {
-      img1 = require("../img/default_img.png")
-      imgStyle1 = styles.mustCellImg
-    } else {
-      imgStyle1 = styles.mustCellImgS
-      img1 = {uri: this.state.imgPath1}
-    }
-     return(
-      <View style={styles.takephotoMustCell}>
-        <TouchableWithoutFeedback onPress={this.takephoto.bind(this,0)}>
-         <View style={styles.takephotoMustCell0}>
-          <Image source={img0} style={imgStyle0}/>
-         </View>
-        </TouchableWithoutFeedback >
-
-        <TouchableWithoutFeedback onPress={this.takephoto.bind(this,1)}>
-         <View style={[styles.takephotoMustCell1,styles.takephotoMustCell0]}>
-          <Image source={img1} style={imgStyle1}/>
-         </View>
-       </TouchableWithoutFeedback >
-      </View>
-    )
-  }
-}
 
 class AddPhoto extends Component {
 
@@ -142,7 +64,8 @@ constructor(props) {
   super(props)
 
   this.changeIndex = 0
-  this.state={otherImgPath:[]}
+  this.state={otherImgPath:[""]}
+  this.firstNotChange = true
   this.addOtherImg = this.addOtherImg.bind(this)
   this.takeOtherPhoto = this.takeOtherPhoto.bind(this)
   this.changeOtherImg = this.changeOtherImg.bind(this)
@@ -163,6 +86,14 @@ takeOtherPhoto() {
   })
 }
 
+addOtherImg(path) {
+  this.setState(prev=>{
+    prev.otherImgPath.push(path)
+    this.backPaths(prev.otherImgPath)
+    return({otherImgPath:prev.otherImgPath})
+  })
+}
+
 changePhoto(index) {
   const {navigator} = this.props
   this.changeIndex = index
@@ -179,19 +110,12 @@ changeOtherImg(path) {
   this.setState(prev=>{
     prev.otherImgPath[this.changeIndex] = path
     this.backPaths(prev.otherImgPath)
+    if(this.changeIndex==0) {
+      this.firstNotChange = false
+    }
     return({otherImgPath:prev.otherImgPath})
   })
 }
-
-
-addOtherImg(path) {
-  this.setState(prev=>{
-    prev.otherImgPath.push(path)
-    this.backPaths(prev.otherImgPath)
-    return({otherImgPath:prev.otherImgPath})
-  })
-}
-
 
 backPaths(paths) {
   const {changePhoto} = this.props
@@ -206,7 +130,7 @@ render(){
     lastCellStyle.push(styles.addCellRight)
   }
 const cells = this.state.otherImgPath.map((path,index)=>
-  <AddPhotoCell key={index} path={path} index={index} changePhoto={this.changePhoto}/>
+  <AddPhotoCell key={index} path={path} index={index} changePhoto={this.changePhoto} firstNotChange={this.firstNotChange}/>
 )
 
   return(
@@ -215,7 +139,7 @@ const cells = this.state.otherImgPath.map((path,index)=>
       <TouchableWithoutFeedback onPress={this.takeOtherPhoto}>
        <View style={styles.addCell}>
          <View style={lastCellStyle}>
-         <Image style={styles.addLastCellImg} source={require("../img/add.png")}/>
+         <Image style={styles.addLastCellImg} source={require("../../img/add.png")}/>
          </View>
        </View>
      </TouchableWithoutFeedback >
@@ -238,19 +162,21 @@ changePhoto() {
 
   render() {
     const {index} = this.props
-    const imgPath = {uri: this.props.path}
-
+    var imgPath = {uri: this.props.path}
+    var cellImgStyle = styles.mustCellImgS
     var cellStyle = [styles.addCellChild]
     if(index%2==1){
       cellStyle.push(styles.addCellRight)
     }
-
-
+    if(index==0&&this.props.firstNotChange) {
+      imgPath=require("../../img/default_img.png")
+      cellImgStyle= styles.mustCellImg
+    }
     return(
       <TouchableWithoutFeedback onPress={this.changePhoto}>
        <View style={styles.addCell}>
          <View style={cellStyle}>
-         <Image style={styles.mustCellImgS} source={imgPath}>
+         <Image style={cellImgStyle} source={imgPath}>
          </Image>
          </View>
        </View>
@@ -277,11 +203,25 @@ const styles = StyleSheet.create({
     marginLeft:40,
     color: CommonColor.defaultBlackColor
   },
+  rightView: {
+    marginRight: 35,
+    height: 40,
+    width: 80,
+    flexDirection: "row",
+    justifyContent:"space-between",
+    alignItems:"center",
+    padding:0,
+  },
+
   cameraImg: {
-    marginRight: 40,
     height: 32,
     width: 32
   },
+  writeImg: {
+    height:32,
+    width: 32,
+  },
+
   takephotoMustCell: {
     flexDirection:"row",
     justifyContent:"space-around",
@@ -365,10 +305,21 @@ const styles = StyleSheet.create({
   saveTitle: {
     color:CommonColor.defaultBlueColor
   },
-  delete: {
-    width: 20,
-    height:20,
+
+  inputView: {
+
+    alignSelf: "stretch",
+    marginLeft: 40,
+    marginRight: 40,
+    marginTop: 30,
+    height: 80,
+    backgroundColor: CommonColor.defaultBgColor,
+    borderColor: CommonColor.defaultDarkLineColor,
+    borderWidth: 1,
+    borderRadius: 3,
+    fontSize: 14,
+    paddingLeft: 5,
   }
 })
 
-export default CollectionTakephoto
+export default AccountCertifice

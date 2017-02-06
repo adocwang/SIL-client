@@ -5,7 +5,7 @@ import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import Person from '../pages/Person';
+import Person from '../pages/mine/Person';
 
 class PersonContainer extends Component {
     render () {

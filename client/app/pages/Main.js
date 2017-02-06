@@ -23,7 +23,6 @@ import HomeContainer from '../containers/HomeContainer'
 import PersonContainer from '../containers/PersonContainer'
 import UserEnterpriseContainer from '../containers/UserEnterpriseContainer'
 
-
 class Main extends React.Component {
     constructor() {
         super()

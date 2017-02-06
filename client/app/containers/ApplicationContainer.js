@@ -1,7 +1,7 @@
 'user strict'
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import Application from '../pages/Application.js'
+import Application from '../pages/application/Application.js'
 
 class ApplicationContainer extends Component {
   render() {

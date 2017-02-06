@@ -146,5 +146,3 @@ function loginLoding () {
         data: {loading:true},
     }
 }
-
-

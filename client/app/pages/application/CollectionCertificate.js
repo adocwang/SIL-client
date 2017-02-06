@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
 import {View,StyleSheet,Text,Image,TouchableWithoutFeedback,Navigator,ListView} from 'react-native'
-import LoanCalculatorContainer from '../containers/LoanCalculatorContainer'
-import CollectionContainer from '../containers/CollectionContainer'
-import CustomToolbar from '../components/CustomToolbar'
-import CommonColor from '../utils/CommonColor'
-import CollectionTakephoto from "../pages/CollectionTakePhoto.js"
+import LoanCalculatorContainer from '../../containers/LoanCalculatorContainer'
+import CollectionContainer from '../../containers/CollectionContainer'
+import CustomToolbar from '../../components/CustomToolbar'
+import CommonColor from '../../utils/CommonColor'
+import CollectionTakephoto from "./CollectionTakePhoto.js"
 
 class CollectionCertificate extends Component {
 
@@ -94,9 +94,9 @@ class CertificateCell extends Component {
      const {selected} = this.props
      var imgFile = null
      if(selected) {
-       imgFile = require("../img/greenNumber.png")
+       imgFile = require("../../img/greenNumber.png")
      } else {
-       imgFile = require("../img/greyNumber.png")
+       imgFile = require("../../img/greyNumber.png")
      }
 
      var bgCell = [styles.certificateCell]
@@ -113,8 +113,8 @@ class CertificateCell extends Component {
            <Text style={styles.certificateCellNumberText}>{number}</Text>
          </Image>
          <Text style={styles.certificateCellText}>{this.props.title}</Text>
-         {this.props.need && <Image style={styles.redStar} source={require("../img/redStar.png")} />}
-         {selected && <Image style={styles.greenSwoosh} source={require("../img/greenSwoosh.png")}/>}
+         {this.props.need && <Image style={styles.redStar} source={require("../../img/redStar.png")} />}
+         {selected && <Image style={styles.greenSwoosh} source={require("../../img/greenSwoosh.png")}/>}
 
       </View>
       </TouchableWithoutFeedback>

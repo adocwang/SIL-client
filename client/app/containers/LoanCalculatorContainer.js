@@ -1,7 +1,7 @@
 'user strict'
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import LoanCalculator from '../pages/LoanCalculator.js'
+import LoanCalculator from '../pages/application/LoanCalculator.js'
 
 class LoanCalculatorContainer extends Component {
   render() {
