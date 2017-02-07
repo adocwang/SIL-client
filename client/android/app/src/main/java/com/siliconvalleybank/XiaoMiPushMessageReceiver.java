@@ -1,9 +1,14 @@
 package com.siliconvalleybank;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import com.siliconvalleybank.components.RxBus;
+import com.siliconvalleybank.components.Utils;
+import com.siliconvalleybank.event.ForeGroundNotifyEvent;
+import com.siliconvalleybank.event.PassThroughEvent;
 import com.xiaomi.mipush.sdk.*;
 
 import java.util.List;
@@ -64,7 +69,7 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 } else if (!TextUtils.isEmpty(message.getUserAccount())) {
                         mUserAccount = message.getUserAccount();
                 }
-                RxBus.getDefault().send(message);
+                RxBus.getDefault().send(new PassThroughEvent(message));
                 Log.e("xiaomiPush",message.getContent());
         }
 
@@ -78,6 +83,30 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 } else if (!TextUtils.isEmpty(message.getUserAccount())) {
                         mUserAccount = message.getUserAccount();
                 }
+
+                if(Utils.isAppIsInBackground(context)){
+                        Log.e("App","Background");
+                        openActivity(context,message.getContent());
+                }else {
+                        RxBus.getDefault().send(new ForeGroundNotifyEvent(message));
+                        Log.e("App","Foreground");
+                }
+
+
+        }
+
+        private void openActivity(final Context context,String content) {
+
+                Handler handler = new Handler(context.getMainLooper());
+                handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                                Intent intent = new Intent(context, MainActivity.class);
+                                intent.putExtra("from", "notify");
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.getApplicationContext().startActivity(intent);
+                        }
+                });
         }
 
         @Override

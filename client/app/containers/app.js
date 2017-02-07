@@ -10,6 +10,7 @@ import LoginContainer from '../containers/LoginContainer';
 import Active from '../pages/auth/Active';
 import Main from '../pages/Main';
 import MainContainer from '../containers/MainContainer';
+import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer';
 import ResetPwd from '../pages/auth/ResetPwd';
 import Test from '../pages/Test';
 import {NaviGoBack} from '../utils/CommonUtils';
@@ -74,9 +75,30 @@ class App extends React.Component {
         BackAndroid.addEventListener('hardwareBackPress', this.goBack);
     }
     componentWillMount(){
-        //注册监听
+
+    }
+    componentDidMount () {
+        console.log('App componentDidMount');
         DeviceEventEmitter.addListener('MiPushMessage', function(e: Event) {
-            alert("MiPushMessage event listener success" +'  params:'+ e.desc);
+            console.log('MiPushMessage receive',e);
+            if(e.type=='1'){
+                storage.save({
+                    key: 'message',  // 注意:请不要在key中使用_下划线符号!
+                    rawData: e,
+                    // 如果不指定过期时间，则会使用defaultExpires参数
+                    // 如果设为null，则永不过期
+                    expires: null
+                });
+            }else if(e.type=='2'){
+                _navigator.push({
+                    component: EnterpriseDetailContainer,
+                    name: 'EnterpriseDetail',
+                    params: {
+                        item: '1',
+                    },
+                });
+            }
+
         });
     }
 

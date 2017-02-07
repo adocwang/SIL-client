@@ -9,7 +9,9 @@ import {
     RefreshControl,
     TouchableOpacity,
     ProgressBarAndroid,
-    InteractionManager
+    InteractionManager,
+    NativeModules,
+    DeviceEventEmitter
 } from 'react-native';
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
 import MainTabBar from '../components/MainTabBar';
@@ -22,6 +24,8 @@ import ApplicationContainer from '../containers/ApplicationContainer'
 import HomeContainer from '../containers/HomeContainer'
 import PersonContainer from '../containers/PersonContainer'
 import UserEnterpriseContainer from '../containers/UserEnterpriseContainer'
+import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
+import MessageContainer from '../containers/MessageContainer'
 
 class Main extends React.Component {
     constructor() {
@@ -32,18 +36,33 @@ class Main extends React.Component {
         };
 
     }
-
     componentDidMount () {
-        //console.log(this.props);
-        //const {dispatch} = this.props;
-        //InteractionManager.runAfterInteractions(() => {
-        //    _typeIds = [1, 2, 3, 4];
-        //    _typeIds.forEach((typeId) => {
-        //        dispatch(fetchReddit(false, true, typeId));
-        //    });
-        //});
-        console.log('first componentDidMount is here');
+        console.log('Main componentDidMount');
+        const {navigator} = this.props;
+        storage.load({
+            key: 'message',
+            autoSync: false,
+            syncInBackground: true
+        }).then(ret => {
+            console.log('Main load message',ret);
+            if(ret.type && ret.type=='1'){
+                navigator.push({
+                        component: EnterpriseDetailContainer,
+                        name: 'EnterpriseDetail',
+                        params: {
+                            item: '1',
+                        },
+                    });
+                // 删除单个数据
+                storage.remove({
+                    key: 'message'
+                });
+            }
+        }).catch(err => {
+
+        })
     }
+
 
     componentWillReceiveProps (nextProps) {
         //const {reddit} = this.props;
@@ -52,8 +71,8 @@ class Main extends React.Component {
         //        ToastShort('没有更多数据了');
         //    }
         //}
-        console.log('Main componentWillReceiveProps is here');
-        console.log(nextProps);
+        // 读取
+
     }
 
     shouldComponentUpdate(){
@@ -108,6 +127,16 @@ class Main extends React.Component {
                         //renderBadge={() => <CustomBadgeView />}
                         onPress={() => this.setState({ selectedTab: 'app' })}>
                         <ApplicationContainer navigator={this.props.navigator}/>
+
+                    </TabNavigator.Item>
+                    <TabNavigator.Item
+                        selected={this.state.selectedTab === 'message'}
+                        title="消息"
+                        renderIcon={() => <Image source={require("../img/message_icon_d.png")} />}
+                        renderSelectedIcon={() => <Image source={require("../img/message_icon.png")} />}
+                        //renderBadge={() => <CustomBadgeView />}
+                        onPress={() => this.setState({ selectedTab: 'message' })}>
+                        <MessageContainer navigator={this.props.navigator}/>
 
                     </TabNavigator.Item>
                     <TabNavigator.Item

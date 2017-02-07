@@ -1,30 +1,6 @@
 /**
- * Created by kiefer on 2017/2/3.
+ * Created by kiefer on 2017/2/7.
  */
-import * as types from '../constants/ActionTypes';
-
-const tabCat = [
-    {
-        id:'1',
-        name:'已受理'
-    },
-    {
-        id:'2',
-        name:'审批中'
-    },
-    {
-        id:'3',
-        name:'审批通过'
-    },
-    {
-        id:'4',
-        name:'签约'
-    },
-    {
-        id:'5',
-        name:'放款'
-    }];
-
 const mockCompanyInfo = [
     {
         img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
@@ -55,19 +31,9 @@ const mockCompanyInfo = [
     }]
 
 const initialState = {
-    loading: false,
-    isLoadMore: true,
-    noMore: false,
-    catList:tabCat,
-    pageList: {1:mockCompanyInfo,2:mockCompanyInfo,3:mockCompanyInfo,4:mockCompanyInfo,5:mockCompanyInfo},
-    pageAfter: {1: '', 2: '', 3: ''},
+   messageList:mockCompanyInfo,
 };
 
-export default function userenterprise (state = initialState, action) {
-    switch (action.type) {
-        case types.UPDATE_HOME_INFO:
-            return Object.assign({}, state, action.data);
-        default:
+export default function home (state = initialState, action) {
             return state;
-    }
 }
