@@ -10,7 +10,8 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.siliconvalleybank.components.RxBus;
-import com.xiaomi.mipush.sdk.MiPushMessage;
+import com.siliconvalleybank.event.ForeGroundNotifyEvent;
+import com.siliconvalleybank.event.PassThroughEvent;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
@@ -31,11 +32,16 @@ public class MainActivity extends ReactActivity {
             @Override
             public void call(Object o) {
                 Log.e("toObservable","receive msg");
-                if (o instanceof MiPushMessage) {
-                    Log.e("receive MiPushMessage",((MiPushMessage) o).getContent());
+                if (o instanceof PassThroughEvent) {
+                    Log.e("receive MiPushMessage",((PassThroughEvent) o).getMiPushMessage().getContent());
                     WritableMap params = Arguments.createMap();
                     params.putString("desc","test");
                     params.putString("type","1");
+                    sendEvent("MiPushMessage",params);
+                }else if(o instanceof ForeGroundNotifyEvent){
+                    WritableMap params = Arguments.createMap();
+                    params.putString("desc","test");
+                    params.putString("type","2");
                     sendEvent("MiPushMessage",params);
                 }
             }}));

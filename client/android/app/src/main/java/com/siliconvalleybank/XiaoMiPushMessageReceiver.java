@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import com.siliconvalleybank.components.RxBus;
+import com.siliconvalleybank.components.Utils;
+import com.siliconvalleybank.event.ForeGroundNotifyEvent;
+import com.siliconvalleybank.event.PassThroughEvent;
 import com.xiaomi.mipush.sdk.*;
 
 import java.util.List;
@@ -66,7 +69,7 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 } else if (!TextUtils.isEmpty(message.getUserAccount())) {
                         mUserAccount = message.getUserAccount();
                 }
-                RxBus.getDefault().send(message);
+                RxBus.getDefault().send(new PassThroughEvent(message));
                 Log.e("xiaomiPush",message.getContent());
         }
 
@@ -80,8 +83,15 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 } else if (!TextUtils.isEmpty(message.getUserAccount())) {
                         mUserAccount = message.getUserAccount();
                 }
-                Log.e("onNotificationMessage",message.getContent());
-                openActivity(context,message.getContent());
+
+                if(Utils.isAppIsInBackground(context)){
+                        Log.e("App","Background");
+                        openActivity(context,message.getContent());
+                }else {
+                        RxBus.getDefault().send(new ForeGroundNotifyEvent(message));
+                        Log.e("App","Foreground");
+                }
+
 
         }
 
