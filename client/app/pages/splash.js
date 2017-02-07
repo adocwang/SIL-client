@@ -47,7 +47,7 @@ class Splash extends React.Component {
             name: 'Main'
           });
         });
-      }, 1000);
+      }, 500);
       console.log(ret);
     }).catch(err => {
       console.log(err);
@@ -59,7 +59,7 @@ class Splash extends React.Component {
             name: 'Login'
           });
         });
-      }, 1000);
+      }, 500);
     })
 
 

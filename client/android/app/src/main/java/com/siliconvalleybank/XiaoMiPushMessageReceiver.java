@@ -119,6 +119,13 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 } else if (!TextUtils.isEmpty(message.getUserAccount())) {
                         mUserAccount = message.getUserAccount();
                 }
+                if(Utils.isAppIsInBackground(context)){
+                        Log.e("App","Background");
+                       // openActivity(context,message.getContent());
+                }else {
+                        RxBus.getDefault().send(new PassThroughEvent(message));
+                        Log.e("App","Foreground");
+                }
         }
 
         @Override
