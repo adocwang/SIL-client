@@ -129,7 +129,6 @@ class UserEnterprise extends React.Component {
         if (userenterprise.isLoadMore) {
             return (
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <Spanner size={30} type='ThreeBounce' color='#c8c8c8'/>
                     <Text style={{textAlign: 'center', fontSize: 16}}>
                         加载中…
                     </Text>
@@ -206,7 +205,7 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     listView: {
-        backgroundColor: '#eeeeec'
+        backgroundColor: '#f2f2f2'
     },
     no_data: {
         flex: 1,

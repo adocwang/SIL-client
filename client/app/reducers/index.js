@@ -7,6 +7,7 @@ import home from './home';
 import auth from './auth';
 import search from './search';
 import userenterprise from './userenterprise';
+import message from './message';
 
 const rootReducer = combineReducers({
   test,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   home,
   auth,
   search,
-  userenterprise
+  userenterprise,
+  message
 });
 
 export default rootReducer;

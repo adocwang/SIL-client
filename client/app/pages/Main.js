@@ -25,6 +25,7 @@ import HomeContainer from '../containers/HomeContainer'
 import PersonContainer from '../containers/PersonContainer'
 import UserEnterpriseContainer from '../containers/UserEnterpriseContainer'
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
+import MessageContainer from '../containers/MessageContainer'
 
 
 class Main extends React.Component {
@@ -127,6 +128,16 @@ class Main extends React.Component {
                         //renderBadge={() => <CustomBadgeView />}
                         onPress={() => this.setState({ selectedTab: 'app' })}>
                         <ApplicationContainer navigator={this.props.navigator}/>
+
+                    </TabNavigator.Item>
+                    <TabNavigator.Item
+                        selected={this.state.selectedTab === 'message'}
+                        title="消息"
+                        renderIcon={() => <Image source={require("../img/message_icon_d.png")} />}
+                        renderSelectedIcon={() => <Image source={require("../img/message_icon.png")} />}
+                        //renderBadge={() => <CustomBadgeView />}
+                        onPress={() => this.setState({ selectedTab: 'message' })}>
+                        <MessageContainer navigator={this.props.navigator}/>
 
                     </TabNavigator.Item>
                     <TabNavigator.Item
