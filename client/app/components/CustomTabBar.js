@@ -58,9 +58,8 @@ const CustomTabBar = React.createClass({
         icon= require('../img/new_company_icon.png');
     }
 
-    return <Button
+    return <TouchableOpacity  key={name} onPress={() => this.props.goToPage(page)}><View
         style={{flex: 1}}
-        key={name}
         accessible={true}
         accessibilityLabel={name}
         accessibilityTraits='button'
@@ -69,8 +68,8 @@ const CustomTabBar = React.createClass({
       <View style={{flex:1}}>
         {
           this.props.redCounts[page] > 0 &&
-          <View style={{alignItems:'flex-end',paddingRight:20}}>
-          <Image style={{alignItems:'center',width:15,height:14}} source={require('../img/new_message.png')}>
+          <View style={{height:20,alignItems:'flex-end'}}>
+          <Image style={{width:10,height:9}} source={require('../img/new_message.png')}>
             {/*<Text  style={{color:'#ffffff',paddingLeft:2}}>{this.props.redCounts[page]}</Text>*/}
           </Image>
           </View>
@@ -85,7 +84,7 @@ const CustomTabBar = React.createClass({
       </Text>
 
         </View>
-    </Button>;
+    </View></TouchableOpacity>;
   },
 
   render() {
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   tabs: {
-    height: 75,
+    height: 80,
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderWidth: 1,

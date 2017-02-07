@@ -23,6 +23,10 @@ import ClaimContainer from '../../containers/ClaimContainer'
 import ApplicationContainer from '../../containers/ApplicationContainer'
 import SearchContainer from '../../containers/SearchContainer'
 import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
+import CompanyInfoItem from '../../components/home/CompanyInfoItem'
+import RiskInfoItem from '../../components/home/RiskInfoItem'
+import RongZiInfoItem from '../../components/home/RongZiInfoItem'
+
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -36,7 +40,6 @@ class Home extends React.Component {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
         };
-        this.renderItem = this.renderItem.bind(this);
         this.renderFooter = this.renderFooter.bind(this);
         this.onScroll = this.onScroll.bind(this);
         this.onSearchCompany = this.onSearchCompany.bind(this);
@@ -92,7 +95,7 @@ class Home extends React.Component {
 
     onPress (item) {
         const {navigator} = this.props;
-        // console.log(item);
+
         let _this = this;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
@@ -142,11 +145,20 @@ class Home extends React.Component {
                 </ScrollView>
             );
         }
+
         return (
             <ListView
                 initialListSize={1}
                 dataSource={dataSource}
-                renderRow={this.renderItem}
+                renderRow={(item)=>{
+                    if(typeId=='1'){
+                        return <CompanyInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
+                    }else if(typeId=='2'){
+                        return <RiskInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
+                    }else if(typeId=='3'){
+                        return <RongZiInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
+                    }
+                }}
                 style={styles.listView}
                 onEndReached={this.onEndReached.bind(this, typeId)}
                 onEndReachedThreshold={10}
@@ -161,35 +173,6 @@ class Home extends React.Component {
           />
         }
             />
-        );
-    }
-
-
-    renderItem (item, sectionID, rowID) {
-        const thumbnail = item.img.lastIndexOf("http") >= 0 ? item.img : 'https://www.redditstatic.com/reddit404b.png';
-
-        return (
-            <TouchableOpacity onPress={this.onPress.bind(this, item)}>
-                <View style={styles.containerItem}>
-                    <Image
-                        style={{width: 88, height: 88, marginRight: 10,borderRadius:44}}
-                        source={{uri: thumbnail}}
-                    />
-                    <View style={{flex: 1, flexDirection: 'column'}}>
-                        <Text style={styles.title}>
-                            {item.title}
-                        </Text>
-                        <View style={{flex:1,flexDirection:'row'}}>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Text style={{flex: 1, fontSize: 14, color: '#ff0000', marginTop: 5, marginRight: 5}}>
-                                    {item.desc}
-                                </Text>
-                            </View>
-                        </View>
-
-                    </View>
-                </View>
-            </TouchableOpacity>
         );
     }
 
@@ -284,7 +267,7 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     listView: {
-        backgroundColor: '#eeeeec'
+        backgroundColor: '#f2f2f2'
     },
     no_data: {
         flex: 1,

@@ -3,36 +3,52 @@
  */
 'use strict';
 
-import React ,{PropTypes}from 'react';
+import React, { PropTypes} from 'react';
 import {
     StyleSheet,
-    ToolbarAndroid
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+    Platform
 } from 'react-native';
-import StyleSheetPropType from 'StyleSheetPropType';
-import ViewStylePropTypes from 'ViewStylePropTypes';
-
 import {NaviGoBack} from '../utils/CommonUtils';
 
-let ViewStylePropType = StyleSheetPropType(ViewStylePropTypes);
+const styles = StyleSheet.create({
+    container: {
+    },
+    rightView: {
+        marginLeft:200,
+        width: 100,
+        height: 20,
+        backgroundColor: "orange",
+    },
+
+});
 
 const propTypes = {
     title: PropTypes.string,
+    operate: PropTypes.string,
     actions: PropTypes.array,
     navigator: PropTypes.object,
-    onActionSelected: PropTypes.func,
     onIconClicked: PropTypes.func,
+    onOperateClicked: PropTypes.func,
     navIcon: PropTypes.number,
     customView: PropTypes.object
-};
+}
 
-class PageToolbar extends React.Component {
-    constructor (props) {
+class PageToolBar extends React.Component {
+
+
+    constructor(props) {
         super(props);
+
+        this.onOperateClicked = this.onOperateClicked.bind(this);
         this.onIconClicked = this.onIconClicked.bind(this);
-        this.onActionSelected = this.onActionSelected.bind(this);
     }
 
-    onIconClicked () {
+    onIconClicked() {
+        console.log(this.props);
         if (this.props.onIconClicked) {
             this.props.onIconClicked();
         } else {
@@ -43,48 +59,48 @@ class PageToolbar extends React.Component {
         }
     }
 
-    onActionSelected (position) {
-        this.props.onActionSelected();
-    }
 
-    render () {
-        const {navigator} = this.props;
-        if (this.props.customView) {
-            return (
-                <ToolbarAndroid style={styles.toolbar}>
-                    {this.props.customView}
-                </ToolbarAndroid>
-            )
-        } else {
-            return (
-                <ToolbarAndroid
-                    style={styles.toolbar}
-                    actions={this.props.actions}
-                    onActionSelected={this.onActionSelected}
-                    onIconClicked={this.onIconClicked}
-                    navIcon={this.props.navIcon ? this.props.navIcon : require('../img/back_arrow.png')}
-                    titleColor='#909090'
-                    title={this.props.title}
-                />
-            );
+    onOperateClicked() {
+        if (this.props.onOperateClicked) {
+            this.props.onOperateClicked();
         }
+    }
+    render() {
+
+        return (
+            <View style={{backgroundColor:'#ffffff',height:60}}>
+                <View
+                style={{flexDirection: 'row', marginLeft:26,marginTop:20}}>
+
+                    <TouchableOpacity onPress={this.onIconClicked}>
+                        <Image
+                            style={{ marginTop:(Platform.OS === 'ios') ? 10 : 3,}}
+                            source={require('../img/back_arrow.png')}
+                        /></TouchableOpacity>
+
+                    <Text style={{fontSize: 16, color: '#9a9a9a',marginLeft:10,marginTop:(Platform.OS === 'ios') ? 10 : 0,backgroundColor:'transparent'}}>{this.props.title}</Text>
+                </View>
+                <View
+                    style={{flexDirection: 'row', flex:1,alignItems: 'center',justifyContent: 'flex-end',marginRight:30}}>
+                    <TouchableOpacity onPress={this.onOperateClicked}>
+                        <Text style={{fontSize: 16, color: '#ffffff',backgroundColor:'transparent'}}>{this.props.operate}</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+        );
     }
 }
 
-let styles = StyleSheet.create({
-    toolbar: {
-        backgroundColor: '#ffffff',
-        height: 58
-    }
-});
+PageToolBar.propTypes = propTypes;
 
-PageToolbar.propTypes = propTypes;
-
-PageToolbar.defaultProps = {
+PageToolBar.defaultProps = {
     onActionSelected: function () {
     },
     title: '',
+    operate:'',
     actions: []
 };
 
-export default PageToolbar;
+
+export default  PageToolBar

@@ -12,11 +12,13 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     View,
-    Navigator
+    Navigator,
+    Dimensions
 } from 'react-native';
 import LoginContainer from '../../containers/LoginContainer';
 import {ToastShort} from '../../utils/ToastUtils';
 import {fetchLogout} from '../../actions/auth'
+
 
 import * as Color from '../../utils/CommonColor';
 import AccountManagerContainer from "../../containers/AccountManagerContainer"
@@ -57,9 +59,7 @@ class Person extends React.Component {
         helloWord = "您好," + this.props.auth.true_name;
         return (
             <View style={styles.container}>
-                <View style={styles.headerImgBg}>
                     <Image style={styles.headerImg} source={headerImg}/>
-                </View>
                 <Text style={styles.helloWord}>{helloWord}</Text>
                 <View style={styles.contentBg}>
                     <TouchableOpacity onPress={this.didClickedAccountManager}>
@@ -85,19 +85,18 @@ class Person extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        height: Dimensions.get('window').height - 100,
         backgroundColor: Color.defaultBgColor,
-    },
-    headerImgBg: {
-        position: 'absolute',
-        top: -60, left: 0, right: 0,
-        height: 76,
+        position:'relative',
+        bottom: 15,
     },
     headerImg: {
-        width: 76,
-        height: 76,
-        alignSelf: "center",
-        borderRadius: 38,
+        width: 80,
+        height: 80,
+        bottom: 45,
+        borderRadius:40,
+        position:'relative',
+        alignSelf:"center",
     },
     helloWord: {
         textAlign: "center",
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 30,
         alignSelf: "center",
-        marginTop: 25,
+        marginTop: -35,
         fontSize: 14
     },
     contentBg: {

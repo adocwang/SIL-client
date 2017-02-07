@@ -118,8 +118,9 @@ class ResetPwd extends React.Component {
                 <ScrollView>
                     <View style={styles.inputview}>
                         <View style={styles.rowview}>
-                            <TextInput onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
-
+                            <View style={{ borderBottomColor: '#15499A', borderBottomWidth: 1,flex:1}}>
+                                <TextInput  underlineColorAndroid='transparent'  onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
+                            </View>
                             <CountDown
                                 onPress={this.onSendMsgCode.bind(this)} //default null
                                 text={'发送验证码'} //default ''
@@ -129,10 +130,12 @@ class ResetPwd extends React.Component {
                                 disabledTextStyle={{color:'#15499A'}} //default gray
                             />
                         </View>
-                        <View style={styles.rowview}>
-                            <TextInput onChangeText={(code) => this.setState({code})} value={this.state.code} style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                        <View style={{ borderBottomColor: '#15499A', borderBottomWidth: 1,flex:1}}>
+                            <TextInput underlineColorAndroid='transparent'  onChangeText={(code) => this.setState({code})} value={this.state.code} style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
                         </View>
-                        <TextInput  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                        <View style={{ borderBottomColor: '#15499A', borderBottomWidth: 1,flex:1}}>
+                            <TextInput underlineColorAndroid='transparent'  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                        </View>
                     </View>
 
                     <View style={styles.buttomview}>

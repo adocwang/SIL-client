@@ -15,29 +15,184 @@ import {
     View
 } from 'react-native';
 import * as Color from '../../utils/CommonColor';
+import Takephoto from '../TakePhoto'
 
 export default class AccountManager extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {user: {}}
+        this.state = {headerImg: require("../../img/header_default.png")}
+        this.didClickedCell = this.didClickedCell.bind(this)
+        this.setPassword = this.setPassword.bind(this)
+        this.setGesturePassword = this.setGesturePassword.bind(this)
+        this.setHeaderImg = this.setHeaderImg.bind(this)
+        this.takephotoClosure = this.takephotoClosure.bind(this)
     }
 
-    render(){
+    didClickedCell(index) {
+        switch (index) {
+            case 5:
+                this.setPassword()
+                break
+            case 6:
+                this.setGesturePassword()
+                break
+            default:
+        }
+    }
+
+    setHeaderImg() {
+        const {navigator} = this.props
+
+        navigator.push({
+            name: "Takephoto",
+            component: Takephoto,
+            params: {
+                takephotoClosure: this.takephotoClosure,
+            }
+        })
+    }
+
+    takephotoClosure(path) {
+        const headerPath = {uri: path}
+        this.setState({headerImg: headerPath})
+    }
+
+    setPassword() {
+
+    }
+
+    setGesturePassword() {
+
+    }
+
+    render() {
         const {auth} = this.props
-        console.log(auth.true_name)
+        const headerImg = this.state.headerImg
+        const userName = "130291444221"
+        const realName = "张三"
+        const company = "天地人民银行"
+        const phoneNumber = "130291444221"
+        const work = "收发灵魂"
+        const password = "******"
+        const gesturePassword = "设置手势密码"
         return (
             <View style={styles.container}>
-                <CustomToolbar title="账户管理" navigator={this.props.navigator} />
+                <CustomToolbar title="账户管理" navigator={this.props.navigator}/>
+                <TouchableOpacity onPress={this.setHeaderImg}>
+                    <View style={styles.headerBg}>
+                        <Image source={headerImg} style={styles.headerImg}/>
+                        <Text style={styles.blueWord}>更改头像</Text>
+                    </View>
+                </TouchableOpacity>
+                <ContentCell tip="账户名" value={userName} secondColor={Color.defaultBlackColor}/>
+                <ContentCell tip="姓名" value={realName} secondColor={Color.defaultBlackColor}/>
+                <ContentCell tip="单位" value={company} secondColor={Color.defaultShallowBlueColor}/>
+                <ContentCell tip="手机号" value={phoneNumber} secondColor={Color.defaultBlackColor}/>
+                <ContentCell tip="职位" value={work} secondColor={Color.defaultShallowBlueColor}/>
+                <ContentCell index={5} tip="密码" value={password} secondColor={Color.defaultShallowBlueColor} canClick
+                             onPress={this.didClickedCell}/>
+                <ContentCell index={6} tip="手势密码" value={gesturePassword} secondColor={Color.defaultShallowBlueColor}
+                             canClick onPress={this.didClickedCell}/>
+                <View style={{backgroundColor: Color.defaultBgColor, flex: 1}}/>
             </View>
+
         );
+    }
+}
+
+class ContentCell extends React.Component {
+    constructor(props) {
+        super(props)
+        this.clicked = this.clicked.bind(this)
+    }
+
+    clicked() {
+        const {index, onPress} = this.props
+        onPress(index)
+    }
+
+    render() {
+        var arrowImg = null
+        const {tip, value, secondColor, canClick} = this.props
+        if (canClick) {
+            arrowImg = require("../../img/right_arrow.png")
+        }
+        return (
+            <TouchableOpacity onPress={this.clicked}>
+                <View style={styles.cellBg}>
+                    <Text style={styles.cellTip}>{tip}</Text>
+                    <View style={styles.rightBg}>
+                        <Text style={[styles.cellValue, {color: secondColor}]}>{value}</Text>
+                        <Image style={styles.rightArrow} source={arrowImg}/>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Color.defaultBgColor,
+    },
+    headerBg: {
+        marginTop: 20,
+        marginLeft: 20,
+        marginRight: 20,
+        alignSelf: "stretch",
+        height: 70,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+
+    },
+    headerImg: {
+        width: 60,
+        height: 60,
+        borderRadius: 30
+    },
+    blueWord: {
+        color: Color.defaultShallowBlueColor,
+        fontSize: 13,
+        marginRight: 13,
+    },
+    cellBg: {
+        marginLeft: 20,
+        marginRight: 20,
+        alignSelf: "stretch",
+        height: 44,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderTopWidth: 1,
+        borderTopColor: Color.defaultDarkLineColor,
+
+    },
+    cellTip: {
+        color: Color.defaultLightGray,
+        fontSize: 13,
+        marginTop: 5,
+    },
+    rightBg: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        flex: 1,
+    },
+    cellValue: {
+        color: Color.defaultBlackColor,
+        fontSize: 13,
+        marginTop: 5,
+        marginRight: 2,
+
+    },
+    rightArrow: {
+        width: 7,
+        height: 12,
+        marginTop: 5,
+
     }
+
 })
 
 

@@ -20,7 +20,9 @@ import {
     Navigator,
     StatusBar,
     BackAndroid,
-    View
+    View,
+    NativeModules,
+    DeviceEventEmitter
     } from 'react-native';
 
 var _navigator, isRemoved = false;
@@ -71,6 +73,13 @@ class App extends React.Component {
         this.goBack = this.goBack.bind(this);
         BackAndroid.addEventListener('hardwareBackPress', this.goBack);
     }
+    componentWillMount(){
+        //注册监听
+        DeviceEventEmitter.addListener('MiPushMessage', function(e: Event) {
+            alert("MiPushMessage event listener success" +'  params:'+ e.desc);
+        });
+    }
+
 
     goBack () {
         return NaviGoBack(_navigator);

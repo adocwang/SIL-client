@@ -89,7 +89,6 @@ class TakephotoMustCell extends Component {
         if (this.selectedIndex === 1) {
             this.setState({imgPath1: path})
         }
-
     }
 
     takephoto(index) {

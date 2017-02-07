@@ -45,7 +45,6 @@ class CustomToolbar extends React.Component {
   }
 
   onIconClicked() {
-    console.log(this.props);
     if (this.props.onIconClicked) {
       this.props.onIconClicked();
     } else {
@@ -76,12 +75,12 @@ class CustomToolbar extends React.Component {
                     source={require('../img/back_arrow_white.png')}
                 /></TouchableOpacity>
 
-              <Text style={{fontSize: 16, color: '#ffffff',marginLeft:10}}>{this.props.title}</Text>
+              <Text style={{fontSize: 16, color: '#ffffff',marginLeft:10,backgroundColor:'transparent'}}>{this.props.title}</Text>
             </View>
             <View
                 style={{flexDirection: 'row', flex:1,alignItems: 'center',justifyContent: 'flex-end',marginRight:30}}>
               <TouchableOpacity onPress={this.onOperateClicked}>
-            <Text style={{fontSize: 16, color: '#ffffff'}}>{this.props.operate}</Text>
+            <Text style={{fontSize: 16, color: '#ffffff',backgroundColor:'transparent'}}>{this.props.operate}</Text>
                 </TouchableOpacity>
             </View>
 

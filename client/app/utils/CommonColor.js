@@ -7,7 +7,8 @@ export const defaultDarkLineColor = "#ddd"
 export const defaultBlackColor = "#4a4a4a" //247 179 62
 export const defaultOrangeColor= "#e7a33e"
 export const defaultSecondBlackColor = "#888"
-
+export const defaultBlueColor="#2233a7"//79,143,217
+export const defaultShallowBlueColor= "rgba(79,143,217,1)"
 export default CommonColor = {
   "defaultBgColor":"#F5F5F5",
   "defaultLightRedColor" : "#eb4f38",

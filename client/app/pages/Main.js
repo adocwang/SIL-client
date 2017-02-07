@@ -28,7 +28,7 @@ class Main extends React.Component {
         super()
 
         this.state = {
-            selectedTab:'company',
+            selectedTab:'home',
         };
 
     }
@@ -78,7 +78,7 @@ class Main extends React.Component {
                         style={{ width: 28, height: 28,marginTop:25}}
                         source={require('../img/default_avatar.png')}
                     />
-                        <Text  style={{fontSize: 14, color: '#ffffff',marginTop:30,marginLeft:10}}>您好,{this.props.auth.true_name}</Text>
+                        <Text  style={{fontSize: 14, color: '#ffffff',marginTop:30,marginLeft:10,backgroundColor:'transparent'}}>您好,{this.props.auth.true_name}</Text>
                     </View>
                 </Image>
 
@@ -88,7 +88,6 @@ class Main extends React.Component {
                         title="主页"
                         renderIcon={() => <Image source={require("../img/home_icon_d.png")} />}
                         renderSelectedIcon={() => <Image source={require("../img/home_icon.png")} />}
-                        badgeText="1"
                         onPress={() => this.setState({ selectedTab: 'home' })}>
                         <HomeContainer navigator={this.props.navigator} />
                     </TabNavigator.Item>
