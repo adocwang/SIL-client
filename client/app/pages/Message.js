@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
 import {ToastShort} from '../utils/ToastUtils';
-import CompanyInfoItem from '../components/home/CompanyInfoItem';
+import MessageItem from '../components/home/MessageItem';
 
 class Message extends React.Component {
     constructor() {
@@ -55,7 +55,7 @@ class Message extends React.Component {
                 component: EnterpriseDetailContainer,
                 name: 'EnterpriseDetail',
                 params: {
-                    item: item,
+                    id: item.item_id,
                 },
             });
         });
@@ -63,7 +63,7 @@ class Message extends React.Component {
 
 
     renderItem (item) {
-        return <CompanyInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
+        return <MessageItem  {...item} onClicked={this.onPress.bind(this, item)}/>
     }
 
 
@@ -74,7 +74,6 @@ class Message extends React.Component {
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(this.props.message.messageList)}
                     renderRow={this.renderItem}
-                    style={styles.listView}
                 />
             </View>
         );
@@ -85,10 +84,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,//可拉伸
         backgroundColor: '#FFFFFF',
-    },
-    listView: {
-        backgroundColor: '#f2f2f2',
-        paddingTop:5
     },
 
 });

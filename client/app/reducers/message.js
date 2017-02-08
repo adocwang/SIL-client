@@ -1,37 +1,38 @@
 /**
  * Created by kiefer on 2017/2/7.
  */
-const mockCompanyInfo = [
+const mockMessageInfo = [
     {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'已分配',
+        id:1,
+        title:'商务小贴士',
+        desc:'您还有企业未曾认领，请尽快认领！',
+        createTime:'16:53',
+        item_id:22,
+        type:1,
+        read:false
     },
     {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'已分配',
+        id:2,
+        title:'商务小贴士',
+        desc:'您还有企业未曾认领，请尽快认领！',
+        createTime:'16:53',
+        type:2,
+        item_id:20,
+        read:true
     },
     {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'已分配',
+        id:3,
+        title:'商务小贴士',
+        desc:'您还有企业未曾认领，请尽快认领！',
+        createTime:'16:53',
+        type:1,
+        item_id:21,
+        read:false
     },
-    {img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'已分配',
-    }]
+    ]
 
 const initialState = {
-   messageList:mockCompanyInfo,
+   messageList:mockMessageInfo,
 };
 
 export default function home (state = initialState, action) {
