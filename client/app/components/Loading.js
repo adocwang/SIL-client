@@ -13,7 +13,7 @@ class Loading extends React.Component {
     render () {
         return(
 
-        <View style={styles.overlay} >
+        <View style={[styles.overlay,{backgroundColor: this.props.backgroundColor, }]} >
             <Spanner size={50} type='ThreeBounce' color='#15499A'/>
         </View>
 

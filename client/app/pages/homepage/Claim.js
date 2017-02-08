@@ -2,7 +2,6 @@
  * Created by kiefer on 2017/1/25.
  */
 import React from 'react';
-import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,

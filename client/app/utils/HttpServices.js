@@ -20,7 +20,7 @@ export function getRequest (url,token) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'extra':{'token':token}
+      'extra':JSON.stringify({'token':token})
     },
   }).then(response=>response.json());
 }

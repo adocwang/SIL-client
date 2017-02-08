@@ -80,7 +80,7 @@ class UserEnterprise extends React.Component {
                 component: EnterpriseDetailContainer,
                 name: 'EnterpriseDetail',
                 params: {
-                    item: item,
+                    id: 21,
                 },
             });
         });

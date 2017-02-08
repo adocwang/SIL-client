@@ -12,7 +12,6 @@ import Main from '../pages/Main';
 import MainContainer from '../containers/MainContainer';
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer';
 import ResetPwd from '../pages/auth/ResetPwd';
-import Test from '../pages/Test';
 import {NaviGoBack} from '../utils/CommonUtils';
 import realm from  '../components/realm'
 

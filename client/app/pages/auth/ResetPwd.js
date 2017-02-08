@@ -3,7 +3,6 @@
  */
 
 import React from 'react';
-import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,
