@@ -27,7 +27,7 @@ import FengXianXinXi from '../../components/enterprise/FengXianXinXi'
 import RongZiZiXun from '../../components/enterprise/RongZiZiXun'
 import DaiKuanXinXi from '../../components/enterprise/DaiKuanXinXi'
 import QiQuanYaoSu from '../../components/enterprise/QiQuanYaoSu'
-import JingYingXinXi from '../../components/enterprise/JingYingXinxi';
+import JingYingXinXi from '../../components/enterprise/JingYingXinXi';
 
 import { Col, Row, Grid } from "react-native-easy-grid";
 
