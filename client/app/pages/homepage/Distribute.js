@@ -18,9 +18,13 @@ import {
 } from 'react-native';
 import CustomToolbar from '../../components/CustomToolbar'
 import CheckBox from 'react-native-check-box'
-import {fetchUserList} from '../../actions/home'
+import {fetchUserList,fetchEnterpiseSet} from '../../actions/home'
 import BasePage from  '../BasePage'
 import Loading from '../../components/Loading'
+import * as types from '../../constants/ActionTypes';
+import CustomCheckBox from '../../components/CustomCheckBox'
+import {ToastShort} from '../../utils/ToastUtils';
+import MainContainer from  '../../containers/MainContainer'
 
 class Distribute extends BasePage {
     constructor(props) {
@@ -28,7 +32,8 @@ class Distribute extends BasePage {
         if (this.props.route.params) {
             this.state = this.props.route.params
         }
-
+        this.state.zhuli={};
+        this.state.xieli={};
     }
 
     componentDidMount() {
@@ -38,28 +43,55 @@ class Distribute extends BasePage {
          });
     }
 
-    onZhuliClick(item){
+    componentWillReceiveProps (nextProps) {
+        const {navigator} = this.props;
+        const {dispatch} = this.props;
+        if(nextProps.claimdistribute.setEnterpriseInfoSuccess){
 
+            navigator.resetTo({
+                component: MainContainer,
+                name: 'Main'
+            });
+        }
+    }
+
+    onZhuliClick(item){
+        const {dispatch} = this.props;
+        dispatch({type:types.USER_LIST_CHANGE,data:{item:item,type:'zhuli'}})
+        this.setState({zhuli:item});
     }
 
     onXieliClick(item){
-
+        const {dispatch} = this.props;
+        dispatch({type:types.USER_LIST_CHANGE,data:{item:item,type:'xieli'}})
+        this.setState({xieli:item});
     }
 
     onSubmit() {
-        const {navigator} = this.props;
-        const {dispatch} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(notifyUpdate({companyInfoUpdate: true}));
-            navigator.popToTop();
-        });
+        if(this.state.zhuli.id){
+            const {navigator} = this.props;
+            const {dispatch} = this.props;
+            InteractionManager.runAfterInteractions(() => {
+                var map = {}
+                map.id = this.state.enterprise.id;
+                map.bank_id = this.state.item.id;
+                map.role_a_id = this.state.zhuli.id;
+                if(this.state.xieli.id){
+                    map.role_b_id = this.state.xieli.id;
+                }
+                dispatch(fetchEnterpiseSet(map,this.props.auth.token));
+            });
+        }else {
+            ToastShort('请选择主理');
+        }
+
     }
 
     renderZhuliCheckBox(item){
-        return <CheckBox
+        return <CustomCheckBox
             style={{ padding: 10}}
             onClick={()=>this.onZhuliClick(item)}
-            isChecked={false}
+            isChecked={item.isChecked}
             key={item.id}
             rightText={item.true_name}
             checkedImage={<Image source={require('../../img/check_box_icon.png')} />}
@@ -68,10 +100,10 @@ class Distribute extends BasePage {
     }
 
     renderXieliCheckBox(item){
-        return <CheckBox
+        return <CustomCheckBox
             style={{ padding: 10}}
             onClick={()=>this.onXieliClick(item)}
-            isChecked={false}
+            isChecked={item.isChecked}
             key={item.id}
             rightText={item.true_name}
             checkedImage={<Image source={require('../../img/check_box_icon.png')} />}
@@ -84,12 +116,13 @@ class Distribute extends BasePage {
         const {claimdistribute} = this.props;
         var checkBoxListLeft = [];
         var checkBoxListRight = [];
-        claimdistribute.userList.forEach((item)=>{
+        claimdistribute.zhuliUserList.forEach((item)=>{
             checkBoxListLeft.push(this.renderZhuliCheckBox(item));
+        });
+        claimdistribute.xieliUserList.forEach((item)=>{
             checkBoxListRight.push(this.renderXieliCheckBox(item));
         });
 
-        console.log(this.props);
         return (
             <View style={styles.container}>
                 <CustomToolbar

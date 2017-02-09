@@ -31,6 +31,7 @@ import BasePage from  '../BasePage'
 import {GapYear} from '../../utils/CommonUtils'
 import Loading from '../../components/Loading'
 import {fetchBankList} from '../../actions/home'
+import * as types from '../../constants/ActionTypes';
 
 class Claim extends BasePage {
     constructor(props) {
@@ -67,15 +68,14 @@ class Claim extends BasePage {
     onBankChoose(item) {
         this.chooseScaleAnimationDialog.closeDialog();
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: DistributeContainer,
                 name: 'Distribute',
                 params: {
                     item: item,
+                    enterprise:this.state.item
                 },
             });
-        });
         //this.chooseScaleAnimationDialog.closeDialog();
     }
 

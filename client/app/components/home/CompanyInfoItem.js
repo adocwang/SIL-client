@@ -71,7 +71,7 @@ let styles = StyleSheet.create({
         padding: 10,
         marginBottom: 2,
         height: 90,
-        paddingLeft: 20
+        paddingLeft: 20,
     },
     img: {
         flex: 1,
@@ -82,7 +82,6 @@ let styles = StyleSheet.create({
         flex: 7,
         flexDirection: 'column',
         paddingLeft: 10,
-        paddingTop: 5
     },
     title: {
         color: '#4A4A4A',
@@ -127,7 +126,6 @@ let styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingTop: 5,
         paddingRight: 10,
         alignItems: 'center'
 

@@ -32,9 +32,11 @@ export function fetchEnterpriseList(paramsMap, token){
                 }else if(data.code==0){
                     dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
                 }
+                dispatch(hideLoading());
 
             })
             .catch((error) => {
+                dispatch(hideLoading());
                 ToastShort(error.message);
             })
     }
@@ -65,9 +67,11 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
                     data.data.isRefreshing = isRefreshing;
                     dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
                 }
+                dispatch(hideLoading());
 
             })
             .catch((error) => {
+                dispatch(hideLoading());
                 ToastShort(error.message);
             })
     }
@@ -83,8 +87,10 @@ export function fetchBankList(token){
                 if(data.code==0){
                     dispatch({type:types.REVEIVE_BANK_LIST,data:data.data})
                 }
+                dispatch(hideLoading());
             })
             .catch((error) => {
+                dispatch(hideLoading());
                 ToastShort(error.message);
             })
     }
@@ -98,9 +104,46 @@ export function fetchUserList(token){
                 if(data.code==0){
                     dispatch({type:types.REVEIVE_USER_LIST,data:data.data})
                 }
+                dispatch(hideLoading());
             })
             .catch((error) => {
+                dispatch(hideLoading());
                 ToastShort(error.message);
             })
+    }
+}
+
+export function fetchEnterpiseSet(paramsMap,token){
+    return dispatch => {
+        dispatch({type:types.FETCH_ENTERPRISE_SET,data:{}})
+        return postRequest(dispatch,host.ENTERPRISE_SET_URL ,paramsMap,token)
+            .then((data) => {
+                console.log('fetchEnterpiseSet',data);
+               if(data.code==1003){
+                   ToastShort('缺少参数');
+               }else if(data.code==2007){
+                   ToastShort('银行不存在');
+               }else if(data.code==2008){
+                   ToastShort('角色不存在');
+               }else if(data.code==2009){
+                   ToastShort('角色不是客户经理');
+               }else if(data.code==407){
+                   ToastShort('无权限');
+               }else if(data.code==0){
+                   dispatch({type:types.REVEIVE_ENTERPRISE_SET,data:data.data})
+               }
+                dispatch(hideLoading());
+            })
+            .catch((error) => {
+                dispatch(hideLoading());
+                ToastShort(error.message);
+            })
+    }
+}
+
+function hideLoading(){
+    return{
+        type: types.HIDE_LOADING,
+        data: {},
     }
 }
