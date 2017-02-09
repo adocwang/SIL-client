@@ -1,7 +1,8 @@
 'use strict';
 import * as host from '../constants/Urls';
+import * as types from '../constants/ActionTypes';
 
-export function postRequest (url,paramsMap,token) {
+export function postRequest (dispatch,url,paramsMap,token) {
   console.info("url=", url,{'token':token});
   return fetch(host.BASE_URL + url, {
     method: 'POST',
@@ -11,10 +12,16 @@ export function postRequest (url,paramsMap,token) {
       'extra':JSON.stringify({'token':token})
     },
     body: JSON.stringify(paramsMap)
-  }).then(response=>response.json());
+  }).then(response=>response.json()).then(responseJson=>{
+    if(responseJson.code==406){
+      dispatch({type:types.CLEAR_AUTH,data:{}})
+    }
+    return responseJson
+  });
 }
 
-export function getRequest (url,token) {
+
+export function getRequest (dispatch,url,token) {
   console.info("url=", url);
   return fetch(host.BASE_URL + url, {
     headers: {
@@ -22,10 +29,10 @@ export function getRequest (url,token) {
       'Content-Type': 'application/json',
       'extra':JSON.stringify({'token':token})
     },
-  }).then(response=>response.json());
-}
-
-export function request (url) {
-  console.info("url=", url);
-  return fetch(url).then(response=>response.json());
+  }).then(response=>response.json()).then(responseJson=>{
+    if(responseJson.code==406){
+      dispatch({type:types.CLEAR_AUTH,data:{}})
+    }
+    return responseJson
+  });
 }

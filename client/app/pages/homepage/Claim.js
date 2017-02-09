@@ -27,8 +27,9 @@ import PopupDialog, {
     DefaultAnimation,
 } from 'react-native-popup-dialog';
 const scaleAnimation = new ScaleAnimation();
+import BasePage from  '../BasePage'
 
-class Claim extends React.Component {
+class Claim extends BasePage {
     constructor(props) {
         super(props);
         if (this.props.route.params) {

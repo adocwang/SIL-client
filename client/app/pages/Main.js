@@ -27,8 +27,9 @@ import UserEnterpriseContainer from '../containers/UserEnterpriseContainer'
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
 import MessageContainer from '../containers/MessageContainer'
 import realm from '../components/realm'
+import BasePage from './BasePage'
 
-class Main extends React.Component {
+class Main extends BasePage {
     constructor() {
         super()
 

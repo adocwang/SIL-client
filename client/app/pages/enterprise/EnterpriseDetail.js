@@ -33,8 +33,9 @@ import Loading from '../../components/Loading'
 import {GapYear} from '../../utils/CommonUtils'
 
 import { Col, Row, Grid } from "react-native-easy-grid";
+import BasePage from  '../BasePage'
 
-class Claim extends React.Component {
+class EnterpriseDetail extends BasePage {
     constructor(props) {
         super(props);
         if (this.props.route.params) {
@@ -252,4 +253,4 @@ let styles = StyleSheet.create({
 
 });
 
-export default Claim;
+export default EnterpriseDetail;

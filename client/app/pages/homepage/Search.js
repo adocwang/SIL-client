@@ -16,10 +16,11 @@ import {
 import CustomToolbar from '../../components/CustomToolbar';
 import ClaimContainer from '../../containers/ClaimContainer'
 import {ToastShort} from '../../utils/ToastUtils';
-import {fetchSearch} from '../../actions/home';
+import {fetchEnterpriseList} from '../../actions/home';
 import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
+import BasePage from  '../BasePage'
 
-class Search extends React.Component {
+class Search extends BasePage {
     constructor() {
         super()
         this.state = {
@@ -56,7 +57,7 @@ class Search extends React.Component {
         }
         const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            dispatch(fetchSearch({name:this.state.enterprise},this.props.auth.token));
+            dispatch(fetchEnterpriseList({name:this.state.enterprise},this.props.auth.token));
         });
     }
 

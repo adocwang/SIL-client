@@ -1,6 +1,6 @@
 'use strict';
 //test
-export const FETCH_REDDIT_LIST = 'FETCH_ARTICLE_LIST';
+export const TEST = 'TEST';
 
 export const LOAD_LOCAL_USER ='LOAD_LOCAL_USER';
 

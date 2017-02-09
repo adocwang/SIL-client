@@ -16,8 +16,9 @@ import {
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
 import {ToastShort} from '../utils/ToastUtils';
 import MessageItem from '../components/home/MessageItem';
+import BasePage from './BasePage'
 
-class Message extends React.Component {
+class Message extends BasePage {
     constructor() {
         super()
         this.state = {

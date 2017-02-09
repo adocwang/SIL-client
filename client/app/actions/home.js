@@ -15,10 +15,10 @@ export function notifyUpdate (state) {
     }
 }
 
-export function fetchSearch(paramsMap,token){
-    console.log('fetchSearch',paramsMap,token);
+export function fetchEnterpriseList(paramsMap, token){
+    console.log('fetchEnterpriseList',paramsMap,token);
     return dispatch => {
-        return postRequest(host.ENTERPRISE_LIST_URL ,paramsMap,token)
+        return postRequest(dispatch,host.ENTERPRISE_LIST_URL ,paramsMap,token)
             .then((data) => {
                 console.log(data);
                 if(data.code == 2007){

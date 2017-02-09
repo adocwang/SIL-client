@@ -13,7 +13,7 @@ export function fetchEnterprise (id,token) {
 
     return dispatch => {
         dispatch(clearLastEnterprise())
-        return getRequest(host.ENTERPRISE_DETAIL_URL + id,token)
+        return getRequest(dispatch,host.ENTERPRISE_DETAIL_URL + id,token)
             .then((data) => {
                 if(data.code==0){
                     console.log(data);

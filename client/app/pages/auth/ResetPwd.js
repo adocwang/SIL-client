@@ -48,7 +48,7 @@ class ResetPwd extends React.Component {
         if(this.props.auth.id == 0 && nextProps.auth.id!=0 && nextProps.auth.token!=''){
             const {dispatch} = this.props;
             InteractionManager.runAfterInteractions(() => {
-                dispatch(fetchUserSet({user_id:nextProps.auth.id,password:this.state.password},nextProps.auth.token));
+                dispatch(fetchUserSet({user_id:nextProps.auth.id,new_password:this.state.password},nextProps.auth.token));
             });
         }else if(this.props.auth.id != 0 && this.props.auth.token !=''){
             const {navigator} = this.props;
@@ -140,7 +140,7 @@ class ResetPwd extends React.Component {
                     <View style={styles.buttomview}>
                         <TouchableOpacity onPress={this.onActiveBtnClick.bind(this)}>
                             <View style={styles.buttonview} >
-                                <Text style={styles.logintext} >激活账户</Text>
+                                <Text style={styles.logintext} >重置密码</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.onShowTipsBtnClick.bind(this)}>

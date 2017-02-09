@@ -9,7 +9,7 @@ import * as host from '../constants/Urls';
 
 export function fetchLogin (paramsMap) {
     return dispatch => {
-        return postRequest(host.PASSWORD_LOGIN_URL ,paramsMap,'iamsuperman')
+        return postRequest(dispatch,host.PASSWORD_LOGIN_URL ,paramsMap,'iamsuperman')
             .then((data) => {
                 if(data.code == 2007){
                     ToastShort('用户不存在');
@@ -30,7 +30,7 @@ export function fetchLogin (paramsMap) {
 export function fetchLogout (token) {
     return dispatch => {
         dispatch(clearAuth());
-        return getRequest(host.USER_LOGOUT_URL,token)
+        return getRequest(dispatch,host.USER_LOGOUT_URL,token)
             .then((data) => {
                 console.log(data);
             })
@@ -42,7 +42,7 @@ export function fetchLogout (token) {
 
 export function fetchSmsCode (phone) {
     return dispatch => {
-        return postRequest(host.SEND_LOGIN_SMS_URL ,{phone:phone},'')
+        return postRequest(dispatch,host.SEND_LOGIN_SMS_URL ,{phone:phone},'')
             .then((data) => {
                 console.log(data);
             })
@@ -56,7 +56,7 @@ export function fetchSmsCode (phone) {
 export function fetchSmsLogin(paramsMap){
     console.log('fetchSmsLogin',paramsMap);
     return dispatch => {
-        return postRequest(host.SMS_LOGIN_URL ,paramsMap,'')
+        return postRequest(dispatch,host.SMS_LOGIN_URL ,paramsMap,'')
             .then((data) => {
                 console.log(data);
                 if(data.code == 2007){
@@ -80,7 +80,7 @@ export function fetchSmsLogin(paramsMap){
 export function fetchUserSet(paramsMap,token){
     console.log('fetchUserSet',paramsMap,token);
     return dispatch => {
-        return postRequest(host.USER_SET_URL ,paramsMap,token)
+        return postRequest(dispatch,host.USER_SET_URL ,paramsMap,token)
             .then((data) => {
                 console.log(data);
                 if(data.code == 2007){
