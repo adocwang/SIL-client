@@ -104,6 +104,33 @@ export function fetchUserSet(paramsMap,token){
     }
 }
 
+export function fetchUserGet(paramsMap,token){
+    return dispatch => {
+        return postRequest(host.USER_GET_URL ,paramsMap,token)
+            .then((data) => {
+
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
+                }
+                dispatch({
+                    type: types.GET_USER_INFO_SUCCESS,
+                    data: {code:data.code},
+                });
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+                dispatch(hideLoading());
+            })
+    }
+}
+
 
 export function loadLocalUser (user) {
     return {

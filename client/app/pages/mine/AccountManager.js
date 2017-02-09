@@ -16,7 +16,9 @@ import {
 } from 'react-native';
 import * as Color from '../../utils/CommonColor';
 import Takephoto from '../TakePhoto'
-
+import Button from '../../components/Button.ios.js'
+import {fetchLogout} from '../../actions/auth'
+import LoginContainer from '../../containers/LoginContainer'
 export default class AccountManager extends React.Component {
     constructor(props) {
         super(props)
@@ -26,6 +28,7 @@ export default class AccountManager extends React.Component {
         this.setGesturePassword = this.setGesturePassword.bind(this)
         this.setHeaderImg = this.setHeaderImg.bind(this)
         this.takephotoClosure = this.takephotoClosure.bind(this)
+        this.didClickedLogOut = this.didClickedLogOut.bind(this)
     }
 
     didClickedCell(index) {
@@ -65,6 +68,28 @@ export default class AccountManager extends React.Component {
 
     }
 
+    didClickedLogOut() {
+        const {dispatch} = this.props
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchLogout(this.props.auth.token));
+            navigator.resetTo({
+                component: LoginContainer,
+                name: 'Login'
+            });
+
+            // 删除单个数据
+            storage.remove({
+                key: 'user'
+            });
+            //realm.write(() => {
+            //    let user = realm.objects('User');
+            //    realm.delete(user); // Deletes all books
+            //    console.log('User',user);
+            //});
+        });
+    }
+
     render() {
         const {auth} = this.props
         const headerImg = this.state.headerImg
@@ -72,7 +97,7 @@ export default class AccountManager extends React.Component {
         const realName = "张三"
         const company = "天地人民银行"
         const phoneNumber = "130291444221"
-        const work = "收发灵魂"
+        const work = "活阎王"
         const password = "******"
         const gesturePassword = "设置手势密码"
         return (
@@ -93,7 +118,12 @@ export default class AccountManager extends React.Component {
                              onPress={this.didClickedCell}/>
                 <ContentCell index={6} tip="手势密码" value={gesturePassword} secondColor={Color.defaultShallowBlueColor}
                              canClick onPress={this.didClickedCell}/>
-                <View style={{backgroundColor: Color.defaultBgColor, flex: 1}}/>
+
+                <View style={{backgroundColor: Color.defaultBgColor, flex: 1}}>
+                    <Button style={styles.exitBg} titleStyle={styles.exitTitle} title="退出登录"
+                            onPress={this.didClickedLogOut}/>
+                </View>
+
             </View>
 
         );
@@ -191,6 +221,18 @@ const styles = StyleSheet.create({
         height: 12,
         marginTop: 5,
 
+    },
+    exitBg: {
+        marginTop: 20,
+        alignSelf:"center",
+        width: 120,
+        height: 40,
+        borderRadius:5,
+        backgroundColor:Color.defaultShallowBlueColor
+    },
+    exitTitle: {
+        color: "white",
+        fontSize: 15
     }
 
 })

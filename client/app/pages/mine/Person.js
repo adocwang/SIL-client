@@ -15,14 +15,12 @@ import {
     Navigator,
     Dimensions
 } from 'react-native';
-import LoginContainer from '../../containers/LoginContainer';
-import {ToastShort} from '../../utils/ToastUtils';
-import {fetchLogout} from '../../actions/auth'
-
 
 import * as Color from '../../utils/CommonColor';
 import AccountManagerContainer from "../../containers/AccountManagerContainer"
 import MyStoreContainer from "../../containers/MyStoreContainer"
+import {fetchUserGet} from '../../actions/auth'
+import {ToastShort} from '../../utils/ToastUtils';
 
 class Person extends React.Component {
     constructor(props) {
@@ -30,6 +28,11 @@ class Person extends React.Component {
         this.state = {user: {}}
         this.didClickedAccountManager = this.didClickedAccountManager.bind(this)
         this.didClickedMyStore = this.didClickedMyStore.bind(this)
+        this.fetchUserInfo = this.fetchUserInfo.bind(this)
+    }
+
+    componentDidMount() {
+        this.fetchUserInfo()
     }
 
     didClickedAccountManager() {
@@ -38,8 +41,19 @@ class Person extends React.Component {
             navigator.push({
                 component: AccountManagerContainer,
                 name: 'AccountManagerContainer',
+                params: {
+                    dispatch: this.props.dispatch
+                }
             });
         });
+    }
+    componentDidUpdate() {
+        this.fetchUserInfo()
+    }
+
+    fetchUserInfo() {
+        const {dispatch,auth} = this.props
+        dispatch(fetchUserGet({id:auth.id,phone:auth.phone},auth.token))
     }
 
     didClickedMyStore() {

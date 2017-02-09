@@ -27,23 +27,23 @@ import PopupDialog, {
     DefaultAnimation,
 
 } from 'react-native-popup-dialog';
+import {ToastShort} from '../../utils/ToastUtils';
 
 class LoanCalculator extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {timeIndex: -1, rateIndex: -1, preferentialRateIndex: -1, selecteIndex: 0, showLX: 0.0, money: 0.0}
+        this.state = {preferentialRateIndex: -1, selecteIndex: 0, showLX: 0.0, money: 0.0,rate: 0,term: 0}
         this.didClickedContainerView = this.didClickedContainerView.bind(this)
         this.didClickedItem = this.didClickedItem.bind(this)
         this.didClickedDialogItem = this.didClickedDialogItem.bind(this)
         this.calculatorResult = this.calculatorResult.bind(this)
         this.textFieldChange = this.textFieldChange.bind(this)
+        this.getPerenceialRate = this.getPerenceialRate.bind(this)
     }
 
     static defaultProps = {
-        time: ["1个月", "2个月", "3个月", "4个月"],
-        rate: ["3.0%", "4.0%", "5%"],
-        preferentialRate: ["9折", "8.8折"]
+        preferentialRate: ["1.3倍","1.2倍","1.1倍","标准","9折", "8.8折"]
     }
 
     didClickedContainerView() {
@@ -54,12 +54,6 @@ class LoanCalculator extends Component {
         this.popupDialog.closeDialog()
         switch (this.state.selecteIndex) {
             case 0:
-                this.setState({timeIndex: index})
-                break;
-            case 1:
-                this.setState({rateIndex: index})
-                break;
-            case 2:
                 this.setState({preferentialRateIndex: index})
                 break;
             default:
@@ -67,19 +61,73 @@ class LoanCalculator extends Component {
         this.calculatorResult()
     }
 
-    textFieldChange(text) {
-        console.log(text);
-        this.setState({money: text})
+    textFieldChange(index,text) {
+        switch(index){
+            case 0:
+                if(text == "") {
+                    this.setState({money: 0})
+                } else {
+                    this.setState({money: text})
+                }
+                break;
+            case 1:
+                if(text == "") {
+                    this.setState({rate: 0})
+                } else {
+                    this.setState({rate: text})
+                }
+                break;
+            case 2:
+                if(text == "") {
+                    this.setState({term: 0})
+                } else {
+                    this.setState({term: text})
+                }
+                break;
+            default:
+        }
         this.calculatorResult()
+    }
+
+    getPerenceialRate() {
+        var preference = 1.0
+        const index = parseInt(this.state.preferentialRateIndex)
+        switch(index) {
+            case 0:
+                preference = 1.3
+                break;
+            case 1:
+                preference = 1.2
+                break;
+            case 2:
+                preference = 1.1
+                break;
+            case 3:
+                preference = 1.0
+                break;
+            case 4:
+                preference = 0.9
+                break;
+            case 5:
+                preference = 0.88
+                break;
+            default:
+        }
+        return preference
     }
 
     calculatorResult() {
         setTimeout(() => {
-            if (this.state.timeIndex != -1 && this.state.rateIndex != -1 && this.state.preferentialRateIndex != -1) {
-                this.setState({showLX: this.state.money})
+            if (this.state.preferentialRateIndex != -1 && this.state.term != 0 && this.state.rate != 0) {
+                const perenceialRate = this.getPerenceialRate()
+                const monthRate = this.state.rate / 12 / 100 * perenceialRate
+                const result =  this.state.money * (monthRate * this.state.term)
+                const showRsult = Math.round(result*Math.pow(10, 2))/Math.pow(10, 2);
+
+                this.setState({showLX: showRsult})
             }
 
-        }, 100)
+        }, 300)
     }
 
     didClickedItem(index) {
@@ -88,35 +136,20 @@ class LoanCalculator extends Component {
     }
 
     render() {
-        var timeStyle = [styles.textHolder]
-        var rateStyle = [styles.textHolder]
         var preferentialRateStyle = [styles.textHolder]
-        var timeString = "请输入贷款期限"
-        var rateString = "请输入利率"
         var preferentialRateString = "请输入优惠利率"
-        if (this.state.timeIndex != -1) {
-            timeStyle.push(styles.textHolderS)
-            timeString = this.props.time[this.state.timeIndex]
-        }
-        if (this.state.rateIndex != -1) {
-            rateStyle.push(styles.textHolderS)
-            rateString = this.props.rate[this.state.rateIndex]
-        }
+
         if (this.state.preferentialRateIndex != -1) {
             preferentialRateStyle.push(styles.textHolderS)
             preferentialRateString = this.props.preferentialRate[this.state.preferentialRateIndex]
+
         }
         const selecteIndex = this.state.selecteIndex
         var data = null
 
         switch (selecteIndex) {
+
             case 0:
-                data = this.props.time
-                break;
-            case 1:
-                data = this.props.rate
-                break;
-            case 2:
                 data = this.props.preferentialRate
                 break;
             default:
@@ -128,33 +161,25 @@ class LoanCalculator extends Component {
                 <View style={styles.container}>
                     <CustomToolbar title="贷款计算器" navigator={navigator}/>
                     <View style={styles.textInputView}>
-                        <TextInput placeholder="请输入贷款金额" style={styles.textInput} onChangeText={this.textFieldChange}
+                        <TextInput placeholder="请输入贷款金额" style={styles.textInput} onChangeText={this.textFieldChange.bind(this,0)}
                                    keyboardType="decimal-pad" placeholderTextColor={defaultLightGray} underlineColorAndroid="transparent"/>
                         <Text style={styles.textYuan}>元</Text>
                     </View>
 
+                        <View style={styles.textInputView}>
+                            <TextInput placeholder="请输入贷款年利率" style={styles.textInput} onChangeText={this.textFieldChange.bind(this,1)}
+                                       keyboardType="decimal-pad" placeholderTextColor={defaultLightGray} underlineColorAndroid="transparent"/>
+                            <Text style={styles.textYuan}>%</Text>
+                        </View>
+
+                        <View style={styles.textInputView}>
+                            <TextInput placeholder="请输入贷款期限" style={styles.textInput} onChangeText={this.textFieldChange.bind(this,2)}
+                                       keyboardType="number-pad" placeholderTextColor={defaultLightGray} underlineColorAndroid="transparent"/>
+                            <Text style={styles.textYuan}>个月</Text>
+
+                        </View>
+
                     <TouchableWithoutFeedback onPress={this.didClickedItem.bind(this, 0)}>
-                        <View style={styles.textInputView}>
-                            <View style={styles.textInput2}>
-                              <Text style={timeStyle}>{timeString}</Text>
-                            </View>
-                            <View style={styles.downButton}><Image style={styles.downImg}
-                                                                   source={require("../../img/arrowDown.png")}/></View>
-                        </View>
-                    </TouchableWithoutFeedback>
-
-                    <TouchableWithoutFeedback onPress={this.didClickedItem.bind(this, 1)}>
-                        <View style={styles.textInputView}>
-                            <View style={styles.textInput2}>
-
-                            <Text style={rateStyle}>{rateString}</Text>
-                            </View>
-                            <View style={styles.downButton}><Image style={styles.downImg}
-                                                                   source={require("../../img/arrowDown.png")}/></View>
-                        </View>
-                    </TouchableWithoutFeedback>
-
-                    <TouchableWithoutFeedback onPress={this.didClickedItem.bind(this, 2)}>
                         <View style={styles.textInputView}>
                             <View style={styles.textInput2}>
 
@@ -202,7 +227,7 @@ class DialogoTableView extends Component {
 
     render() {
         return (
-            <ListView dataSource={this.state.dataSource}
+            <ListView style={styles.listView} dataSource={this.state.dataSource}
                       renderRow={(rowData, sectionID, rowID) =>
                           <TouchableWithoutFeedback onPress={this.clickedCell.bind(this, rowID)}>
                               <View style={styles.chooseCell}><Text style={styles.chooseTitle}>{rowData}</Text></View>
@@ -249,14 +274,13 @@ const styles = StyleSheet.create({
     textYuan: {
         marginLeft: 15,
         color: defaultGreenColor,
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: "800",
     },
     popupDialog: {},
     textHolder: {
        fontSize: 14,
         color: defaultLightGray,
-
     },
     textHolderS: {
         color: defaultBlackColor
@@ -273,6 +297,9 @@ const styles = StyleSheet.create({
     downImg: {
         width: 20,
         height: 20,
+    },
+    downPercent: {
+        color: "white",
     },
     chooseCell: {
         borderBottomColor: defaultLineColor,
@@ -307,6 +334,9 @@ const styles = StyleSheet.create({
         color: defaultOrangeColor,
         fontSize: 18,
     },
+    listView: {
+        borderRadius: 5,
+    }
 
 
 })
