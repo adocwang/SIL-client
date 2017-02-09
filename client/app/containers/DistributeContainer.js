@@ -16,9 +16,9 @@ class DistributeContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {home} = state;
+    const {auth,claimdistribute} = state;
     return {
-        home
+        auth,claimdistribute
     }
 }
 

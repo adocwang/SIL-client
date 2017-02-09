@@ -5,7 +5,7 @@
 
 import * as types from '../constants/ActionTypes';
 import {ToastShort} from '../utils/ToastUtils';
-import {postRequest} from '../utils/HttpServices';
+import {postRequest,getRequest} from '../utils/HttpServices';
 import * as host from '../constants/Urls';
 
 export function notifyUpdate (state) {
@@ -16,7 +16,6 @@ export function notifyUpdate (state) {
 }
 
 export function fetchEnterpriseList(paramsMap, token){
-    console.log('fetchEnterpriseList',paramsMap,token);
     return dispatch => {
         dispatch({type:types.FETCH_COMPANY_LIST,data:{}})
         return postRequest(dispatch,host.ENTERPRISE_LIST_URL ,paramsMap,token)
@@ -42,7 +41,6 @@ export function fetchEnterpriseList(paramsMap, token){
 }
 
 export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,paramsMap, token){
-    console.log('fetchEnterpriseList',paramsMap,token);
     return dispatch => {
         dispatch({type:types.FETCH_COMPANY_LIST,
             data:{
@@ -52,7 +50,6 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
         }})
         return postRequest(dispatch,host.ENTERPRISE_LIST_URL ,paramsMap,token)
             .then((data) => {
-                console.log(data);
                 if(data.code == 2007){
                     ToastShort('用户不存在');
                 }else  if(data.code == 1003){
@@ -69,6 +66,23 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
                     dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
                 }
 
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+            })
+    }
+
+}
+
+
+export function fetchBankList(token){
+    return dispatch => {
+        dispatch({type:types.FETCH_BANK_LIST,data:{}})
+        return getRequest(dispatch,host.BANK_LIST_URL ,token)
+            .then((data) => {
+                if(data.code==0){
+                    dispatch({type:types.REVEIVE_BANK_LIST,data:data.data})
+                }
             })
             .catch((error) => {
                 ToastShort(error.message);

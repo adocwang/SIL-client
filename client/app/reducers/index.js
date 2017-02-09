@@ -7,6 +7,7 @@ import search from './search';
 import userenterprise from './userenterprise';
 import message from './message';
 import enterprise from './enterprise';
+import claimdistribute from './claimdistribute';
 
 const rootReducer = combineReducers({
   home,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   search,
   userenterprise,
   message,
-  enterprise
+  enterprise,
+  claimdistribute
 });
 
 export default rootReducer;
