@@ -9,3 +9,4 @@ export const USER_LOGOUT_URL = 'user/logout';
 export const USER_SET_URL = 'user/set';
 export const USER_GET_URL = 'user/set';
 export const ENTERPRISE_LIST_URL = 'enterprise/list';
+export const ENTERPRISE_DETAIL_URL = 'enterprise/';

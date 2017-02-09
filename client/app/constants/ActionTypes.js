@@ -1,6 +1,6 @@
 'use strict';
 //test
-export const FETCH_REDDIT_LIST = 'FETCH_ARTICLE_LIST';
+export const TEST = 'TEST';
 
 export const LOAD_LOCAL_USER ='LOAD_LOCAL_USER';
 
@@ -14,3 +14,7 @@ export const GET_USER_INFO_SUCCESS = "GET_USER_INFO_SUCCESS";
 //首页action
 export const UPDATE_HOME_INFO = 'UPDATE_HOME_INFO';
 export const FETCH_COMPANY_LIST = 'FETCH_COMPANY_LIST';
+
+
+export const FETCH_ENTERPRISE_DETAIL = 'FETCH_ENTERPRISE_DETAIL';
+export const CLEAR_LAST_ENTERPRISE_DETAIL = 'CLEAR_LAST_ENTERPRISE_DETAIL';

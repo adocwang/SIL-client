@@ -16,9 +16,10 @@ class EnterpriseDetailContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {auth} = state;
+    const {auth,enterprise} = state;
     return {
-        auth
+        auth,
+        enterprise
     }
 }
 

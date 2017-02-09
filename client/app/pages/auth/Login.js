@@ -2,7 +2,6 @@
  * Created by kiefer on 2017/1/22.
  */
 import React from 'react';
-import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,
@@ -27,8 +26,8 @@ class Login extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            password:'12348765',
-            phone:'15828516285',
+            password:'111111',
+            phone:'13547926578',
             loading:false
         };
     }

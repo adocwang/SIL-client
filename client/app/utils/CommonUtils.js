@@ -14,3 +14,14 @@ export function isEmptyObject (obj) {
   }
   return true;
 }
+
+export function GapYear(yearStr){
+  var oldDate = new Date(Date.parse(yearStr));
+  var nowDate = new Date();
+  var gap = nowDate.getFullYear() -  oldDate.getFullYear();
+  if(gap > 0){
+    return gap
+  }else {
+    return 0
+  }
+}

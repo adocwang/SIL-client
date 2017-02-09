@@ -82,7 +82,7 @@ public class MainActivity extends ReactActivity {
                 public void run() {
                     WritableMap params = Arguments.createMap();
                     params.putString("desc","test");
-                    params.putString("type","1");
+                    params.putString("type","3");
                     sendEvent("MiPushMessage",params);
                     mSendMsg = true;
                 }

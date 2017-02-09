@@ -40,12 +40,12 @@ class RiskInfoItem extends React.Component {
                         </Text>
                         <View style={styles.catContainer}>
 
-                            <View style={{backgroundColor:'#7ED321', borderRadius:10,padding:2,justifyContent:'center'}}>
+                            <View style={styles.statusContainer}>
                                 <Text style={styles.status}>
                                     {this.props.status}
                                 </Text>
                             </View>
-                            <View style={{borderWidth:1, borderRadius:10,padding:3,justifyContent:'center',borderColor:'#F21B35'}}>
+                            <View style={styles.infoContainer}>
                                 <Text style={styles.red_text}>
                                    开庭公告
                                 </Text>
@@ -68,7 +68,7 @@ let styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         padding: 10,
         marginBottom:2,
-        height:100,
+        height:120,
         paddingLeft:20
     },
     img:{
@@ -103,6 +103,23 @@ let styles = StyleSheet.create({
     red_text:{
       color:'#F21B35',
       fontSize:12
+    },
+    statusContainer:{
+        backgroundColor:'#7ED321',
+        borderRadius:10,
+        justifyContent:'center',
+        height:20,
+        width:60,
+        alignItems:'center'
+    },
+    infoContainer:{
+        borderWidth:1,
+        borderRadius:10,
+        justifyContent:'center',
+        borderColor:'#F21B35',
+        height:20,
+        width:80,
+        alignItems:'center'
     },
     catContainer:{
         flex:1,

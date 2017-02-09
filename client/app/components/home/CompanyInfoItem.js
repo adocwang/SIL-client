@@ -39,7 +39,7 @@ class CompanyInfoItem extends React.Component {
                                 <Text style={styles.cat}>
                                     {this.props.cat}
                                 </Text>
-                            {this.props.status &&  <View style={{backgroundColor:'#7ED321', borderRadius:10,padding:3,justifyContent:'center'}}>
+                            {this.props.status &&  <View style={styles.statusContainer}>
                                 <Text style={styles.status}>
                                 {this.props.status}
                                 </Text>
@@ -63,7 +63,7 @@ let styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         padding: 10,
         marginBottom:2,
-        height:100,
+        height:120,
         paddingLeft:20
     },
     img:{
@@ -90,6 +90,14 @@ let styles = StyleSheet.create({
     cat:{
         color:'#4A4A4A',
         fontSize:12,
+    },
+    statusContainer:{
+        backgroundColor:'#7ED321',
+        borderRadius:10,
+        justifyContent:'center',
+        height:20,
+        width:60,
+        alignItems:'center'
     },
     status:{
         color:'#ffffff',

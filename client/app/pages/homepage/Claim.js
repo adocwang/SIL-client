@@ -2,7 +2,6 @@
  * Created by kiefer on 2017/1/25.
  */
 import React from 'react';
-import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,
@@ -28,8 +27,9 @@ import PopupDialog, {
     DefaultAnimation,
 } from 'react-native-popup-dialog';
 const scaleAnimation = new ScaleAnimation();
+import BasePage from  '../BasePage'
 
-class Claim extends React.Component {
+class Claim extends BasePage {
     constructor(props) {
         super(props);
         if (this.props.route.params) {

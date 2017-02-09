@@ -3,7 +3,6 @@
  */
 
 import React from 'react';
-import {fetchTest} from '../../actions/test';
 import {
     StyleSheet,
     Image,
@@ -49,7 +48,7 @@ class Active extends React.Component {
         if(this.props.auth.id == 0 && nextProps.auth.id!=0 && nextProps.auth.token!=''){
             const {dispatch} = this.props;
             InteractionManager.runAfterInteractions(() => {
-                dispatch(fetchUserSet({user_id:nextProps.auth.id,password:this.state.password},nextProps.auth.token));
+                dispatch(fetchUserSet({user_id:nextProps.auth.id,new_password:this.state.password},nextProps.auth.token));
             });
         }else if(this.props.auth.id != 0 && this.props.auth.token !='' && nextProps.auth.code!=undefined && nextProps.auth.code==0){
             const {navigator} = this.props;

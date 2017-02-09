@@ -19,9 +19,9 @@ class ResetPwdContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {localUser} = state;
+    const {auth} = state;
     return {
-        localUser
+        auth
     }
 }
 

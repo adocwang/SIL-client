@@ -19,9 +19,9 @@ import {
 import CustomToolbar from '../../components/CustomToolbar'
 import CheckBox from 'react-native-check-box'
 import {notifyUpdate} from '../../actions/home'
+import BasePage from  '../BasePage'
 
-
-class Distribute extends React.Component {
+class Distribute extends BasePage {
     constructor(props) {
         super(props);
         if (this.props.route.params) {

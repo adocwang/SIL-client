@@ -21,11 +21,12 @@ import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
 import CompanyInfoItem from '../components/home/CompanyInfoItem'
+import BasePage from './BasePage'
 
 var canLoadMore;
 var loadMoreTime = 0;
 
-class UserEnterprise extends React.Component {
+class UserEnterprise extends BasePage {
     constructor() {
         super()
 
@@ -80,7 +81,7 @@ class UserEnterprise extends React.Component {
                 component: EnterpriseDetailContainer,
                 name: 'EnterpriseDetail',
                 params: {
-                    item: item,
+                    id: 21,
                 },
             });
         });

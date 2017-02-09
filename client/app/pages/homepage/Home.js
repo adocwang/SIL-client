@@ -26,12 +26,12 @@ import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
 import CompanyInfoItem from '../../components/home/CompanyInfoItem'
 import RiskInfoItem from '../../components/home/RiskInfoItem'
 import RongZiInfoItem from '../../components/home/RongZiInfoItem'
-
+import BasePage from  '../BasePage'
 
 var canLoadMore;
 var loadMoreTime = 0;
 
-class Home extends React.Component {
+class Home extends BasePage {
     constructor() {
         super()
 
