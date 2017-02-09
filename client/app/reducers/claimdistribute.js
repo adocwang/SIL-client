@@ -19,6 +19,13 @@ export default function claimdistribute (state = initialState, action) {
         case types.FETCH_BANK_LIST:
             state.loadingBankList = true;
             return Object.assign({}, state);
+        case types.REVEIVE_USER_LIST:
+            state.loadingUserList = false;
+            state.userList = action.data.users;
+            return Object.assign({}, state);
+        case types.FETCH_USER_LIST:
+            state.loadingUserList = true;
+            return Object.assign({}, state);
         default:
             return state;
     }

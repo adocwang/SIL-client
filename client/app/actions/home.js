@@ -89,3 +89,18 @@ export function fetchBankList(token){
             })
     }
 }
+
+export function fetchUserList(token){
+    return dispatch => {
+        dispatch({type:types.FETCH_USER_LIST,data:{}})
+        return postRequest(dispatch,host.USER_LIST_URL ,{page:1,page_limit:100},token)
+            .then((data) => {
+                if(data.code==0){
+                    dispatch({type:types.REVEIVE_USER_LIST,data:data.data})
+                }
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+            })
+    }
+}

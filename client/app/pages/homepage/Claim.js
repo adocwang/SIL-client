@@ -70,7 +70,10 @@ class Claim extends BasePage {
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: DistributeContainer,
-                name: 'Distribute'
+                name: 'Distribute',
+                params: {
+                    item: item,
+                },
             });
         });
         //this.chooseScaleAnimationDialog.closeDialog();
@@ -84,7 +87,7 @@ class Claim extends BasePage {
         return <CheckBox
             style={{flex: 1, padding: 10}}
             onClick={()=>this.onBankChoose(item)}
-            isChecked={true}
+            isChecked={false}
             key={item.id}
             rightText={item.name}
             checkedImage={<Image source={require('../../img/check_box_icon.png')} />}
