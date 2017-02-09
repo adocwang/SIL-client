@@ -11,7 +11,7 @@ const initialState = {
 
 export default function search (state = initialState, action) {
     switch (action.type) {
-        case types.FETCH_COMPANY_LIST:
+        case types.REVEIVE_COMPANY_LIST:
             return Object.assign({}, state,action.data);
         default:
             return state;

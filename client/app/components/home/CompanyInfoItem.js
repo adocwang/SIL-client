@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import {GapYear} from '../../utils/CommonUtils'
 
 const propTypes = {
     onClicked: PropTypes.func,
@@ -20,32 +21,38 @@ class CompanyInfoItem extends React.Component {
         super(props);
     }
 
-    render () {
-        return(
+    render() {
+        return (
             <TouchableOpacity onPress={()=>this.props.onClicked()}>
                 <View style={styles.containerItem}>
                     <Image
                         style={styles.img}
-                        source={{uri: this.props.img}}
+                        source={require('../../img/default_avatar.png')}
                     />
                     <View style={styles.content}>
-                        <Text style={styles.title}>
-                            {this.props.title}
-                        </Text>
-                        <Text style={styles.desc}>
-                            {this.props.desc}
-                        </Text>
                         <View style={styles.catContainer}>
-                                <Text style={styles.cat}>
-                                    {this.props.cat}
-                                </Text>
-                            {this.props.status &&  <View style={styles.statusContainer}>
+                            <Text style={styles.title}>
+                                {this.props.name}
+                            </Text>
+                            {this.props.role_a ? <View style={styles.greenContainer}>
                                 <Text style={styles.status}>
-                                {this.props.status}
+                                    已认领
                                 </Text>
-                                </View>}
+                            </View> : <View style={styles.redContainer}>
+                                <Text style={styles.red_text}>
+                                    未分配
+                                </Text>
+                            </View>}
 
                         </View>
+                        <Text style={styles.desc}>
+                            {this.props.legal_man} |
+                            成立{GapYear(this.props.start) > 0 ? GapYear(this.props.start) : '不到1'}年
+                        </Text>
+
+                        <Text style={styles.cat}>
+                            {this.props.address}
+                        </Text>
 
                     </View>
                 </View>
@@ -62,54 +69,67 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#ffffff',
         padding: 10,
-        marginBottom:2,
-        height:120,
-        paddingLeft:20
+        marginBottom: 2,
+        height: 90,
+        paddingLeft: 20
     },
-    img:{
-        flex:1,
+    img: {
+        flex: 1,
         width: 40,
         height: 40,
     },
-    content:{
+    content: {
         flex: 7,
         flexDirection: 'column',
-        paddingLeft:10,
+        paddingLeft: 10,
+        paddingTop: 5
+    },
+    title: {
+        color: '#4A4A4A',
+        fontSize: 16,
+    },
+    desc: {
+        color: '#9B9B9B',
+        fontSize: 14,
+        paddingTop: 3
+    },
+    cat: {
+        color: '#4A4A4A',
+        fontSize: 12,
         paddingTop:5
     },
-    title:{
-        color:'#4A4A4A',
-        fontSize:16,
-        paddingTop:5
+    greenContainer: {
+        backgroundColor: '#7ED321',
+        borderRadius: 10,
+        justifyContent: 'center',
+        height: 20,
+        width: 60,
+        alignItems: 'center'
     },
-    desc:{
-        color:'#9B9B9B',
-        fontSize:14,
-        paddingTop:3
+    redContainer: {
+        borderWidth: 1,
+        borderRadius: 10,
+        justifyContent: 'center',
+        borderColor: '#F21B35',
+        height: 20,
+        width: 60,
+        alignItems: 'center'
     },
-    cat:{
-        color:'#4A4A4A',
-        fontSize:12,
+    red_text: {
+        color: '#F21B35',
+        fontSize: 12
     },
-    statusContainer:{
-        backgroundColor:'#7ED321',
-        borderRadius:10,
-        justifyContent:'center',
-        height:20,
-        width:60,
-        alignItems:'center'
+    status: {
+        color: '#ffffff',
+        fontSize: 12,
     },
-    status:{
-        color:'#ffffff',
-        fontSize:12,
-    },
-    catContainer:{
-        flex:1,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        paddingTop:5,
-        paddingRight:10,
-        alignItems:'center'
+    catContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: 5,
+        paddingRight: 10,
+        alignItems: 'center'
 
     }
 });

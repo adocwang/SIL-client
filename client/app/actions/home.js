@@ -18,6 +18,7 @@ export function notifyUpdate (state) {
 export function fetchEnterpriseList(paramsMap, token){
     console.log('fetchEnterpriseList',paramsMap,token);
     return dispatch => {
+        dispatch({type:types.FETCH_COMPANY_LIST,data:{}})
         return postRequest(dispatch,host.ENTERPRISE_LIST_URL ,paramsMap,token)
             .then((data) => {
                 console.log(data);
@@ -30,7 +31,42 @@ export function fetchEnterpriseList(paramsMap, token){
                 }else  if(data.code == 406){
                     ToastShort('用户无权限');
                 }else if(data.code==0){
-                    dispatch({type:types.FETCH_COMPANY_LIST,data:data.data})
+                    dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
+                }
+
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+            })
+    }
+}
+
+export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,paramsMap, token){
+    console.log('fetchEnterpriseList',paramsMap,token);
+    return dispatch => {
+        dispatch({type:types.FETCH_COMPANY_LIST,
+            data:{
+                isRefreshing:isRefreshing,
+                loading:loading,
+                isLoadMore:isLoadMore
+        }})
+        return postRequest(dispatch,host.ENTERPRISE_LIST_URL ,paramsMap,token)
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
+                }else if(data.code==0){
+                    if(data.data.enterprises.length==0){
+                        ToastShort('没有更多数据了');
+                    }
+                    data.data.isRefreshing = isRefreshing;
+                    dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
                 }
 
             })

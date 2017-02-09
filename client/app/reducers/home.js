@@ -6,92 +6,56 @@ import * as types from '../constants/ActionTypes';
 
 const homeTabCat = [
     {
-        id:'1',
+        id:1,
         name:'新增企业'
     },
     {
-        id:'2',
+        id:2,
         name:'风险企业'
     },
     {
-        id:'3',
+        id:3,
         name:'最新资讯'
     }];
 
-const mockCompanyInfo = [
-    {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'已分配',
-    },
-    {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'已分配',
-    },
-    {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'已分配',
-    },
-    {img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'已分配',
-    }]
-
-const mockCompanyInfo1 = [
-    {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'审核中',
-    },
-    {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'审核中',
-    },
-    {
-        img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'审核中',
-    },
-    {img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-        title:'深圳能源集团股份有限公司',
-        desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-        cat:'能源  投资  >>',
-        status:'审核中',
-    }]
-
 
 const initialState = {
-    isRefreshing: false,
-    loading: false,
-    isLoadMore: true,
+    isRefreshing: {1:false,2:false,3:false},
+    loading: {1:true,2:false,3:false},
+    isLoadMore: {1:false,2:false,3:false},
     noMore: false,
     catList:homeTabCat,
-    pageList: {1:mockCompanyInfo,2:mockCompanyInfo1,3:mockCompanyInfo},
-    pageAfter: {1: '', 2: '', 3: ''},
-    companyInfoUpdate:false
+    pageList: {1:[],2:[],3:[]},
+    pageAfter: {1: 1, 2: 1, 3: 1},
 };
 
 export default function home (state = initialState, action) {
     switch (action.type) {
         case types.UPDATE_HOME_INFO:
-            return Object.assign({}, state, action.data);
+            return Object.assign({}, state);
+        case types.FETCH_COMPANY_LIST:
+            state.isRefreshing[1] = action.data.isRefreshing;
+            state.isLoadMore[1] = action.data.isLoadMore;
+            state.loading[1] = action.data.loading;
+            return Object.assign({}, state);
+        case types.REVEIVE_COMPANY_LIST:
+            var newState={}
+            state.isRefreshing[1] =false;
+            state.isLoadMore[1] =false;
+            state.loading[1] = false;
+            if(action.data.enterprises.length == 0){
+                state.noMore = true;
+            }else {
+                state.noMore = false;
+                if(action.data.isRefreshing){
+                    state.pageList[1] = action.data.enterprises;
+                    state.pageAfter[1]=2;
+                }else {
+                    state.pageAfter[1] = state.pageAfter[1] + 1;
+                    state.pageList[1] = state.pageList[1].concat(action.data.enterprises)
+                }
+            }
+            return Object.assign({}, state,newState);
         default:
             return state;
     }
