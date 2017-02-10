@@ -28,6 +28,7 @@ import RiskInfoItem from '../../components/home/RiskInfoItem'
 import RongZiInfoItem from '../../components/home/RongZiInfoItem'
 import BasePage from  '../BasePage'
 import {fetchHomeEnterpriseList} from '../../actions/home'
+import {ToastShort} from '../../utils/ToastUtils'
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -55,7 +56,14 @@ class Home extends BasePage {
     }
 
     componentWillReceiveProps (nextProps) {
-
+        const {home} = this.props;
+        var index = this.state.tabIndex + 1
+        console.log(index,home.isLoadMore[index],nextProps.home.isLoadMore[index],nextProps.home.isRefreshing[index],nextProps.home.noMore);
+        if (!nextProps.home.isRefreshing[index]) {
+            if (nextProps.home.noMore) {
+                ToastShort('没有更多数据了');
+            }
+        }
     }
 
     shouldComponentUpdate(){
@@ -88,7 +96,6 @@ class Home extends BasePage {
     }
 
     onEndReached (typeId) {
-        console.log('onEndReached',typeId);
         let time = Date.parse(new Date()) / 1000;
         const {home} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
@@ -224,6 +231,7 @@ class Home extends BasePage {
                             </View>
                     </TouchableOpacity>
                             <ScrollableTabView
+                                onChangeTab={(item)=>{this.setState({tabIndex:item.i})}}
                                 style={{marginTop: 20,flex:1}}
                                 renderTabBar={() => <CustomTabBar  />}
                             >

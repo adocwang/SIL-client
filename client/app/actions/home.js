@@ -8,16 +8,10 @@ import {ToastShort} from '../utils/ToastUtils';
 import {postRequest,getRequest} from '../utils/HttpServices';
 import * as host from '../constants/Urls';
 
-export function notifyUpdate (state) {
-    return {
-        type: types.UPDATE_HOME_INFO,
-        data: state
-    }
-}
 
 export function fetchEnterpriseList(paramsMap, token){
     return dispatch => {
-        dispatch({type:types.FETCH_COMPANY_LIST,data:{}})
+        dispatch({type:types.FETCH_SEARCH_COMPANY_LIST,data:{}})
         return postRequest(dispatch,host.ENTERPRISE_LIST_URL ,paramsMap,token)
             .then((data) => {
                 console.log(data);
@@ -30,7 +24,7 @@ export function fetchEnterpriseList(paramsMap, token){
                 }else  if(data.code == 406){
                     ToastShort('用户无权限');
                 }else if(data.code==0){
-                    dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
+                    dispatch({type:types.REVEIVE_SEARCH_COMPANY_LIST,data:data.data})
                 }
                 dispatch(hideLoading());
 
@@ -43,6 +37,7 @@ export function fetchEnterpriseList(paramsMap, token){
 }
 
 export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,paramsMap, token){
+    console.log('fetchHomeEnterpriseListi',isRefreshing, loading, isLoadMore,paramsMap);
     return dispatch => {
         dispatch({type:types.FETCH_COMPANY_LIST,
             data:{
@@ -54,20 +49,21 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
             .then((data) => {
                 if(data.code == 2007){
                     ToastShort('用户不存在');
+                    dispatch(hideLoading());
                 }else  if(data.code == 1003){
                     ToastShort('缺少参数');
+                    dispatch(hideLoading());
                 }else  if(data.code == 407){
                     ToastShort('无权限');
+                    dispatch(hideLoading());
                 }else  if(data.code == 406){
                     ToastShort('用户无权限');
+                    dispatch(hideLoading());
                 }else if(data.code==0){
-                    if(data.data.enterprises.length==0){
-                        ToastShort('没有更多数据了');
-                    }
                     data.data.isRefreshing = isRefreshing;
                     dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
                 }
-                dispatch(hideLoading());
+
 
             })
             .catch((error) => {
@@ -120,19 +116,24 @@ export function fetchEnterpiseSet(paramsMap,token){
             .then((data) => {
                 console.log('fetchEnterpiseSet',data);
                if(data.code==1003){
+                   dispatch(hideLoading());
                    ToastShort('缺少参数');
                }else if(data.code==2007){
+                   dispatch(hideLoading());
                    ToastShort('银行不存在');
                }else if(data.code==2008){
+                   dispatch(hideLoading());
                    ToastShort('角色不存在');
                }else if(data.code==2009){
+                   dispatch(hideLoading());
                    ToastShort('角色不是客户经理');
                }else if(data.code==407){
                    ToastShort('无权限');
+                   dispatch(hideLoading());
                }else if(data.code==0){
                    dispatch({type:types.REVEIVE_ENTERPRISE_SET,data:data.data})
                }
-                dispatch(hideLoading());
+
             })
             .catch((error) => {
                 dispatch(hideLoading());

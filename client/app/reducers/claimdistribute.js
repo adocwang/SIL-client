@@ -37,6 +37,7 @@ export default function claimdistribute (state = initialState, action) {
             return Object.assign({}, state);
         case types.REVEIVE_ENTERPRISE_SET:
             state.setEnterpriseInfoSuccess = true;
+            state.loadingUserList = false;
             return Object.assign({}, state);
         case types.USER_LIST_CHANGE:
             if(action.data.type=='zhuli'){

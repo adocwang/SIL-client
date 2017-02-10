@@ -31,8 +31,6 @@ const initialState = {
 
 export default function home (state = initialState, action) {
     switch (action.type) {
-        case types.UPDATE_HOME_INFO:
-            return Object.assign({}, state);
         case types.FETCH_COMPANY_LIST:
             state.isRefreshing[1] = action.data.isRefreshing;
             state.isLoadMore[1] = action.data.isLoadMore;
