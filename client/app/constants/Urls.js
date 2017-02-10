@@ -12,3 +12,4 @@ export const ENTERPRISE_LIST_URL = 'enterprise/list';
 export const ENTERPRISE_DETAIL_URL = 'enterprise/';
 export const ENTERPRISE_SET_URL = 'enterprise/set';
 export const BANK_LIST_URL = 'bank/list';
+export const LOAN_LIST_URL = 'loan/list/';

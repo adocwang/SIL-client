@@ -1,0 +1,111 @@
+/**
+ * Created by kiefer on 2017/2/10.
+ */
+
+'use strict';
+import React , { PropTypes }from 'react'
+import {
+    StyleSheet,
+    Image,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
+import {GapYear} from '../../utils/CommonUtils'
+
+const propTypes = {
+    onClicked: PropTypes.func,
+}
+
+class UserLoanItem extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <TouchableOpacity onPress={()=>this.props.onClicked()}>
+                <View style={styles.containerItem}>
+                    <Image
+                        style={styles.img}
+                        source={require('../../img/default_avatar.png')}
+                    />
+                    <View style={styles.content}>
+                        <View style={styles.catContainer}>
+                            <Text style={styles.title}>
+                                {this.props.name}
+                            </Text>
+
+                        </View>
+                        <Text style={styles.desc}>
+                            {this.props.legal_man} |
+                            成立{GapYear(this.props.start) > 0 ? GapYear(this.props.start) : '不到1'}年
+                        </Text>
+
+                        <Text style={styles.cat}>
+                            {this.props.address}
+                        </Text>
+
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+}
+
+let styles = StyleSheet.create({
+    containerItem: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
+        padding: 10,
+        marginBottom: 2,
+        height: 100,
+        paddingLeft: 20,
+    },
+    img: {
+        flex: 1,
+        width: 40,
+        height: 40,
+    },
+    content: {
+        flex: 7,
+        flexDirection: 'column',
+        paddingLeft: 10,
+        alignSelf:'center'
+    },
+    title: {
+        color: '#4A4A4A',
+        fontSize: 16,
+    },
+    desc: {
+        color: '#9B9B9B',
+        fontSize: 14,
+        paddingTop: 3
+    },
+    cat: {
+        color: '#4A4A4A',
+        fontSize: 12,
+        paddingTop:3
+    },
+    red_text: {
+        color: '#F21B35',
+        fontSize: 12
+    },
+    status: {
+        color: '#ffffff',
+        fontSize: 12,
+    },
+    catContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingRight: 10,
+        alignItems: 'center'
+
+    }
+});
+
+export default UserLoanItem;

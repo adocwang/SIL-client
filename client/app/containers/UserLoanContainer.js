@@ -5,7 +5,7 @@ import React ,{Component}from 'react';
 
 import {connect} from 'react-redux';
 
-import UserEnterprise from '../pages/UserEnterprise';
+import UserEnterprise from '../pages/UserLoan';
 
 class UserEnterpriseContainer extends Component {
     render () {
@@ -16,9 +16,10 @@ class UserEnterpriseContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {userenterprise} = state;
+    const {userloan,auth} = state;
     return {
-        userenterprise
+        userloan,
+        auth
     }
 }
 
