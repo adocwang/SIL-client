@@ -38,6 +38,7 @@ export function fetchUserLoanList(isRefreshing, loading, isLoadMore,paramsMap, t
         console.log('fetchHomeEnterpriseList',isRefreshing, loading, isLoadMore,paramsMap,tabIndex);
         return postRequest(dispatch,host.LOAN_LIST_URL ,paramsMap,token)
             .then((data) => {
+                console.log(data);
                 if(data.code == 2007){
                     ToastShort('用户不存在');
                     dispatch(hideLoading(tabIndex));

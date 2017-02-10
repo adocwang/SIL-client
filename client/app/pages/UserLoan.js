@@ -20,6 +20,7 @@ import UserLoanTabBar from '../components/UserLoanTabBar';
 import Loading from '../components/Loading';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
+import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
 import ApplicationContainer from '../containers/ApplicationContainer'
 import SearchContainer from '../containers/SearchContainer'
 import Icon from '../../node_modules/react-native-vector-icons/Ionicons';
@@ -63,7 +64,7 @@ class UserLoan extends BasePage {
     onRefresh (typeId) {
         const {dispatch} = this.props;
         canLoadMore = false;
-        dispatch(fetchUserLoanList(true,false,false,{page:1}, this.props.auth.token));
+        dispatch(fetchUserLoanList(true,false,false,{page:1}, this.props.auth.token,this.state.tabIndex));
     }
 
     onScroll () {
@@ -77,15 +78,36 @@ class UserLoan extends BasePage {
         const {userloan} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
             const {dispatch} = this.props;
-            dispatch(fetchUserLoanList(false,false,true,{page:userloan.pageAfter[1]}, this.props.auth.token));
+            dispatch(fetchUserLoanList(false,false,true,{page:userloan.pageAfter[1]}, this.props.auth.token,this.state.tabIndex));
             canLoadMore = false;
             loadMoreTime = Date.parse(new Date()) / 1000;
         }
     }
 
+    onTabChanged(index){
+        this.setState({tabIndex:index});
+        const {userloan} = this.props;
+        var tabIndex = index + 1;
+        if(userloan.pageList[tabIndex].length ==0 && tabIndex !=1){
+            const {dispatch} = this.props;
+
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(fetchUserLoanList(false,true,false,{page:userloan.pageAfter[tabIndex]}, this.props.auth.token,this.state.tabIndex));
+            });
+        }
+    }
 
     onPress (item) {
         const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: EnterpriseDetailContainer,
+                name: 'EnterpriseDetail',
+                params: {
+                    id: item.id,
+                },
+            });
+        });
 
     }
 
@@ -126,7 +148,7 @@ class UserLoan extends BasePage {
                 initialListSize={1}
                 dataSource={dataSource}
                 renderRow={(item)=>{
-                        return <UserLoanItem  {...item} onClicked={this.onPress.bind(this, item)}/>
+                        return <UserLoanItem  {...item.enterprise} onClicked={this.onPress.bind(this, item.enterprise)}/>
                 }}
                 style={styles.listView}
                 onEndReached={this.onEndReached.bind(this, typeId)}
@@ -176,7 +198,7 @@ class UserLoan extends BasePage {
         return (
             <View style={styles.container}>
                 <ScrollableTabView
-                    onChangeTab={(item)=>{this.setState({tabIndex:item.i})}}
+                    onChangeTab={(item)=>{this.onTabChanged(item.i)}}
                     style={{marginTop: 20,flex:1}}
                     renderTabBar={() => <UserLoanTabBar  />}
                 >
