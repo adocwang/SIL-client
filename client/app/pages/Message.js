@@ -38,9 +38,7 @@ class Message extends BasePage {
 
     }
 
-    shouldComponentUpdate(){
-        return true;
-    }
+
     componentWillUpdate(){
     }
 

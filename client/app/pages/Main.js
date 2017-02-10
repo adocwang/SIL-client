@@ -109,9 +109,7 @@ class Main extends BasePage {
 
     }
 
-    shouldComponentUpdate(){
-        return true;
-    }
+
     componentWillUpdate(){
     }
 

@@ -47,7 +47,15 @@ class Claim extends BasePage {
     }
 
     openScaleAnimationDialog() {
-        this.scaleAnimationDialog.openDialog();
+        // 删除单个数据
+        storage.remove({
+            key: 'user'
+        });
+        navigator.resetTo({
+            component: LoginContainer,
+            name: 'Login'
+        });
+        //this.scaleAnimationDialog.openDialog();
     }
 
     openChooseScaleAnimationDialog() {
@@ -236,7 +244,7 @@ let styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         padding: 10,
         marginBottom: 2,
-        height: 90,
+        height: 100,
         paddingLeft: 20
     },
     img: {
@@ -248,7 +256,6 @@ let styles = StyleSheet.create({
         flex: 7,
         flexDirection: 'column',
         paddingLeft: 10,
-        paddingTop: 5
     },
     title: {
         color: '#4A4A4A',
@@ -262,7 +269,7 @@ let styles = StyleSheet.create({
     cat: {
         color: '#4A4A4A',
         fontSize: 12,
-        paddingTop: 5
+        paddingTop: 3
     },
     catContainer: {
         flex: 1,

@@ -41,9 +41,6 @@ class Search extends BasePage {
 
     }
 
-    shouldComponentUpdate(){
-        return true;
-    }
     componentWillUpdate(){
     }
 

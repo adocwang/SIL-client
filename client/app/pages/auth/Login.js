@@ -67,9 +67,7 @@ class Login extends React.Component {
         }
     }
 
-    shouldComponentUpdate(){
-        return true;
-    }
+
     componentWillUpdate(){
     }
 

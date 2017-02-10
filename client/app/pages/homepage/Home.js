@@ -55,13 +55,6 @@ class Home extends BasePage {
         });
     }
 
-    componentWillReceiveProps (nextProps) {
-
-    }
-
-    shouldComponentUpdate(){
-        return true;
-    }
     componentWillUpdate(){
     }
 
@@ -70,9 +63,17 @@ class Home extends BasePage {
 
     onSearchCompany(){
         const {navigator} = this.props;
-        navigator.push({
-            component: SearchContainer,
-            name: 'Search',
+        //navigator.push({
+        //    component: SearchContainer,
+        //    name: 'Search',
+        //});
+        // 删除单个数据
+        storage.remove({
+            key: 'user'
+        });
+        navigator.resetTo({
+            component: LoginContainer,
+            name: 'Login'
         });
     }
 

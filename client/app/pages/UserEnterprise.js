@@ -46,9 +46,7 @@ class UserEnterprise extends BasePage {
 
     }
 
-    shouldComponentUpdate(){
-        return true;
-    }
+
     componentWillUpdate(){
     }
 
