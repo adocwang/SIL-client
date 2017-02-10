@@ -56,14 +56,7 @@ class Home extends BasePage {
     }
 
     componentWillReceiveProps (nextProps) {
-        const {home} = this.props;
-        var index = this.state.tabIndex + 1
-        console.log(index,home.isLoadMore[index],nextProps.home.isLoadMore[index],nextProps.home.isRefreshing[index],nextProps.home.noMore);
-        if (!nextProps.home.isRefreshing[index]) {
-            if (nextProps.home.noMore) {
-                ToastShort('没有更多数据了');
-            }
-        }
+
     }
 
     shouldComponentUpdate(){

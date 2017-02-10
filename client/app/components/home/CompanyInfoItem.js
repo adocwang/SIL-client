@@ -70,7 +70,7 @@ let styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         padding: 10,
         marginBottom: 2,
-        height: 90,
+        height: 100,
         paddingLeft: 20,
     },
     img: {
@@ -82,6 +82,7 @@ let styles = StyleSheet.create({
         flex: 7,
         flexDirection: 'column',
         paddingLeft: 10,
+        alignSelf:'center'
     },
     title: {
         color: '#4A4A4A',
@@ -95,7 +96,7 @@ let styles = StyleSheet.create({
     cat: {
         color: '#4A4A4A',
         fontSize: 12,
-        paddingTop:5
+        paddingTop:3
     },
     greenContainer: {
         backgroundColor: '#7ED321',

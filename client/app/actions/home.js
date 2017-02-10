@@ -61,6 +61,9 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
                     dispatch(hideLoading());
                 }else if(data.code==0){
                     data.data.isRefreshing = isRefreshing;
+                    if(isLoadMore && data.data.enterprises.length == 0){
+                        ToastShort('没有更多数据了');
+                    }
                     dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
                 }
 
