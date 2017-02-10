@@ -47,15 +47,7 @@ class Claim extends BasePage {
     }
 
     openScaleAnimationDialog() {
-        // 删除单个数据
-        storage.remove({
-            key: 'user'
-        });
-        navigator.resetTo({
-            component: LoginContainer,
-            name: 'Login'
-        });
-        //this.scaleAnimationDialog.openDialog();
+        this.scaleAnimationDialog.openDialog();
     }
 
     openChooseScaleAnimationDialog() {
