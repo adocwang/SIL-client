@@ -11,6 +11,7 @@ const initialState = {
     token: '',
     role: '',
     bank: '',
+    role_name:"",
 };
 
 export default function auth (state = initialState, action) {
@@ -37,6 +38,8 @@ export default function auth (state = initialState, action) {
         case types.LOAD_LOCAL_USER:
             return Object.assign({}, state, action.data);
         case types.SET_USER_INFO_SUCCESS:
+            return Object.assign({}, state, action.data);
+        case types.GET_USER_INFO_SUCCESS:
             return Object.assign({}, state, action.data);
         case types.HIDE_LOADING:
             return Object.assign({}, state, action.data);

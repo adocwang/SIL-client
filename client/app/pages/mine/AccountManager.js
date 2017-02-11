@@ -78,46 +78,35 @@ export default class AccountManager extends React.Component {
                 name: 'Login'
             });
 
-            // 删除单个数据
             storage.remove({
                 key: 'user'
             });
-            //realm.write(() => {
-            //    let user = realm.objects('User');
-            //    realm.delete(user); // Deletes all books
-            //    console.log('User',user);
-            //});
+
         });
     }
 
     render() {
         const {auth} = this.props
         const headerImg = this.state.headerImg
-        const userName = "130291444221"
-        const realName = "张三"
-        const company = "天地人民银行"
-        const phoneNumber = "130291444221"
-        const work = "活阎王"
+        const realName = auth.true_name
+        const company = auth.bank_name
+        const phoneNumber = auth.phone
+        const work = auth.role_name
         const password = "******"
-        const gesturePassword = "设置手势密码"
         return (
             <View style={styles.container}>
                 <CustomToolbar title="账户管理" navigator={this.props.navigator}/>
                 <TouchableOpacity onPress={this.setHeaderImg}>
                     <View style={styles.headerBg}>
                         <Image source={headerImg} style={styles.headerImg}/>
-                        <Text style={styles.blueWord}>更改头像</Text>
                     </View>
                 </TouchableOpacity>
-                <ContentCell tip="账户名" value={userName} secondColor={Color.defaultBlackColor}/>
                 <ContentCell tip="姓名" value={realName} secondColor={Color.defaultBlackColor}/>
                 <ContentCell tip="单位" value={company} secondColor={Color.defaultShallowBlueColor}/>
                 <ContentCell tip="手机号" value={phoneNumber} secondColor={Color.defaultBlackColor}/>
                 <ContentCell tip="职位" value={work} secondColor={Color.defaultShallowBlueColor}/>
                 <ContentCell index={5} tip="密码" value={password} secondColor={Color.defaultShallowBlueColor} canClick
                              onPress={this.didClickedCell}/>
-                <ContentCell index={6} tip="手势密码" value={gesturePassword} secondColor={Color.defaultShallowBlueColor}
-                             canClick onPress={this.didClickedCell}/>
 
                 <View style={{backgroundColor: Color.defaultBgColor, flex: 1}}>
                     <Button style={styles.exitBg} titleStyle={styles.exitTitle} title="退出登录"

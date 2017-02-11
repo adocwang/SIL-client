@@ -109,7 +109,6 @@ class ApplicationItem extends Component {
         itemStyle = {width:15,height:20,marginTop:35}
         break;
     default:
-        console.log(this.props.index);
 }
     return(
       <TouchableWithoutFeedback onPress={this.clickedItem}>

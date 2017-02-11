@@ -105,11 +105,13 @@ export function fetchUserSet(paramsMap,token){
 }
 
 export function fetchUserGet(paramsMap,token){
-    return dispatch => {
-        return postRequest(host.USER_GET_URL ,paramsMap,token)
-            .then((data) => {
 
+    return dispatch => {
+
+        return postRequest(dispatch,host.USER_GET_URL ,paramsMap,token)
+            .then((data) => {
                 console.log(data);
+
                 if(data.code == 2007){
                     ToastShort('用户不存在');
                 }else  if(data.code == 1003){

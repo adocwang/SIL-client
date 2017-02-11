@@ -27,7 +27,7 @@ import FengXianXinXi from '../../components/enterprise/FengXianXinXi'
 import RongZiZiXun from '../../components/enterprise/RongZiZiXun'
 import DaiKuanXinXi from '../../components/enterprise/DaiKuanXinXi'
 import QiQuanYaoSu from '../../components/enterprise/QiQuanYaoSu'
-import JingYingXinXi from '../../components/enterprise/JingYingXinXi';
+import JingYingXinXi from '../../components/enterprise/JingYingXinxi.js';
 import {fetchEnterprise} from '../../actions/enterprise'
 import Loading from '../../components/Loading'
 import {GapYear} from '../../utils/CommonUtils'

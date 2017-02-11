@@ -35,6 +35,8 @@ class Person extends React.Component {
         this.fetchUserInfo()
     }
 
+
+
     didClickedAccountManager() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
@@ -47,9 +49,6 @@ class Person extends React.Component {
             });
         });
     }
-    componentDidUpdate() {
-        this.fetchUserInfo()
-    }
 
     fetchUserInfo() {
         const {dispatch,auth} = this.props
@@ -57,13 +56,13 @@ class Person extends React.Component {
     }
 
     didClickedMyStore() {
-        const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: MyStoreContainer,
-                name: 'MyStoreContainer',
-            });
-        });
+        // const {navigator} = this.props;
+        // InteractionManager.runAfterInteractions(() => {
+        //     navigator.push({
+        //         component: MyStoreContainer,
+        //         name: 'MyStoreContainer',
+        //     });
+        // });
     }
 
     render() {

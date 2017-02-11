@@ -7,6 +7,8 @@ import search from './search';
 import userenterprise from './userenterprise';
 import message from './message';
 import enterprise from './enterprise';
+import {enterpriseList} from './enterprise';
+import collection,{uploadImg} from './application.js'
 
 const rootReducer = combineReducers({
   home,
@@ -14,7 +16,10 @@ const rootReducer = combineReducers({
   search,
   userenterprise,
   message,
-  enterprise
+  enterprise,
+    enterpriseList,
+    collection,
+    uploadImg,
 });
 
 export default rootReducer;

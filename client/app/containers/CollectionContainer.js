@@ -12,10 +12,9 @@ class CollectionContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    console.log(state);
-    const {collection} = state;
+    const {enterpriseList,auth} = state;
     return {
-        collection
+        enterpriseList,auth
     }
 }
 

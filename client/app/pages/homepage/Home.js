@@ -50,7 +50,7 @@ class Home extends BasePage {
 
     componentWillReceiveProps (nextProps) {
 
-    }
+}
 
     shouldComponentUpdate(){
         return true;
