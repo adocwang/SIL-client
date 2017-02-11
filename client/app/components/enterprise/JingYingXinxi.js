@@ -13,11 +13,29 @@ import {
     StyleSheet,
     Image,
     Text,
-    View
+    View,
+    TouchableOpacity
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import Domain from '../../pages/enterprise/Domain'
 
 class JingYingXinXi extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onYMClicked = this.onYMClicked.bind(this);
+    }
+
+    onYMClicked() {
+        const  {navigator} = this.props;
+        navigator.push({
+            component: Domain,
+            name: 'Domain',
+            params: {
+                info: this.props,
+            },
+        });
+    }
+
     render () {
         return(
 
@@ -45,10 +63,10 @@ class JingYingXinXi extends React.Component {
                     </Col>
                     <View style={styles.col_divider}/>
                     <Col>
-                        <View style={styles.common_item}>
+                            <TouchableOpacity style={styles.common_item} onPress={this.onYMClicked}>
                             <Image source = {require('../../img/yuming.png')}/>
                             <Text style={styles.common_item_text}>域名</Text>
-                        </View>
+                                </TouchableOpacity>
                     </Col>
                 </Row>
 

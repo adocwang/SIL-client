@@ -173,7 +173,7 @@ class EnterpriseDetail extends BasePage {
                         >
                             <QiQuanYaoSu />
                         </Bar>
-                        <Bar
+                        {this.props.enterprise.detail&&<Bar
                             title='经营信息'
                             collapsible={true}
                             show={true}
@@ -182,8 +182,8 @@ class EnterpriseDetail extends BasePage {
                             style={styles.bar}
                             titleStyle={styles.bar_title}
                         >
-                            <JingYingXinXi />
-                        </Bar>
+                            <JingYingXinXi navigator={navigator} {...this.props.enterprise.detail}/>
+                        </Bar>}
                     </ScrollView>}
             </View>
         );
