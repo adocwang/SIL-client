@@ -169,7 +169,7 @@ class Login extends React.Component {
 
                 </View>
                 {
-                    this.state.loading?<Loading/>:<View></View>
+                    this.state.loading?<Loading backgroundColor = 'rgba(255,255,255,0.5)' />:<View></View>
                 }
             </View>
         );

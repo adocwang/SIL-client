@@ -96,9 +96,6 @@ class Home extends BasePage {
 
     onPress (item) {
         const {navigator} = this.props;
-
-        let _this = this;
-        InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: ClaimContainer,
                 name: 'Claim',
@@ -112,7 +109,6 @@ class Home extends BasePage {
                     }
                 },
             });
-        });
     }
 
     //渲染每页内容

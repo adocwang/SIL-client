@@ -19,11 +19,12 @@ export function fetchEnterprise (id,token) {
                     console.log(data);
                     dispatch(fetchEnterpriseSuccess(data.data))
                 }else {
+                    dispatch(hideLoading());
                     ToastShort('该企业不存在');
                 }
             })
             .catch((error) => {
-                console.log(error);
+                dispatch(hideLoading());
                 ToastShort(error.message);
             })
     }
@@ -35,6 +36,14 @@ export function fetchEnterpriseSuccess (data) {
     data.loading = false;
     return {
         type:types.FETCH_ENTERPRISE_DETAIL,
+        data:data
+    }
+}
+
+export function hideLoading () {
+    data.loading = false;
+    return {
+        type:types.HIDE_ENTERPRISE_LOADING,
         data:data
     }
 }

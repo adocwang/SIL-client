@@ -39,7 +39,6 @@ class Claim extends BasePage {
         if (this.props.route.params) {
             this.state = this.props.route.params
         }
-        console.log(this.state);
         this.openScaleAnimationDialog = this.openScaleAnimationDialog.bind(this);
         this.openChooseScaleAnimationDialog = this.openChooseScaleAnimationDialog.bind(this);
         this.onClaimBtnClick = this.onClaimBtnClick.bind(this);
