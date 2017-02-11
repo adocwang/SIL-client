@@ -14,10 +14,11 @@ import {
     InteractionManager
 } from 'react-native';
 import CustomToolbar from '../../components/CustomToolbar';
-import ClaimContainer from '../../containers/ClaimContainer'
+import EnterpriseDetailContainer from '../../containers/enterprise/EnterpriseDetailContainer'
 import {ToastShort} from '../../utils/ToastUtils';
 import {fetchEnterpriseList} from '../../actions/home';
 import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
+import Loading from '../../components/Loading'
 import BasePage from  '../BasePage'
 
 class Search extends BasePage {
@@ -34,16 +35,12 @@ class Search extends BasePage {
         this.searchCompany = this.searchCompany.bind(this);
     }
     componentDidMount () {
-        console.log(this.props);
     }
 
     componentWillReceiveProps (nextProps) {
 
     }
 
-    shouldComponentUpdate(){
-        return true;
-    }
     componentWillUpdate(){
     }
 
@@ -63,23 +60,13 @@ class Search extends BasePage {
 
     onPress (item) {
         const {navigator} = this.props;
-        // console.log(item);
-        let _this = this;
-        InteractionManager.runAfterInteractions(() => {
             navigator.push({
-                component: ClaimContainer,
-                name: 'Claim',
+                component: EnterpriseDetailContainer,
+                name: 'EnterpriseDetail',
                 params: {
-                    item: item,
-                    //回调!从SecondPageComponent获取user
-                    getUser: function(user) {
-                        _this.setState({
-                            user: user
-                        })
-                    }
+                    id: item.id,
                 },
             });
-        });
     }
 
 
@@ -88,7 +75,7 @@ class Search extends BasePage {
             <TouchableOpacity onPress={this.onPress.bind(this, item)}>
                 <View style={styles.containerItem}>
                     <View style={{flex: 1, flexDirection: 'column'}}>
-                        <Text>
+                        <Text style={styles.itemText}>
                             {item.name}
                         </Text>
                     </View>
@@ -118,11 +105,15 @@ class Search extends BasePage {
                             /></View></TouchableOpacity>
                     </View>
 
-                {this.props.search.enterprises.length >0?<ListView
+                <View style={{flex:1}}>
+                {this.props.search.enterprises.length >0&& <ListView
+                    style={styles.listView}
                     dataSource={this.state.dataSource.cloneWithRows(this.props.search.enterprises)}
                     renderRow={this.renderItem}
-                />:<View></View>}
-
+                />}
+                    {this.props.search.loading&&<Loading backgroundColor = 'rgba(255,255,255,0.5)'/>
+                    }
+                </View>
             </View>
         );
     }
@@ -133,6 +124,10 @@ const styles = StyleSheet.create({
         flex: 1,//可拉伸
         backgroundColor: '#FFFFFF',
     },
+    listView: {
+        flex: 1,//可拉伸
+        padding:20
+    },
     containerItem: {
         flex: 1,
         flexDirection: 'row',
@@ -140,6 +135,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fcfcfc',
         padding: 10,
+    },
+    itemText:{
+        fontSize:14
     },
     searchBar: {
         flexDirection: 'row',

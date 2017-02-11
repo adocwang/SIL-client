@@ -22,9 +22,9 @@ class ClaimContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {localUser} = state;
+    const {claimdistribute,auth} = state;
     return {
-        localUser
+        claimdistribute,auth
     }
 }
 

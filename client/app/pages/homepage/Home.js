@@ -17,7 +17,7 @@ import {
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
 import MainTabBar from '../../components/MainTabBar';
 import CustomTabBar from '../../components/CustomTabBar';
-import LoadingView from '../../components/LoadingView';
+import Loading from '../../components/Loading';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../../containers/ClaimContainer'
 import ApplicationContainer from '../../containers/ApplicationContainer'
@@ -27,6 +27,8 @@ import CompanyInfoItem from '../../components/home/CompanyInfoItem'
 import RiskInfoItem from '../../components/home/RiskInfoItem'
 import RongZiInfoItem from '../../components/home/RongZiInfoItem'
 import BasePage from  '../BasePage'
+import {fetchHomeEnterpriseList} from '../../actions/home'
+import {ToastShort} from '../../utils/ToastUtils'
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -46,8 +48,14 @@ class Home extends BasePage {
         canLoadMore = false;
     }
     componentDidMount () {
+        const {dispatch} = this.props;
+        const {home} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+             dispatch(fetchHomeEnterpriseList(false,true,false,{page:home.pageAfter[1]}, this.props.auth.token));
+        });
     }
 
+<<<<<<< HEAD
     componentWillReceiveProps (nextProps) {
 
 }
@@ -55,6 +63,8 @@ class Home extends BasePage {
     shouldComponentUpdate(){
         return true;
     }
+=======
+>>>>>>> 9d8803652d071a075d3cd2ac8ffde3d809d12f82
     componentWillUpdate(){
     }
 
@@ -67,12 +77,13 @@ class Home extends BasePage {
             component: SearchContainer,
             name: 'Search',
         });
+
     }
 
     onRefresh (typeId) {
         const {dispatch} = this.props;
         canLoadMore = false;
-        //dispatch(fetchReddit(true, false, typeId));
+        dispatch(fetchHomeEnterpriseList(true,false,false,{page:1}, this.props.auth.token));
     }
 
     onScroll () {
@@ -86,7 +97,7 @@ class Home extends BasePage {
         const {home} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
             const {dispatch} = this.props;
-            //dispatch(fetchReddit(false, false, typeId, true, 25, reddit.redditAfter[typeId]));
+            dispatch(fetchHomeEnterpriseList(false,false,true,{page:home.pageAfter[1]}, this.props.auth.token));
             canLoadMore = false;
             loadMoreTime = Date.parse(new Date()) / 1000;
         }
@@ -95,9 +106,6 @@ class Home extends BasePage {
 
     onPress (item) {
         const {navigator} = this.props;
-
-        let _this = this;
-        InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: ClaimContainer,
                 name: 'Claim',
@@ -111,14 +119,13 @@ class Home extends BasePage {
                     }
                 },
             });
-        });
     }
 
     //渲染每页内容
     renderContent (dataSource, typeId) {
         const {home} = this.props;
-        if (home.loading) {
-            return <LoadingView/>;
+        if (home.loading[typeId]) {
+            return <Loading/>;
         }
         let isEmpty = home.pageList[typeId] == undefined || home.pageList[typeId].length == 0;
         if (isEmpty) {
@@ -130,7 +137,7 @@ class Home extends BasePage {
                     style={{flex: 1}}
                     refreshControl={
             <RefreshControl
-              refreshing={home.isRefreshing}
+              refreshing={home.isRefreshing[typeId]}
               onRefresh={this.onRefresh.bind(this, typeId)}
               title="Loading..."
               colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
@@ -139,7 +146,7 @@ class Home extends BasePage {
                 >
                     <View style={{alignItems: 'center'}}>
                         <Text style={{fontSize: 16}}>
-                            正在与网络撕扯...
+                            暂无数据
                         </Text>
                     </View>
                 </ScrollView>
@@ -163,10 +170,10 @@ class Home extends BasePage {
                 onEndReached={this.onEndReached.bind(this, typeId)}
                 onEndReachedThreshold={10}
                 onScroll={this.onScroll}
-                renderFooter={this.renderFooter}
+                renderFooter={this.renderFooter.bind(this, typeId)}
                 refreshControl={
           <RefreshControl
-            refreshing={home.isRefreshing}
+            refreshing={home.isRefreshing[typeId]}
             onRefresh={this.onRefresh.bind(this, typeId)}
             title="Loading..."
             colors={['#ff0000', '#ff0000', '#ff0000', '#ff0000']}
@@ -176,9 +183,9 @@ class Home extends BasePage {
         );
     }
 
-    renderFooter () {
+    renderFooter (typeId) {
         const {home} = this.props;
-        if (home.isLoadMore) {
+        if (home.isLoadMore[typeId]) {
             return (
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <Spanner size={30} type='ThreeBounce' color='#c8c8c8'/>
@@ -217,8 +224,9 @@ class Home extends BasePage {
                             </View>
                     </TouchableOpacity>
                             <ScrollableTabView
+                                onChangeTab={(item)=>{this.setState({tabIndex:item.i})}}
                                 style={{marginTop: 20,flex:1}}
-                                renderTabBar={() => <CustomTabBar redCounts={[1,2,3]} />}
+                                renderTabBar={() => <CustomTabBar  />}
                             >
 
                                 {lists}

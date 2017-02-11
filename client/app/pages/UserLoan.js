@@ -15,18 +15,24 @@ import {
     InteractionManager
 } from 'react-native';
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
-import UserEnterpriseTabBar from '../components/UserEnterpriseTabBar';
-import LoadingView from '../components/LoadingView';
+import MainTabBar from '../components/MainTabBar';
+import UserLoanTabBar from '../components/UserLoanTabBar';
+import Loading from '../components/Loading';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
-import CompanyInfoItem from '../components/home/CompanyInfoItem'
-import BasePage from './BasePage'
+import ApplicationContainer from '../containers/ApplicationContainer'
+import SearchContainer from '../containers/SearchContainer'
+import Icon from '../../node_modules/react-native-vector-icons/Ionicons';
+import UserLoanItem from '../components/loan/UserLoanItem'
+import BasePage from  './BasePage'
+import {fetchUserLoanList} from '../actions/userloan'
+import {ToastShort} from '../utils/ToastUtils'
 
 var canLoadMore;
 var loadMoreTime = 0;
 
-class UserEnterprise extends BasePage {
+class UserLoan extends BasePage {
     constructor() {
         super()
 
@@ -35,26 +41,31 @@ class UserEnterprise extends BasePage {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
         };
+        this.state.tabIndex = 0;
         this.renderFooter = this.renderFooter.bind(this);
         this.onScroll = this.onScroll.bind(this);
         canLoadMore = false;
     }
     componentDidMount () {
+        const {dispatch} = this.props;
+        const {userloan} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchUserLoanList(false,true,false,{page:userloan.pageAfter[1]}, this.props.auth.token,this.state.tabIndex));
+        });
     }
 
-    componentWillReceiveProps (nextProps) {
-
-    }
-
-    shouldComponentUpdate(){
-        return true;
-    }
     componentWillUpdate(){
     }
 
     componentDidUpdate(){
     }
 
+
+    onRefresh (typeId) {
+        const {dispatch} = this.props;
+        canLoadMore = false;
+        dispatch(fetchUserLoanList(true,false,false,{page:1}, this.props.auth.token,this.state.tabIndex));
+    }
 
     onScroll () {
         if (!canLoadMore) {
@@ -64,15 +75,27 @@ class UserEnterprise extends BasePage {
 
     onEndReached (typeId) {
         let time = Date.parse(new Date()) / 1000;
-        const {userenterprise} = this.props;
+        const {userloan} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
             const {dispatch} = this.props;
-            //dispatch(fetchReddit(false, false, typeId, true, 25, reddit.redditAfter[typeId]));
+            dispatch(fetchUserLoanList(false,false,true,{page:userloan.pageAfter[1]}, this.props.auth.token,this.state.tabIndex));
             canLoadMore = false;
             loadMoreTime = Date.parse(new Date()) / 1000;
         }
     }
 
+    onTabChanged(index){
+        this.setState({tabIndex:index});
+        const {userloan} = this.props;
+        var tabIndex = index + 1;
+        if(userloan.pageList[tabIndex].length ==0 && tabIndex !=1){
+            const {dispatch} = this.props;
+
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(fetchUserLoanList(false,true,false,{page:userloan.pageAfter[tabIndex]}, this.props.auth.token,this.state.tabIndex));
+            });
+        }
+    }
 
     onPress (item) {
         const {navigator} = this.props;
@@ -81,19 +104,20 @@ class UserEnterprise extends BasePage {
                 component: EnterpriseDetailContainer,
                 name: 'EnterpriseDetail',
                 params: {
-                    id: 21,
+                    id: item.id,
                 },
             });
         });
+
     }
 
     //渲染每页内容
     renderContent (dataSource, typeId) {
-        const {userenterprise} = this.props;
-        if (userenterprise.loading) {
-            return <LoadingView/>;
+        const {userloan} = this.props;
+        if (userloan.loading[typeId]) {
+            return <Loading/>;
         }
-        let isEmpty = userenterprise.pageList[typeId] == undefined || userenterprise.pageList[typeId].length == 0;
+        let isEmpty = userloan.pageList[typeId] == undefined || userloan.pageList[typeId].length == 0;
         if (isEmpty) {
             return (
                 <ScrollView
@@ -101,35 +125,54 @@ class UserEnterprise extends BasePage {
                     horizontal={false}
                     contentContainerStyle={styles.no_data}
                     style={{flex: 1}}
+                    refreshControl={
+            <RefreshControl
+              refreshing={userloan.isRefreshing[typeId]}
+              onRefresh={this.onRefresh.bind(this, typeId)}
+              title="Loading..."
+              colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
+            />
+          }
                 >
                     <View style={{alignItems: 'center'}}>
                         <Text style={{fontSize: 16}}>
-                            正在与网络撕扯...
+                            暂无数据
                         </Text>
                     </View>
                 </ScrollView>
             );
         }
+
         return (
             <ListView
                 initialListSize={1}
                 dataSource={dataSource}
-                renderRow={(item)=>{  return <CompanyInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/> }}
+                renderRow={(item)=>{
+                        return <UserLoanItem  {...item.enterprise} onClicked={this.onPress.bind(this, item.enterprise)}/>
+                }}
                 style={styles.listView}
                 onEndReached={this.onEndReached.bind(this, typeId)}
                 onEndReachedThreshold={10}
                 onScroll={this.onScroll}
-                renderFooter={this.renderFooter}/>
+                renderFooter={this.renderFooter.bind(this, typeId)}
+                refreshControl={
+          <RefreshControl
+            refreshing={userloan.isRefreshing[typeId]}
+            onRefresh={this.onRefresh.bind(this, typeId)}
+            title="Loading..."
+            colors={['#ff0000', '#ff0000', '#ff0000', '#ff0000']}
+          />
+        }
+            />
         );
     }
 
-
-
-    renderFooter () {
-        const {userenterprise} = this.props;
-        if (userenterprise.isLoadMore) {
+    renderFooter (typeId) {
+        const {userloan} = this.props;
+        if (userloan.isLoadMore[typeId]) {
             return (
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Spanner size={30} type='ThreeBounce' color='#c8c8c8'/>
                     <Text style={{textAlign: 'center', fontSize: 16}}>
                         加载中…
                     </Text>
@@ -139,25 +182,25 @@ class UserEnterprise extends BasePage {
     }
 
     render () {
-        const {userenterprise} = this.props;
+        const {userloan} = this.props;
         var lists = [];
-        userenterprise.catList.forEach((cat) => {
+        userloan.catList.forEach((cat) => {
             lists.push(
                 <View
                     key={cat.id}
                     tabLabel={cat.name}
                     style={{flex: 1}}
                 >
-                    {this.renderContent(this.state.dataSource.cloneWithRows(userenterprise.pageList[cat.id] == undefined ? [] : userenterprise.pageList[cat.id]), cat.id)}
+                    {this.renderContent(this.state.dataSource.cloneWithRows(userloan.pageList[cat.id] == undefined ? [] : userloan.pageList[cat.id]), cat.id)}
                 </View>);
         });
 
         return (
             <View style={styles.container}>
-
                 <ScrollableTabView
-                    style={{flex:1}}
-                    renderTabBar={() => <UserEnterpriseTabBar redCounts={[1,2,3]} />}
+                    onChangeTab={(item)=>{this.onTabChanged(item.i)}}
+                    style={{marginTop: 20,flex:1}}
+                    renderTabBar={() => <UserLoanTabBar  />}
                 >
 
                     {lists}
@@ -253,4 +296,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default UserEnterprise;
+export default UserLoan;

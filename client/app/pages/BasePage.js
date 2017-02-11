@@ -9,7 +9,7 @@ export default class BasePage extends Component {
         super(props);
     }
 
-    componentWillReceiveProps (nextProps) {
+    shouldComponentUpdate(nextProps, nextState){
         const {navigator} = nextProps;
         const {auth} = nextProps;
         if(navigator && auth && auth.id==0){
@@ -22,6 +22,7 @@ export default class BasePage extends Component {
                 name: 'Login'
             });
         }
+        return true;
     }
 
 }

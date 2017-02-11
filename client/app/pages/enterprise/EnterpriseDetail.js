@@ -44,7 +44,6 @@ class EnterpriseDetail extends BasePage {
     }
 
     componentDidMount() {
-        console.log(this.state);
         if (this.state.id && this.state.id != '') {
             const {dispatch} = this.props;
             InteractionManager.runAfterInteractions(() => {
@@ -69,7 +68,7 @@ class EnterpriseDetail extends BasePage {
                             source={{uri: 'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg'}}
                         />
                     </View>
-                    {!this.props.enterprise.loading &&<View>
+                    {!this.props.enterprise.loading && enterprise.detail&& <View>
                     <Text style={styles.name}>{enterprise.name}</Text>
                     <Text style={styles.desc}>{enterprise.legal_man} | {enterprise.detail.regist_capi} | 成立{GapYear(enterprise.start)>0?GapYear(enterprise.start):'不到1'}年</Text>
                     <Text style={styles.cat}>互联网 信息技术 >></Text>

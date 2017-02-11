@@ -27,7 +27,7 @@ class Login extends React.Component {
         super(props);
         this.state = {
             password:'111111',
-            phone:'13547926578',
+            phone:'13878787878',
             loading:false
         };
     }
@@ -67,9 +67,7 @@ class Login extends React.Component {
         }
     }
 
-    shouldComponentUpdate(){
-        return true;
-    }
+
     componentWillUpdate(){
     }
 
@@ -171,7 +169,7 @@ class Login extends React.Component {
 
                 </View>
                 {
-                    this.state.loading?<Loading/>:<View></View>
+                    this.state.loading?<Loading backgroundColor = 'rgba(255,255,255,0.5)' />:<View></View>
                 }
             </View>
         );

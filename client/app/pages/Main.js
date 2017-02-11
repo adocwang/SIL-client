@@ -23,7 +23,7 @@ import ClaimContainer from '../containers/ClaimContainer'
 import ApplicationContainer from '../containers/ApplicationContainer'
 import HomeContainer from '../containers/HomeContainer'
 import PersonContainer from '../containers/PersonContainer'
-import UserEnterpriseContainer from '../containers/UserEnterpriseContainer'
+import UserEnterpriseContainer from '../containers/UserLoanContainer'
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
 import MessageContainer from '../containers/MessageContainer'
 import realm from '../components/realm'
@@ -109,9 +109,7 @@ class Main extends BasePage {
 
     }
 
-    shouldComponentUpdate(){
-        return true;
-    }
+
     componentWillUpdate(){
     }
 

@@ -18,12 +18,17 @@ export function fetchEnterprise (id,token) {
                 if (data.code == 0) {
                     console.log(data);
                     dispatch(fetchEnterpriseSuccess(data.data))
+<<<<<<< HEAD
                 } else {
+=======
+                }else {
+                    dispatch(hideLoading());
+>>>>>>> 9d8803652d071a075d3cd2ac8ffde3d809d12f82
                     ToastShort('该企业不存在');
                 }
             })
             .catch((error) => {
-                console.log(error);
+                dispatch(hideLoading());
                 ToastShort(error.message);
             })
     }
@@ -58,6 +63,14 @@ export function fetchEnterpriseSuccess (data) {
     data.loading = false;
     return {
         type:types.FETCH_ENTERPRISE_DETAIL,
+        data:data
+    }
+}
+
+export function hideLoading () {
+    data.loading = false;
+    return {
+        type:types.HIDE_ENTERPRISE_LOADING,
         data:data
     }
 }

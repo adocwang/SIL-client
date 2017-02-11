@@ -44,6 +44,7 @@ export default function auth (state = initialState, action) {
         case types.HIDE_LOADING:
             return Object.assign({}, state, action.data);
         case types.CLEAR_AUTH:
+            console.log('CLEAR_AUTH',initialState);
             return initialState;
         default:
             return state;

@@ -1,6 +1,7 @@
 /**
- * Created by kiefer on 2017/2/5.
+ * Created by kiefer on 2017/2/10.
  */
+
 'use strict';
 import React , { PropTypes }from 'react'
 import {
@@ -16,7 +17,7 @@ const propTypes = {
     onClicked: PropTypes.func,
 }
 
-class CompanyInfoItem extends React.Component {
+class UserLoanItem extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -34,15 +35,6 @@ class CompanyInfoItem extends React.Component {
                             <Text style={styles.title}>
                                 {this.props.name}
                             </Text>
-                            {this.props.role_a ? <View style={styles.greenContainer}>
-                                <Text style={styles.status}>
-                                    已认领
-                                </Text>
-                            </View> : <View style={styles.redContainer}>
-                                <Text style={styles.red_text}>
-                                    未分配
-                                </Text>
-                            </View>}
 
                         </View>
                         <Text style={styles.desc}>
@@ -98,23 +90,6 @@ let styles = StyleSheet.create({
         fontSize: 12,
         paddingTop:3
     },
-    greenContainer: {
-        backgroundColor: '#7ED321',
-        borderRadius: 10,
-        justifyContent: 'center',
-        height: 20,
-        width: 60,
-        alignItems: 'center'
-    },
-    redContainer: {
-        borderWidth: 1,
-        borderRadius: 10,
-        justifyContent: 'center',
-        borderColor: '#F21B35',
-        height: 20,
-        width: 60,
-        alignItems: 'center'
-    },
     red_text: {
         color: '#F21B35',
         fontSize: 12
@@ -133,4 +108,4 @@ let styles = StyleSheet.create({
     }
 });
 
-export default CompanyInfoItem;
+export default UserLoanItem;
