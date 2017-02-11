@@ -20,6 +20,7 @@ import CustomTabBar from '../../components/CustomTabBar';
 import Loading from '../../components/Loading';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../../containers/ClaimContainer'
+import EnterpriseDetailContainer from '../../containers/enterprise/EnterpriseDetailContainer'
 import ApplicationContainer from '../../containers/ApplicationContainer'
 import SearchContainer from '../../containers/SearchContainer'
 import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
@@ -106,19 +107,20 @@ class Home extends BasePage {
 
     onPress (item) {
         const {navigator} = this.props;
-            navigator.push({
-                component: ClaimContainer,
-                name: 'Claim',
-                params: {
-                    item: item,
-                    //回调!从SecondPageComponent获取user
-                    getUser: function(user) {
-                        _this.setState({
-                            user: user
-                        })
-                    }
-                },
-            });
+            //navigator.push({
+            //    component: ClaimContainer,
+            //    name: 'Claim',
+            //    params: {
+            //        item: item,
+            //    },
+            //});
+        navigator.push({
+            component: EnterpriseDetailContainer,
+            name: 'EnterpriseDetail',
+            params: {
+                id: 21,
+            },
+        });
     }
 
     //渲染每页内容

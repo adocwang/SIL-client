@@ -7,21 +7,39 @@ import {
     StyleSheet,
     Image,
     Text,
-    View
+    View,
+    TouchableOpacity
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import GongShangXinXi from '../../pages/enterprise/GongShangXinXi'
 
 class CommonInfo extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onGSClicked = this.onGSClicked.bind(this);
+    }
+
+    onGSClicked() {
+        const  {navigator} = this.props;
+        navigator.push({
+            component: GongShangXinXi,
+            name: 'GongShangXinXi',
+            params: {
+                info: this.props,
+            },
+        });
+    }
+
     render () {
         return(
 
             <Grid style={styles.container}>
                 <Col>
                     <Row>
-                        <View style={styles.common_item}>
+                        <TouchableOpacity style={styles.common_item} onPress={this.onGSClicked}>
                             <Image source = {require('../../img/gongshangxinxi.png')}/>
                             <Text style={styles.common_item_text}>工商信息</Text>
-                        </View>
+                            </TouchableOpacity>
                     </Row>
                     <View style={styles.row_divider}/>
                     <Row>

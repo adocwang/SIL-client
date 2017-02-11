@@ -1,9 +1,7 @@
 /**
  * Created by kiefer on 2017/2/4.
  */
-/**
- * Created by kiefer on 2017/1/25.
- */
+
 import React from 'react';
 import {
     StyleSheet,
@@ -27,7 +25,9 @@ import FengXianXinXi from '../../components/enterprise/FengXianXinXi'
 import RongZiZiXun from '../../components/enterprise/RongZiZiXun'
 import DaiKuanXinXi from '../../components/enterprise/DaiKuanXinXi'
 import QiQuanYaoSu from '../../components/enterprise/QiQuanYaoSu'
-import JingYingXinXi from '../../components/enterprise/JingYingXinxi.js';
+import JingYingXinXi from '../../components/enterprise/JingYingXinXi';
+import GongShangXinXi from '../../pages/enterprise/GongShangXinXi'
+
 import {fetchEnterprise} from '../../actions/enterprise'
 import Loading from '../../components/Loading'
 import {GapYear} from '../../utils/CommonUtils'
@@ -88,7 +88,7 @@ class EnterpriseDetail extends BasePage {
                             <DaiKuanJinDu activeTab={1} backgroundColor='#ffffff'/>
                         </Bar>
 
-                        <Bar
+                        {this.props.enterprise.detail&&<Bar
                             title='常用信息'
                             collapsible={true}
                             show={true}
@@ -97,8 +97,8 @@ class EnterpriseDetail extends BasePage {
                             style={styles.bar}
                             titleStyle={styles.bar_title}
                         >
-                            <CommonInfo/>
-                        </Bar>
+                           <CommonInfo navigator={navigator} {...this.props.enterprise.detail}/>
+                        </Bar>}
                         <Bar
                             title='融资资讯'
                             collapsible={true}

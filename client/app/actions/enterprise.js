@@ -68,10 +68,9 @@ export function fetchEnterpriseSuccess (data) {
 }
 
 export function hideLoading () {
-    data.loading = false;
     return {
         type:types.HIDE_ENTERPRISE_LOADING,
-        data:data
+        data:{loading:false}
     }
 }
 
