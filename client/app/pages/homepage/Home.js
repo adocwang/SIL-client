@@ -56,21 +56,7 @@ class Home extends BasePage {
         });
     }
 
-<<<<<<< HEAD
-    componentWillReceiveProps (nextProps) {
 
-}
-
-    shouldComponentUpdate(){
-        return true;
-    }
-=======
->>>>>>> 9d8803652d071a075d3cd2ac8ffde3d809d12f82
-    componentWillUpdate(){
-    }
-
-    componentDidUpdate(){
-    }
 
     onSearchCompany(){
         const {navigator} = this.props;
@@ -107,20 +93,20 @@ class Home extends BasePage {
 
     onPress (item) {
         const {navigator} = this.props;
-            //navigator.push({
-            //    component: ClaimContainer,
-            //    name: 'Claim',
-            //    params: {
-            //        item: item,
-            //    },
-            //});
-        navigator.push({
-            component: EnterpriseDetailContainer,
-            name: 'EnterpriseDetail',
-            params: {
-                id: 21,
-            },
-        });
+            navigator.push({
+                component: ClaimContainer,
+                name: 'Claim',
+                params: {
+                    item: item,
+                },
+            });
+        //navigator.push({
+        //    component: EnterpriseDetailContainer,
+        //    name: 'EnterpriseDetail',
+        //    params: {
+        //        id: 21,
+        //    },
+        //});
     }
 
     //渲染每页内容
