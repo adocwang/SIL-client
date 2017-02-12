@@ -93,20 +93,20 @@ class Home extends BasePage {
 
     onPress (item) {
         const {navigator} = this.props;
-            //navigator.push({
-            //    component: ClaimContainer,
-            //    name: 'Claim',
-            //    params: {
-            //        item: item,
-            //    },
-            //});
-        navigator.push({
-            component: EnterpriseDetailContainer,
-            name: 'EnterpriseDetail',
-            params: {
-                id: 21,
-            },
-        });
+            navigator.push({
+                component: ClaimContainer,
+                name: 'Claim',
+                params: {
+                    item: item,
+                },
+            });
+        //navigator.push({
+        //    component: EnterpriseDetailContainer,
+        //    name: 'EnterpriseDetail',
+        //    params: {
+        //        id: 21,
+        //    },
+        //});
     }
 
     //渲染每页内容
@@ -128,7 +128,7 @@ class Home extends BasePage {
               refreshing={home.isRefreshing[typeId]}
               onRefresh={this.onRefresh.bind(this, typeId)}
               title="Loading..."
-              colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
+              colors={['#15499A', '#15499A', '#15499A', '#15499A']}
             />
           }
                 >
@@ -164,7 +164,7 @@ class Home extends BasePage {
             refreshing={home.isRefreshing[typeId]}
             onRefresh={this.onRefresh.bind(this, typeId)}
             title="Loading..."
-            colors={['#ff0000', '#ff0000', '#ff0000', '#ff0000']}
+            colors={['#15499A', '#15499A', '#15499A', '#15499A']}
           />
         }
             />

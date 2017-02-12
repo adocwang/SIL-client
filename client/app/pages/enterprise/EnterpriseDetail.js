@@ -14,6 +14,7 @@ import {
     TouchableOpacity,
     Button,
     ScrollView,
+    RefreshControl,
     View
 } from 'react-native';
 import CustomToolbar from '../../components/CustomToolbar'
@@ -44,13 +45,31 @@ class EnterpriseDetail extends BasePage {
         }
     }
 
+
     componentDidMount() {
+        const {dispatch} = this.props;
         if (this.state.id && this.state.id != '') {
-            const {dispatch} = this.props;
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(fetchEnterprise(this.state.id, this.props.auth.token));
+            // 读取
+            storage.load({
+                key: 'enterprise',
+                id:this.state.id,
+                autoSync: false,
+                syncInBackground: true
+            }).then(ret => {
+                dispatch({type:types.FETCH_LOCAL_ENTERPRISE_DETAIL,data:ret});
+            }).catch(err => {
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(fetchEnterprise(this.state.id, this.props.auth.token,false));
+                });
             });
+
         }
+    }
+    refreshEnterprise(id){
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchEnterprise(id, this.props.auth.token,true));
+        });
     }
     componentWillUnmount() {
         const {dispatch} = this.props;
@@ -81,7 +100,15 @@ class EnterpriseDetail extends BasePage {
                     </View>}
                 </View>
                 {this.props.enterprise.loading ? <Loading backgroundColor='rgba(255,255,255,0.5)'/> :
-                    <ScrollView style={{marginBottom:20}}>
+                    <ScrollView style={{marginBottom:20}}
+                                refreshControl={
+                    <RefreshControl
+                    refreshing={enterprise.isRefreshing}
+                    onRefresh={this.refreshEnterprise.bind(this, this.state.id)}
+                    title="Loading..."
+                    colors={['#15499A', '#15499A', '#15499A', '#15499A']}
+                    />}
+                    >
                         <Bar
                             title='贷款受理进度'
                             collapsible={true}

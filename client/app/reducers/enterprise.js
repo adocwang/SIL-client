@@ -7,6 +7,7 @@ import * as types from '../constants/ActionTypes';
 
 const initialState = {
     loading:true,
+    isRefreshing:false,
     detail:{},
     id:0,
     address:'',
@@ -30,9 +31,23 @@ const listInitialState = {
 export default function enterprise (state = initialState, action) {
     switch (action.type) {
         case types.FETCH_ENTERPRISE_DETAIL:
+            state.loading = false;
+            state.isRefreshing = false;
+            storage.save({
+                key: 'enterprise',  // 注意:请不要在key中使用_下划线符号!
+                id: action.data.id,   // 注意:请不要在id中使用_下划线符号!
+                rawData: action.data,
+            });
             return Object.assign({}, state,action.data);
         case types.CLEAR_LAST_ENTERPRISE_DETAIL:
             return initialState;
+        case types.FETCH_LOCAL_ENTERPRISE_DETAIL:
+            state.loading = false;
+            state.isRefreshing = false;
+            return Object.assign({}, state,action.data);
+        case types.REFRESH_ENTERPRISE_DETAIL:
+            state.isRefreshing = true;
+            return Object.assign({}, state);
         default:
             return state;
     }
