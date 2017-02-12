@@ -1,6 +1,8 @@
 /**
  * Created by kiefer on 2017/2/7.
  */
+import * as types from '../constants/ActionTypes';
+
 const mockMessageInfo = [
     {
         id:1,
@@ -33,8 +35,18 @@ const mockMessageInfo = [
 
 const initialState = {
    messageList:mockMessageInfo,
+    isRefreshing:false
 };
 
 export default function home (state = initialState, action) {
-            return state;
+           switch (action.type){
+               case types.FETCH_MESSAGE_LIST:
+                   state.isRefreshing = true;
+                   return Object.assign({}, state);
+               case types.RECEIVE_MESSAGE_LIST:
+                   state.isRefreshing = false;
+                   return Object.assign({}, state);
+               default:
+                   return state;
+           }
 }

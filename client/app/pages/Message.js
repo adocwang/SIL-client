@@ -11,6 +11,7 @@ import {
     ListView,
     TextInput,
     TouchableOpacity,
+    RefreshControl,
     InteractionManager
 } from 'react-native';
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
@@ -18,6 +19,7 @@ import {ToastShort} from '../utils/ToastUtils';
 import MessageItem from '../components/home/MessageItem';
 import BasePage from './BasePage'
 import CustomToolbar from '../components/CustomToolbar'
+import * as types from '../constants/ActionTypes';
 
 class Message extends BasePage {
     constructor() {
@@ -31,20 +33,12 @@ class Message extends BasePage {
 
         this.renderItem = this.renderItem.bind(this);
     }
-    componentDidMount () {
+
+    refreshList(){
+        const {dispatch} = this.props;
+        dispatch({type:types.FETCH_MESSAGE_LIST});
+        dispatch({type:types.RECEIVE_MESSAGE_LIST});
     }
-
-    componentWillReceiveProps (nextProps) {
-
-    }
-
-
-    componentWillUpdate(){
-    }
-
-    componentDidUpdate(){
-    }
-
 
 
     onPress (item) {
@@ -77,6 +71,13 @@ class Message extends BasePage {
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(this.props.message.messageList)}
                     renderRow={this.renderItem}
+                    refreshControl={
+                    <RefreshControl
+                    refreshing={this.props.message.isRefreshing}
+                    onRefresh={this.refreshList.bind(this)}
+                    title="Loading..."
+                    colors={['#15499A', '#15499A', '#15499A', '#15499A']}
+                    />}
                 />
             </View>
         );
