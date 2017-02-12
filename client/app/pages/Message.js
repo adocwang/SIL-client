@@ -32,7 +32,6 @@ class Message extends BasePage {
         this.renderItem = this.renderItem.bind(this);
     }
     componentDidMount () {
-        console.log(this.props);
     }
 
     componentWillReceiveProps (nextProps) {

@@ -96,6 +96,7 @@ export function fetchBankList(token){
 
 export function fetchUserList(token){
     return dispatch => {
+        dispatch({type:types.FETCH_USER_LIST,data:{}})
         return postRequest(dispatch,host.USER_LIST_URL ,{page:1,page_limit:100,role_en_name:'ROLE_CUSTOMER_MANAGER'},token)
             .then((data) => {
                 if(data.code==0){
