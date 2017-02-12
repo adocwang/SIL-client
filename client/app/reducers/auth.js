@@ -11,7 +11,8 @@ const initialState = {
     token: '',
     role: '',
     bank: '',
-    role_name:"",
+    role_name:'',
+    bank_name:''
 };
 
 export default function auth (state = initialState, action) {

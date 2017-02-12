@@ -38,7 +38,7 @@ class UserLoanItem extends React.Component {
 
                         </View>
                         <Text style={styles.desc}>
-                            {this.props.legal_man} |
+                            {this.props.legal_man&&(this.props.legal_man + ' | ')}{this.props.regist_capi&&(this.props.regist_capi + ' | ')}
                             成立{GapYear(this.props.start) > 0 ? GapYear(this.props.start) : '不到1'}年
                         </Text>
 
@@ -61,19 +61,25 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#ffffff',
         padding: 10,
-        marginBottom: 2,
+        marginBottom: 7,
         height: 100,
         paddingLeft: 20,
+        marginLeft:20,
+        marginRight:20,
+        marginTop:5
     },
     img: {
         flex: 1,
-        width: 40,
-        height: 40,
+        width: 50,
+        height: 50,
+        borderColor:'#B5B5B5',     //边框颜色
+        borderWidth:1, //边框宽度
+        borderRadius:15  //边框圆角
     },
     content: {
         flex: 7,
         flexDirection: 'column',
-        paddingLeft: 10,
+        paddingLeft: 15,
         alignSelf:'center'
     },
     title: {

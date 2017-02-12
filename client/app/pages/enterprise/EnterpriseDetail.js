@@ -1,9 +1,7 @@
 /**
  * Created by kiefer on 2017/2/4.
  */
-/**
- * Created by kiefer on 2017/1/25.
- */
+
 import React from 'react';
 import {
     StyleSheet,
@@ -16,6 +14,7 @@ import {
     TouchableOpacity,
     Button,
     ScrollView,
+    RefreshControl,
     View
 } from 'react-native';
 import CustomToolbar from '../../components/CustomToolbar'
@@ -27,13 +26,16 @@ import FengXianXinXi from '../../components/enterprise/FengXianXinXi'
 import RongZiZiXun from '../../components/enterprise/RongZiZiXun'
 import DaiKuanXinXi from '../../components/enterprise/DaiKuanXinXi'
 import QiQuanYaoSu from '../../components/enterprise/QiQuanYaoSu'
-import JingYingXinXi from '../../components/enterprise/JingYingXinxi.js';
+import JingYingXinXi from '../../components/enterprise/JingYingXinxi';
+import GongShangXinXi from '../../pages/enterprise/GongShangXinXi'
+
 import {fetchEnterprise} from '../../actions/enterprise'
 import Loading from '../../components/Loading'
 import {GapYear} from '../../utils/CommonUtils'
 
 import { Col, Row, Grid } from "react-native-easy-grid";
 import BasePage from  '../BasePage'
+import * as types from '../../constants/ActionTypes';
 
 class EnterpriseDetail extends BasePage {
     constructor(props) {
@@ -43,15 +45,38 @@ class EnterpriseDetail extends BasePage {
         }
     }
 
+
     componentDidMount() {
+        const {dispatch} = this.props;
         if (this.state.id && this.state.id != '') {
-            const {dispatch} = this.props;
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(fetchEnterprise(this.state.id, this.props.auth.token));
+            // 读取
+            storage.load({
+                key: 'enterprise',
+                id:this.state.id,
+                autoSync: false,
+                syncInBackground: true
+            }).then(ret => {
+                dispatch({type:types.FETCH_LOCAL_ENTERPRISE_DETAIL,data:ret});
+            }).catch(err => {
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(fetchEnterprise(this.state.id, this.props.auth.token,false));
+                });
             });
+
         }
     }
-
+    refreshEnterprise(id){
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchEnterprise(id, this.props.auth.token,true));
+        });
+    }
+    componentWillUnmount() {
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch({type:types.CLEAR_LAST_ENTERPRISE_DETAIL});
+        });
+    }
 
     render() {
         const {navigator} = this.props;
@@ -75,7 +100,15 @@ class EnterpriseDetail extends BasePage {
                     </View>}
                 </View>
                 {this.props.enterprise.loading ? <Loading backgroundColor='rgba(255,255,255,0.5)'/> :
-                    <ScrollView style={{marginBottom:20}}>
+                    <ScrollView style={{marginBottom:20}}
+                                refreshControl={
+                    <RefreshControl
+                    refreshing={enterprise.isRefreshing}
+                    onRefresh={this.refreshEnterprise.bind(this, this.state.id)}
+                    title="Loading..."
+                    colors={['#15499A', '#15499A', '#15499A', '#15499A']}
+                    />}
+                    >
                         <Bar
                             title='贷款受理进度'
                             collapsible={true}
@@ -97,7 +130,7 @@ class EnterpriseDetail extends BasePage {
                             style={styles.bar}
                             titleStyle={styles.bar_title}
                         >
-                            <CommonInfo/>
+                           <CommonInfo navigator={navigator} {...this.props.enterprise.detail}/>
                         </Bar>
                         <Bar
                             title='融资资讯'
@@ -182,7 +215,7 @@ class EnterpriseDetail extends BasePage {
                             style={styles.bar}
                             titleStyle={styles.bar_title}
                         >
-                            <JingYingXinXi />
+                            <JingYingXinXi navigator={navigator} {...this.props.enterprise.detail}/>
                         </Bar>
                     </ScrollView>}
             </View>

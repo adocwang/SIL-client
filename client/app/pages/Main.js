@@ -169,16 +169,6 @@ class Main extends BasePage {
 
                     </TabNavigator.Item>
                     <TabNavigator.Item
-                        selected={this.state.selectedTab === 'message'}
-                        title="消息"
-                        renderIcon={() => <Image source={require("../img/message_icon_d.png")} />}
-                        renderSelectedIcon={() => <Image source={require("../img/message_icon.png")} />}
-                        //renderBadge={() => <CustomBadgeView />}
-                        onPress={() => this.setState({ selectedTab: 'message' })}>
-                        <MessageContainer navigator={this.props.navigator}/>
-
-                    </TabNavigator.Item>
-                    <TabNavigator.Item
                         selected={this.state.selectedTab === 'person'}
                         title="我的"
                         renderIcon={() => <Image source={require("../img/person_icon_d.png")} />}

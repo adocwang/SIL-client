@@ -81,21 +81,15 @@ const DaiKuanJinDu = React.createClass({
 
         return <View
             key={name}
-            style={{flex: 1}}
+            style={styles.tab}
         >
-            <View style={{flex:1}}>
+                    <Image source = {icon} style={styles.icon}/>
+                    {isTabActive? <Image source = {require('../../img/line_dot_green.png')} style={styles.jindu}/>
+                    : <Image source = {require('../../img/line_dot_gray.png')} style={styles.jindu}/>}
 
-                <View style={[styles.tab, this.props.tabStyle,]}>
-                    <Image source = {icon} style={{alignSelf:'center',marginTop:20,height:15}}/>
-                    {isTabActive? <Image source = {require('../../img/line_dot_green.png')} style={{alignSelf:'center',marginTop:5}}/>
-                    : <Image source = {require('../../img/line_dot_gray.png')} style={{alignSelf:'center',marginTop:5}}/>}
-
-                </View>
                 <Text style={[{color: textColor, fontWeight, alignSelf:'center',paddingBottom:15,paddingTop:5}, textStyle, ]}>
                     {name}
                 </Text>
-
-            </View>
         </View>;
     },
 
@@ -118,9 +112,10 @@ const DaiKuanJinDu = React.createClass({
 
 const styles = StyleSheet.create({
     tab: {
-        flex: 1,
+        flex:1,
         justifyContent: 'center',
         paddingBottom: 10,
+        backgroundColor:'transparent'
     },
     tabs: {
         height: 75,
@@ -131,6 +126,16 @@ const styles = StyleSheet.create({
         borderLeftWidth: 0,
         borderRightWidth: 0,
     },
+    jindu:{
+        alignSelf:'center',
+        marginTop:5,
+        resizeMode: Image.resizeMode.cover
+    },
+    icon:{
+        alignSelf:'center',
+        marginTop:20,
+        height:15,
+    }
 });
 
 export default DaiKuanJinDu;

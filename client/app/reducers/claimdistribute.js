@@ -4,9 +4,9 @@
 import * as types from '../constants/ActionTypes';
 
 const initialState = {
-    loadingBankList:false,
+    loadingBankList:true,
     bankList:[],
-    loadingUserList:false,
+    loadingUserList:true,
     zhuliUserList:[],
     xieliUserList:[],
     setEnterpriseInfoSuccess:false

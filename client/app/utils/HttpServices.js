@@ -4,8 +4,8 @@ import * as types from '../constants/ActionTypes';
 
 export function postRequest (dispatch,url,paramsMap,token) {
 
-  console.info("url=", url,{'token':token},paramsMap);
-  return fetch(host.BASE_URL + url, {
+    console.info("url=", url,{'token':token},paramsMap);
+   return fetch(host.BASE_URL + url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

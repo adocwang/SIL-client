@@ -24,6 +24,7 @@ const rootReducer = combineReducers({
    claimdistribute,
     commonNet,
     findingEnterprise
+
 });
 
 export default rootReducer;

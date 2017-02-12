@@ -79,7 +79,7 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
 
 export function fetchBankList(token){
     return dispatch => {
-        dispatch({type:types.FETCH_BANK_LIST,data:{}})
+        //dispatch({type:types.FETCH_BANK_LIST,data:{}})
         return getRequest(dispatch,host.BANK_LIST_URL ,token)
             .then((data) => {
                 if(data.code==0){
@@ -97,7 +97,7 @@ export function fetchBankList(token){
 export function fetchUserList(token){
     return dispatch => {
         dispatch({type:types.FETCH_USER_LIST,data:{}})
-        return postRequest(dispatch,host.USER_LIST_URL ,{page:1,page_limit:100},token)
+        return postRequest(dispatch,host.USER_LIST_URL ,{page:1,page_limit:100,role_en_name:'ROLE_CUSTOMER_MANAGER'},token)
             .then((data) => {
                 if(data.code==0){
                     dispatch({type:types.REVEIVE_USER_LIST,data:data.data})

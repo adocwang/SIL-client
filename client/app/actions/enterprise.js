@@ -6,13 +6,16 @@ import {ToastShort} from '../utils/ToastUtils';
 import {postRequest,getRequest} from '../utils/HttpServices';
 import * as host from '../constants/Urls';
 
-export function fetchEnterprise (id,token) {
+export function fetchEnterprise (id,token,isRefreshing) {
     if(id==undefined || id==''){
         ToastShort('该企业不存在');
     }
 
+
     return dispatch => {
-        dispatch(clearLastEnterprise())
+        if(isRefreshing){
+            dispatch({type:types.REFRESH_ENTERPRISE_DETAIL})
+        }
         return getRequest(dispatch, host.ENTERPRISE_DETAIL_URL + id, token)
             .then((data) => {
                 if (data.code == 0) {
@@ -95,16 +98,9 @@ export function fetchEnterpriseSuccess (data) {
 }
 
 export function hideLoading () {
-    data.loading = false;
     return {
         type:types.HIDE_ENTERPRISE_LOADING,
-        data:data
+        data:{loading:false}
     }
 }
 
-export function clearLastEnterprise () {
-    return {
-        type:types.CLEAR_LAST_ENTERPRISE_DETAIL,
-        data:{}
-    }
-}

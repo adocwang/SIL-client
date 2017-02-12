@@ -20,6 +20,7 @@ import CustomTabBar from '../../components/CustomTabBar';
 import Loading from '../../components/Loading';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../../containers/ClaimContainer'
+import EnterpriseDetailContainer from '../../containers/enterprise/EnterpriseDetailContainer'
 import ApplicationContainer from '../../containers/ApplicationContainer'
 import SearchContainer from '../../containers/SearchContainer'
 import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
@@ -51,7 +52,7 @@ class Home extends BasePage {
         const {dispatch} = this.props;
         const {home} = this.props;
         InteractionManager.runAfterInteractions(() => {
-             dispatch(fetchHomeEnterpriseList(false,true,false,{page:home.pageAfter[1]}, this.props.auth.token));
+             dispatch(fetchHomeEnterpriseList(false,true,false,{page:home.pageAfter[1],bank_name:this.props.auth.bank_name}, this.props.auth.token));
         });
     }
 
@@ -61,6 +62,7 @@ class Home extends BasePage {
 
     componentDidUpdate(){
     }
+
 
     onSearchCompany(){
         const {navigator} = this.props;
@@ -74,7 +76,7 @@ class Home extends BasePage {
     onRefresh (typeId) {
         const {dispatch} = this.props;
         canLoadMore = false;
-        dispatch(fetchHomeEnterpriseList(true,false,false,{page:1}, this.props.auth.token));
+        dispatch(fetchHomeEnterpriseList(true,false,false,{page:1,bank_name:this.props.auth.bank_name}, this.props.auth.token));
     }
 
     onScroll () {
@@ -88,7 +90,7 @@ class Home extends BasePage {
         const {home} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
             const {dispatch} = this.props;
-            dispatch(fetchHomeEnterpriseList(false,false,true,{page:home.pageAfter[1]}, this.props.auth.token));
+            dispatch(fetchHomeEnterpriseList(false,false,true,{page:home.pageAfter[1],bank_name:this.props.auth.bank_name}, this.props.auth.token));
             canLoadMore = false;
             loadMoreTime = Date.parse(new Date()) / 1000;
         }
@@ -102,14 +104,15 @@ class Home extends BasePage {
                 name: 'Claim',
                 params: {
                     item: item,
-                    //回调!从SecondPageComponent获取user
-                    getUser: function(user) {
-                        _this.setState({
-                            user: user
-                        })
-                    }
                 },
             });
+        //navigator.push({
+        //    component: EnterpriseDetailContainer,
+        //    name: 'EnterpriseDetail',
+        //    params: {
+        //        id: 21,
+        //    },
+        //});
     }
 
     //渲染每页内容
@@ -131,7 +134,7 @@ class Home extends BasePage {
               refreshing={home.isRefreshing[typeId]}
               onRefresh={this.onRefresh.bind(this, typeId)}
               title="Loading..."
-              colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
+              colors={['#15499A', '#15499A', '#15499A', '#15499A']}
             />
           }
                 >
@@ -167,7 +170,7 @@ class Home extends BasePage {
             refreshing={home.isRefreshing[typeId]}
             onRefresh={this.onRefresh.bind(this, typeId)}
             title="Loading..."
-            colors={['#ff0000', '#ff0000', '#ff0000', '#ff0000']}
+            colors={['#15499A', '#15499A', '#15499A', '#15499A']}
           />
         }
             />
@@ -207,11 +210,12 @@ class Home extends BasePage {
                     <TouchableOpacity onPress={this.onSearchCompany}>
                             <View   style={styles.searchBar}>
                                 <Text style={styles.searchBarInput}>输入企业名称</Text>
-                                <View style={{marginLeft:10,paddingRight:10}}>
-                                    <Icon
-                                        name={'md-search'} size={30}
-                                        color={'#737373'}
-                                    /></View>
+                                <View >
+                                    <Image
+                                        style={{}}
+                                        source={require('../../img/search_icon.png')}
+                                    />
+                                   </View>
                             </View>
                     </TouchableOpacity>
                             <ScrollableTabView
@@ -300,7 +304,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius:30,
-        height: 40,
+        height: 35,
         marginLeft: 10,
         marginRight:10
     },

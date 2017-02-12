@@ -25,9 +25,9 @@ class Active extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            phone:'13878787878',
-            code:'6666',
-            password:'111111',
+            phone:'',
+            code:'',
+            password:'',
             loading:false,
             showTips:false
         };
