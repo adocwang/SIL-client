@@ -25,7 +25,25 @@ import PopupDialog, {
 
 } from 'react-native-popup-dialog';
 import {ToastShort} from '../../utils/ToastUtils';
-import Loading from '../../components/Loading'
+var ImagePicker = require('react-native-image-picker');
+
+import Loading from '../../components/Loading';
+
+const ImgModel = {
+    local: "",
+    net:"",
+}
+
+const newImgModel = ()=>{
+    var imgModel = new Object()
+    imgModel.local = ""
+    imgModel.net = ""
+    return imgModel
+}
+
+
+const imgRootPath = "http://silapi.adoc.wang/resource/get/"
+
 class CollectionContent extends Component {
 
     constructor(props) {
@@ -46,6 +64,8 @@ class CollectionContent extends Component {
         this.chargeInputAll = this.chargeInputAll.bind(this)
         this.uploadImg = this.uploadImg.bind(this)
         this.didClickedSave = this.didClickedSave.bind(this)
+        this.hasUploadImg = this.hasUploadImg.bind(this)
+        this.chargeWithOutImg = this.chargeWithOutImg.bind(this)
         this.showDialogType = "select"
         this.state = {data: null, selectViewIndex: -1,refresh:"refresh",showLoading:false}
         this.paths = []
@@ -53,25 +73,62 @@ class CollectionContent extends Component {
         this.imgIndex = -1
         this.submitData = null
         this.lastImgId = ""
+        this.imgModels = []
     }
 
     componentDidMount() {
         const content = this.props.route.params.content
         this.submitData = JSON.parse(JSON.stringify(content.content));
-        console.log(this.submitData)
         this.setState({data: content})
     }
 
     didClickedSave() {
-        if(this.imgIndex != -1 && typeof(this.submitData[this.imgIndex].value) == "undefined" ) {
-            if(this.paths.length == 0) {
-                ToastShort("添加图片")
-            } else {
-                this.uploadImg()
+        if(this.imgIndex != -1 ) {
+            const result = parseInt(this.hasUploadImg())
+            console.log(result)
+            switch(result) {
+                case 0:
+                    ToastShort("上传图片")
+                    break;
+                case 1:
+                    this.uploadImg()
+                    break
+                default:
+                    this.chargeInputAll()
             }
         } else {
             this.chargeInputAll()
         }
+    }
+
+    hasUploadImg() { //0 添加图片 1,上传
+        var status  = 2
+        if(this.imgModels.length == 1) {
+            const model = this.imgModels[0]
+            if(model.local == "" && model.net == "") {
+                return 0
+            }
+        }
+        this.imgModels.map(data=>{
+            if(data.local != "") {
+                console.log(data)
+                status = 1
+            }
+        })
+        return status
+    }
+
+    chargeWithOutImg() {
+        var result = true
+        this.submitData.map(data=>{
+            if(data.value == undefined && data.type != "img") {
+                result = false
+            }
+        })
+        if(!result) {
+            ToastShort("信息不完善")
+        }
+        return result
     }
 
     chargeInputAll() {
@@ -79,7 +136,7 @@ class CollectionContent extends Component {
         var result = true
         this.submitData.map(data=>{
             if(data.value == undefined) {
-                result =  false
+                result = false
             }
         })
         if(!result) {
@@ -99,43 +156,43 @@ class CollectionContent extends Component {
     }
 
     changePhoto(index,paths) {
-        console.log(paths)
-        this.paths = paths
+        this.imgModels = paths
     }
 
     uploadImg() {
+        if(!this.chargeWithOutImg()) {
+            return false
+        }
         this.setState({showLoading: true})
-        this.paths.map(path=>{
-            const {dispatch,auth} = this.props
-            dispatch(uploadImg(path,auth.token))
+        this.imgModels.map(imgModel=>{
+            if(imgModel.local == "" && imgModel.net != "") {
+                this.netPaths.push(imgModel.net)
+            } else if(imgModel.local != ""){
+                    const {dispatch,auth} = this.props
+                    dispatch(uploadImg(imgModel.local,auth.token))
+            }
         })
     }
-
 
     componentWillReceiveProps(nextProps) {
 
         const {uploadImg} = nextProps
-        console.log(uploadImg.resourceId)
         if(uploadImg.resourceId != this.lastImgId) {
 
             this.lastImgId = uploadImg
             this.netPaths.push(uploadImg.resourceId)
-
-            if(this.netPaths.length == this.paths.length) {
-
-                    this.setState({showLoading: false})
-
+            if(this.netPaths.length == this.imgModels.length) {
+                this.setState({showLoading: false})
                 this.submitData[this.imgIndex].value = this.netPaths
-                console.log("判断")
                 this.chargeInputAll()
             }
         }
     }
 
+
+
     inputViewChange(index,text) {
         this.submitData[index].value = text
-        console.log(index)
-        console.log(text)
     }
 
     checkBoxViewChange(index) {
@@ -170,22 +227,24 @@ class CollectionContent extends Component {
     }
 
     inputView(obj, index) {
+        const text = this.submitData[index].value
         return (
-            <TextInput key={index} style={styles.textInput} placeholder={obj.title}
+            <TextInput defaultValue={text} key={index} style={styles.textInput} placeholder={obj.title}
                        onChangeText={this.inputViewChange.bind(this, index)} underlineColorAndroid="transparent"/>
         )
     }
 
     textArea(obj, index) {
+        const text = this.submitData[index].value
+
         return (
-            <TextInput key={index} multiline style={styles.textArea} placeholder={obj.title}
+            <TextInput defaultValue={text} key={index} multiline style={styles.textArea} placeholder={obj.title}
                        onChangeText={this.inputViewChange.bind(this, index)} underlineColorAndroid="transparent"/>
         )
     }
 
     selectView(obj, index) {
         var value = null
-        console.log(typeof(this.submitData[index].value))
         if(typeof(this.submitData[index].value) != "undefined") {
             value = this.submitData[index].value.name
         }
@@ -195,9 +254,25 @@ class CollectionContent extends Component {
     }
 
     imageView(obj, index) {
-        this.imgIndex = index
+        if(this.imgModels.length == 0) {
+            this.imgIndex = index
+            var imgModels = []
+            if (typeof(this.submitData[index].value) != "undefined") {
+                console.log(this.submitData[index].value)
+                const netImgs = this.submitData[index].value
+                netImgs.map((data, index) => {
+                    var imgModel = new Object()
+                    imgModel.local = ""
+                    imgModel.net = data
+                    imgModels.push(imgModel)
+                })
+            }
+            console.log(imgModels)
+            this.imgModels = imgModels
+        }
+
         return (
-            <AddPhoto key={index} changePhoto={this.changePhoto.bind(this, index)}
+            <AddPhoto imgModels={imgModels} key={index} changePhoto={this.changePhoto.bind(this, index)}
                       navigator={this.props.navigator}/>
         )
     }
@@ -254,14 +329,12 @@ class CollectionContent extends Component {
         if (this.state.data != null) {
             if (this.state.selectViewIndex != -1) {
                 const dataSource = this.state.data.content[this.state.selectViewIndex].dataSource
-                console.log(dataSource)
                 for (var i = 0; i < dataSource.length; i++) {
                     const obj = dataSource[i]
                     dialogData.push(obj.name)
                 }
             }
         }
-        console.log("ch")
 
         return (
             <TouchableWithoutFeedback onPress={this.clickedSelf}>
@@ -322,13 +395,13 @@ class SelecteView extends Component {
     }
 }
 
+
 class AddPhoto extends Component {
 
     constructor(props) {
         super(props)
-
         this.changeIndex = 0
-        this.state = {otherImgPath: [""]}
+        this.state = {otherImgPath: []}
         this.firstNotChange = true
         this.addOtherImg = this.addOtherImg.bind(this)
         this.takeOtherPhoto = this.takeOtherPhoto.bind(this)
@@ -337,9 +410,19 @@ class AddPhoto extends Component {
         this.changePhoto = this.changePhoto.bind(this)
     }
 
+    componentDidMount() {
+        var imgModels = this.props.imgModels
+        if(imgModels.length == 0) {
+            let imgModel = new Object()
+            imgModel.local = ""
+            imgModel.net = ""
+            imgModels.push(imgModel)
+        }
 
-    takeOtherPhoto() {
-        const {navigator} = this.props
+        this.setState({otherImgPath: this.props.imgModels})
+    }
+
+    haha() {
 
         navigator.push({
             name: "Takephoto",
@@ -348,35 +431,83 @@ class AddPhoto extends Component {
                 takephotoClosure: this.addOtherImg,
             }
         })
+
+        // this.changeIndex = index
+        // navigator.push({
+        //     name: "Takephoto",
+        //     component: Takephoto,
+        //     params: {
+        //         takephotoClosure: this.changeOtherImg,
+        //     }
+        // })
+    }
+
+    takeOtherPhoto() {
+        var options = {
+            title: 'Select Avatar',
+            takePhotoButtonTitle:"拍照",
+            chooseFromLibraryButtonTitle:"相册",
+
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+            }
+            else if (response.error) {
+            }
+            else if (response.customButton) {
+            }
+            else {
+                this.addOtherImg(response.uri)
+            }
+        });
     }
 
     addOtherImg(path) {
         this.setState(prev => {
-            prev.otherImgPath.push(path)
+            var imgModel = newImgModel()
+            imgModel.local = path
+            prev.otherImgPath.push(imgModel)
             this.backPaths(prev.otherImgPath)
             return ({otherImgPath: prev.otherImgPath})
         })
     }
 
     changePhoto(index) {
-        const {navigator} = this.props
-        this.changeIndex = index
-        navigator.push({
-            name: "Takephoto",
-            component: Takephoto,
-            params: {
-                takephotoClosure: this.changeOtherImg,
+         this.changeIndex = index
+
+
+        var options = {
+            title: 'Select Avatar',
+            takePhotoButtonTitle:"拍照",
+            chooseFromLibraryButtonTitle:"相册",
+
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
             }
-        })
+        };
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+            }
+            else if (response.error) {
+            }
+            else if (response.customButton) {
+            }
+            else {
+               this.changeOtherImg(response.uri)
+            }
+        });
     }
 
     changeOtherImg(path) {
         this.setState(prev => {
-            prev.otherImgPath[this.changeIndex] = path
+            prev.otherImgPath[this.changeIndex].local = path
             this.backPaths(prev.otherImgPath)
-            if (this.changeIndex == 0) {
-                this.firstNotChange = false
-            }
+
             return ({otherImgPath: prev.otherImgPath})
         })
     }
@@ -393,10 +524,20 @@ class AddPhoto extends Component {
         if (count % 2 == 1) {
             lastCellStyle.push(styles.addCellRight)
         }
-        const cells = this.state.otherImgPath.map((path, index) =>
-            <AddPhotoCell key={index} path={path} index={index} changePhoto={this.changePhoto}
-                          firstNotChange={this.firstNotChange}/>
-        )
+        const cells = this.state.otherImgPath.map((imgModel, index) =>{
+            var imgPath = ""
+            var firstNotChange = true
+            if(imgModel.local != "") {
+                imgPath = imgModel.local
+                firstNotChange = false
+            } else if(imgModel.net != "") {
+                imgPath = imgRootPath + imgModel.net
+                firstNotChange = false
+            }
+            return (
+            <AddPhotoCell key={index} path={imgPath} index={index} changePhoto={this.changePhoto}
+                          firstNotChange={firstNotChange}/>)
+        })
 
         return (
             <View style={styles.addPhoto}>
@@ -525,7 +666,9 @@ class DialogoCheckTableView extends Component {
             }
         }
         const {closure} = this.props
-        closure(indexs)
+        if(indexs.length != 0) {
+            closure(indexs)
+        }
     }
 
     render() {
@@ -556,6 +699,7 @@ class DialogoCheckTableView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "white"
     },
     saveButton: {
         width: 160,

@@ -72,8 +72,9 @@ class Person extends React.Component {
         helloWord = "您好," + this.props.auth.true_name;
         return (
             <View style={styles.container}>
-                    <Image style={styles.headerImg} source={headerImg}/>
+                <View style={styles.helloBg}>
                 <Text style={styles.helloWord}>{helloWord}</Text>
+                </View>
                 <View style={styles.contentBg}>
                     <TouchableOpacity onPress={this.didClickedAccountManager}>
                         <View style={styles.contentChild}>
@@ -98,10 +99,9 @@ class Person extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: Dimensions.get('window').height - 100,
-        backgroundColor: Color.defaultBgColor,
-        position:'relative',
-        bottom: 15,
+        flex:1,
+        backgroundColor: CommonColor.defaultBgColor,
+        marginTop:10,
     },
     headerImg: {
         width: 80,
@@ -111,14 +111,20 @@ const styles = StyleSheet.create({
         position:'relative',
         alignSelf:"center",
     },
+    helloBg: {
+        alignSelf:"stretch",
+        backgroundColor: "white",
+        justifyContent:"center",
+        height:40,
+
+    },
     helloWord: {
         textAlign: "center",
         color: Color.defaultBlackColor,
-        width: 200,
         height: 30,
-        alignSelf: "center",
-        marginTop: -35,
-        fontSize: 14
+        alignSelf: "stretch",
+        textAlign:"center",
+        fontSize: 14,
     },
     contentBg: {
         height: 108,

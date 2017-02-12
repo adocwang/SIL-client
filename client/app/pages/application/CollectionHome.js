@@ -5,6 +5,7 @@ import CommonColor from '../../utils/CommonColor'
 import CollectionCertificateContainer from '../../containers/CollectionCertificeContainer'
 import {fetchEnterpriseList} from '../../actions/enterprise'
 import Spanner from 'react-native-spinkit'
+import Loading from '../../components/Loading';
 
 class CollectionHome extends Component {
 
@@ -18,7 +19,7 @@ class CollectionHome extends Component {
         const ds = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         })
-        this.state = {dataSource: ds, selectedIndex: -1,isRefreshing:false,isLoadingMore: false}
+        this.state = {dataSource: ds, selectedIndex: -1,isRefreshing:false,isLoadingMore: false,showLoading:false}
         this.clickedCell = this.clickedCell.bind(this)
         this.rightTitleClicked = this.rightTitleClicked.bind(this)
         this.onRefresh = this.onRefresh.bind(this)
@@ -44,6 +45,7 @@ class CollectionHome extends Component {
     }
 
     componentDidMount() {
+        this.setState({showLoading: true})
         this.fetchEnterprise(1)
     }
 
@@ -57,9 +59,9 @@ class CollectionHome extends Component {
 
     fetchEnterprise(page) {
         this.page = page
-        const {dispatch} = this.props
+        const {dispatch,auth} = this.props
 
-        dispatch(fetchEnterpriseList({page:page,page_limit:10},"iamsuperman:15828516285"))
+        dispatch(fetchEnterpriseList({page:page,page_limit:10,only_mine:"1"},auth.token))
     }
 
     clickedCell(index) {
@@ -112,6 +114,7 @@ class CollectionHome extends Component {
     }
 
     componentWillReceiveProps (nextProps) {
+        this.setState({showLoading: false})
         this.state.isRefreshing = false
         this.setState({isLoadingMore: false})
         if(this.page == 1) {
@@ -140,11 +143,15 @@ class CollectionHome extends Component {
     }
 
     render() {
+        const isRefreshing = this.state.isRefreshing
+        console.log(isRefreshing)
         return (
             <View style={styles.container}>
+                {this.state.showLoading && <Loading/>}
                 <CustomToolbar title="现场采集" navigator={this.props.navigator} operate="选择"
                                onOperateClicked={this.rightTitleClicked}/>
                 <Text style={styles.head}>选择采集公司</Text>
+                <View style={styles.lineView}/>
                 <ListView dataSource={this.state.dataSource} style={styles.listView}
                           renderRow={(rowData, sectionID, rowID) =>
                               <CompanyCell data={rowData} clickClosure={this.clickedCell} rowID={rowID}/>
@@ -155,7 +162,7 @@ class CollectionHome extends Component {
                           renderFooter={this.renderFooter}
                           refreshControl={
                               <RefreshControl
-                                  refreshing={this.state.isRefreshing}
+                                  refreshing={false}
                                   onRefresh={this.onRefresh}
                                   tintColor="#ff0000"
                                   title="Loading..."
@@ -203,17 +210,23 @@ class CompanyCell extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "white"
     },
     head: {
         alignSelf: "stretch",
         height: 45,
         paddingLeft: 50,
-        lineHeight: 45,
         color: "black",
+        paddingTop: 15,
     },
+    lineView: {
+        alignSelf: "stretch",
+        backgroundColor: CommonColor.defaultLineColor,
+        height:1
+    },
+
     listView: {
-        borderTopWidth: 1,
-        borderTopColor: CommonColor.defaultLineColor,
+
         marginTop: 10,
         flex: 1,
     },

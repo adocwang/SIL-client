@@ -93,6 +93,8 @@ render() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "white"
+
     },
     listView: {
         flex: 1,

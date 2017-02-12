@@ -27,6 +27,23 @@ const listInitialState = {
     enterprises:[],
 }
 
+const findingEnterpriseState= {
+    id: 0,
+    data: "",
+    state: 0,
+    created: "",
+    modified: 0,
+}
+
+export function findingEnterprise(state = findingEnterpriseState, action) {
+    switch (action.type) {
+        case types.FETCH_FINDING_ENTERPRISE:
+            return Object.assign({}, state,action.data);
+        default:
+            return state;
+    }
+}
+
 export default function enterprise (state = initialState, action) {
     switch (action.type) {
         case types.FETCH_ENTERPRISE_DETAIL:

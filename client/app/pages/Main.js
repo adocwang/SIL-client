@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Image,
     View,
-    Text,
+    Text,Dimensions,
     StyleSheet,
     ScrollView,
     ListView,
@@ -121,6 +121,7 @@ class Main extends BasePage {
     }
 
     render () {
+        const selectedPerson=(this.state.selectedTab === 'person')
         return (
             <View style={styles.container}>
                 <Image source={require('../img/toolbar_bg.png')}  style={{height:100,  width:null, flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
@@ -131,7 +132,13 @@ class Main extends BasePage {
                     />
                         <Text  style={{fontSize: 14, color: '#ffffff',marginTop:30,marginLeft:10,backgroundColor:'transparent'}}>您好,{this.props.auth.true_name}</Text>
                     </View>
+
+
+
                 </Image>
+                {selectedPerson && <View style={styles.headerBg}>
+                    <Image style={styles.headerImg} source={require("../img/header_default.png")}/>
+                </View>}
 
                 <TabNavigator  style={{marginTop: 20, }}>
                     <TabNavigator.Item
@@ -250,7 +257,21 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         textAlign: 'center',
         color: 'black'
-    }
+    },
+    headerBg: {
+        alignItems:"center",
+        height: 50,
+        top: 50,
+        width: Dimensions.get('window').width,
+        position:"absolute",
+
+    },
+
+    headerImg: {
+            width: 80,
+            height: 80,
+            borderRadius: 44,
+    },
 });
 
 export default Main;

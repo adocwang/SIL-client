@@ -18,12 +18,9 @@ export function fetchEnterprise (id,token) {
                 if (data.code == 0) {
                     console.log(data);
                     dispatch(fetchEnterpriseSuccess(data.data))
-<<<<<<< HEAD
-                } else {
-=======
+
                 }else {
                     dispatch(hideLoading());
->>>>>>> 9d8803652d071a075d3cd2ac8ffde3d809d12f82
                     ToastShort('该企业不存在');
                 }
             })
@@ -33,6 +30,36 @@ export function fetchEnterprise (id,token) {
             })
     }
 }
+
+export function fetchGetFindingEnterprise (id,token) {
+    if(id==undefined || id==''){
+        ToastShort('该企业不存在');
+    }
+
+    return dispatch => {
+        dispatch(clearLastEnterprise())
+        return getRequest(dispatch, host.ENTERPRISE_FINDING_URL + id, token)
+            .then((data) => {
+                if (data.code == 0) {
+                    console.log(data);
+                    dispatch({
+                        type:types.FETCH_FINDING_ENTERPRISE,
+                        data:data
+                    })
+
+                }else {
+                    dispatch(hideLoading());
+                    ToastShort('该企业不存在');
+                }
+            })
+            .catch((error) => {
+                dispatch(hideLoading());
+                ToastShort(error.message);
+            })
+    }
+}
+
+
 
 export function fetchEnterpriseList(paramsMap, token){
     console.log('fetchEnterpriseList',paramsMap,token);

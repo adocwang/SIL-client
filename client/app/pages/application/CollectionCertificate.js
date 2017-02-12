@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, Image, TouchableWithoutFeedback, Navigator, ListView} from 'react-native'
-import LoanCalculatorContainer from '../../containers/LoanCalculatorContainer'
-import CollectionContainer from '../../containers/CollectionContainer'
+import {View, StyleSheet, Text, Image, TouchableWithoutFeedback, Navigator, ListView,AsyncStorage} from 'react-native'
 import CustomToolbar from '../../components/CustomToolbar'
 import CommonColor from '../../utils/CommonColor'
-import CollectionTakephoto from "./CollectionTakePhoto.js"
 import {fetchCollectionConfig,submitCollectionConfig} from '../../actions/application'
 import CollectionContentContainer from "../../containers/CollectionContentContainer"
 import {ToastShort} from '../../utils/ToastUtils';
+import * as types from '../../constants/ActionTypes';
+import {fetchGetFindingEnterprise} from "../../actions/enterprise"
+import Loading from '../../components/Loading';
 
 class CollectionCertificate extends Component {
 
@@ -17,7 +17,7 @@ class CollectionCertificate extends Component {
             rowHasChanged: (row1, row2) => row1 !== row2,
         })
         this.datas = [];
-        this.state = {dataSource: ds}
+        this.state = {dataSource: ds,showLoading:false}
         this.selecteds = []
         this.clickedCell = this.clickedCell.bind(this)
         this.chargeExit = this.chargeExit.bind(this)
@@ -25,35 +25,77 @@ class CollectionCertificate extends Component {
         this.saveCell = this.saveCell.bind(this)
         this.getChildData = this.getChildData.bind(this)
         this.rightTitleClicked = this.rightTitleClicked.bind(this)
+        this.initalizeData = this.initalizeData.bind(this)
         this.submitData = null
+        this.isSubmiting = false
+        this.hasFetchFindingNet = false
+        this.originData = null
     }
 
     componentDidMount() {
+        this.setState({showLoading: true})
         this.fetchConfig()
     }
 
     fetchConfig() {
-      const {dispatch,auth} = this.props
-        dispatch(fetchCollectionConfig(auth.token))
+
+        const {dispatch,auth} = this.props
+        const companyId = this.props.route.params.company.id
+
+
+        AsyncStorage.getItem(types.COLLECTION_LOCAL + companyId,(error,value)=>{
+            if(value == null) {
+                dispatch(fetchGetFindingEnterprise(companyId,auth.token))
+            } else {
+                console.log("从本地")
+                this.originData = JSON.parse(value)
+                this.initalizeData(this.originData.submitData)
+                this.setState({showLoading: false})
+            }
+        })
     }
 
 
     componentWillReceiveProps(nextProps) {
-        const {collection} = nextProps
-        this.datas=collection
+        this.setState({showLoading: false})
+        if(nextProps.commonNet.type==types.SUBMIT_FINDING && this.isSubmiting) {
+            this.isSubmiting = false
+            const {navigator} = this.props
+            ToastShort("提交成功")
+            navigator.pop()
+        } else {
+            const {collection,dispatch, findingEnterprise,auth} = nextProps
+            console.log(findingEnterprise.data.id)
+            if (typeof(findingEnterprise.data.id) == "undefined" ) {
+                if (!this.hasFetchFindingNet) {
+                    this.hasFetchFindingNet = true
+                    dispatch(fetchCollectionConfig(auth.token))
+                }
+            } else {
+                const result = findingEnterprise.data.data
+                this.originData = JSON.parse(result)
+
+                this.initalizeData(this.originData.submitData)
+            }
+            if(collection.length > 0) {
+
+                this.initalizeData(collection)
+            }
+        }
+    }
+
+    initalizeData(data) {
+        this.datas = data
         this.submitData = JSON.parse(JSON.stringify(this.datas));
-        this.setState({dataSource:this.state.dataSource.cloneWithRows(this.datas)})
+        this.setState({dataSource: this.state.dataSource.cloneWithRows(this.datas)})
     }
 
 
     saveCell(index) {
-        const result = this.chargeExit(index)
-        if (result == -1) {
-            this.selecteds.push(index)
-        } else {
-            this.selecteds.splice(result, 1)
-
-        }
+        console.log("执行")
+        this.submitData[index].selected = true
+        const selected = this.submitData[index].selected
+        console.log(selected)
         let newData = JSON.parse(JSON.stringify(this.datas));
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(newData)
@@ -74,26 +116,38 @@ class CollectionCertificate extends Component {
     }
 
     rightTitleClicked() {
+        var status = true
         this.submitData.map((data,index)=>{
-            const selected = (this.chargeExit(index) != -1)
-            if(data.isRequired && !selected) {
+            if(data.isRequired && !data.selected) {
                 ToastShort("*号必须填写")
-                return false
+                status = false
             }
         })
+        if (!status) {
+            return
+        }
         const {dispatch,auth} = this.props
         const companyId = this.props.route.params.company.id
-        const params = {companyId: companyId,data: this.submitData}
-        const jsonData = JSON.stringify(params)
-        dispatch(submitCollectionConfig(jsonData,auth.token))
+        var realData = this.originData
+        if(this.originData == null) {
+            realData = new Object()
+            realData.createTime = Date.parse(new Date());
+        }
 
+        realData.submitData = this.submitData
+        realData.lastModifyTiem = Date.parse(new Date());
+        const jsonData = JSON.stringify(realData)
+        this.isSubmiting = true
+        this.setState({showLoading: true})
+        dispatch(submitCollectionConfig({id: companyId,data: jsonData},auth.token))
+        AsyncStorage.setItem(types.COLLECTION_LOCAL + companyId,jsonData)
     }
 
     getChildData(index,data) {
         const childData = JSON.parse(JSON.stringify(this.datas[index]));
         childData.content = data
         this.submitData[index] = childData
-        this.selecteds.push(index)
+        this.submitData[index].selected = true
         this.datas = JSON.parse(JSON.stringify(this.datas));
         this.setState({dataSource:this.state.dataSource.cloneWithRows(this.datas)})
     }
@@ -111,6 +165,7 @@ class CollectionCertificate extends Component {
         const companyName = this.props.route.params.company.name
         return (
             <View style={styles.container}>
+                {this.state.showLoading && <Loading/>}
                 <CustomToolbar title="现场采集" navigator={this.props.navigator} operate="提交"
                                onOperateClicked={this.rightTitleClicked}/>
                 <View style={styles.topView}>
@@ -118,7 +173,8 @@ class CollectionCertificate extends Component {
                 </View>
                 <ListView dataSource={this.state.dataSource} style={styles.listView}
                           renderRow={(rowData, sectionID, rowID) => {
-                              const selected = (this.chargeExit(rowID) != -1)
+                              const selected = this.submitData[rowID].selected
+                              console.log(selected)
                               return (
                                   <CertificateCell selected={selected} title={rowData.name}
                                                    clickClosure={this.clickedCell} rowID={rowID} need={rowData.isRequired}/>)
@@ -176,6 +232,7 @@ class CertificateCell extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "white"
     },
     topView: {
         height: 54,

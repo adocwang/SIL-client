@@ -9,8 +9,10 @@ import {getRequest,uploadImage,postRequest} from '../utils/HttpServices';
 import * as host from '../constants/Urls';
 
 export function fetchCollectionConfig(token){
+    console.log("sss")
+
     return dispatch => {
-        return getRequest(dispatch,host.COLLECTION_GET_URL,'iamsuperman')
+        return getRequest(dispatch,host.COLLECTION_GET_URL,token)
             .then((data) => {
                 console.log(data);
                 if(data.code == 2007){
@@ -32,10 +34,9 @@ export function fetchCollectionConfig(token){
     }
 }
 
-export function submitCollectionConfig(jsonData,token) {
+export function submitCollectionConfig(params,token) {
     return dispatch => {
-        const parameters = {key:"finding.template",value:jsonData}
-        return postRequest(dispatch,host.COLLECTION_PUT_URL,parameters,token)
+        return postRequest(dispatch,host.COLLECTION_PUT_URL,params,token)
             .then((data) => {
                 console.log(data);
                 if(data.code == 2007){
@@ -47,12 +48,11 @@ export function submitCollectionConfig(jsonData,token) {
                 }else  if(data.code == 406){
                     ToastShort('用户无权限');
                 }else if(data.code==0){
-                    dispatch({type:types.COLLECTION_CONFIG,data:data.data})
+                    dispatch({type:types.SUBMIT_FINDING,data:data.data})
                 }
             })
             .catch((error) => {
-
-                ToastShort(error.message);
+                // ToastShort(error.message);
             })
     }
 }

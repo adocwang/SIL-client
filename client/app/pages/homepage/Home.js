@@ -55,16 +55,7 @@ class Home extends BasePage {
         });
     }
 
-<<<<<<< HEAD
-    componentWillReceiveProps (nextProps) {
 
-}
-
-    shouldComponentUpdate(){
-        return true;
-    }
-=======
->>>>>>> 9d8803652d071a075d3cd2ac8ffde3d809d12f82
     componentWillUpdate(){
     }
 

@@ -28,3 +28,13 @@ export function uploadImg(state = uploadInitialState, action) {
             return state;
     }
 }
+
+export function commonNet(state = {}, action) {
+    switch (action.type) {
+        case types.SUBMIT_FINDING:
+
+            return Object.assign({}, state, action);
+        default:
+            return state;
+    }
+}

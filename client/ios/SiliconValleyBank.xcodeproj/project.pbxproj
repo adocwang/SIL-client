@@ -35,6 +35,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		866EC73C5BDC4B30BD1A72FD /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3812143CA846E8896BCDB7 /* libRNSpinkit.a */; };
 		896C6E80E5F046D9A5C831A9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A046AC590C84536A2CB505C /* libz.tbd */; };
+		9B912EF95A744F329FBF1B01 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 639CE988C4A940CF89EE8F1D /* libRNImagePicker.a */; };
 		B156CD1528A341C5AB0D95F3 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C840D36B03BA4AD7BD54AA69 /* Entypo.ttf */; };
 		B43E03CD8E4748C4BCA99BCA /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1EBC483FA114356A718FB07 /* libRCTCamera.a */; };
 		C8C309FEC21042489596050B /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F524EC3D87849F9ADD94BFE /* Foundation.ttf */; };
@@ -240,6 +241,13 @@
 			remoteGlobalIDString = D42CB3511B2538DE00FD0AE2;
 			remoteInfo = RNSpinkit;
 		};
+		C2EB72AC1E505CAD002DD3AD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6EDF06938EC74B8A9836C99B /* RNImagePicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
+			remoteInfo = RNImagePicker;
+		};
 		C2FD97761E3F83C0004036A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EFE7FFA8212C4539B9FBAC8A /* RCTCamera.xcodeproj */;
@@ -287,6 +295,8 @@
 		3FBA312A644B4AC2AA8687F9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		51368119681706679589A1F1 /* Pods-SiliconValleyBank.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiliconValleyBank.release.xcconfig"; path = "Pods/Target Support Files/Pods-SiliconValleyBank/Pods-SiliconValleyBank.release.xcconfig"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		639CE988C4A940CF89EE8F1D /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
+		6EDF06938EC74B8A9836C99B /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		782D7D4995634FC1926B554E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		78DDF84C9C4440C3BAB67630 /* RealmReact.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RealmReact.xcodeproj; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; };
@@ -335,6 +345,7 @@
 				35067C1408E64962BB8620E9 /* libRealmReact.a in Frameworks */,
 				61461755163C42928536EE97 /* libc++.tbd in Frameworks */,
 				896C6E80E5F046D9A5C831A9 /* libz.tbd in Frameworks */,
+				9B912EF95A744F329FBF1B01 /* libRNImagePicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +504,7 @@
 				1A2FA9A3DE9B404F9B00E510 /* RNSpinkit.xcodeproj */,
 				EFE7FFA8212C4539B9FBAC8A /* RCTCamera.xcodeproj */,
 				78DDF84C9C4440C3BAB67630 /* RealmReact.xcodeproj */,
+				6EDF06938EC74B8A9836C99B /* RNImagePicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -542,6 +554,14 @@
 			isa = PBXGroup;
 			children = (
 				C26E0C031E3AE56700130401 /* libRNSpinkit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C2EB728E1E505CAC002DD3AD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C2EB72AD1E505CAD002DD3AD /* libRNImagePicker.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -712,6 +732,10 @@
 				{
 					ProductGroup = FBA616251E49714100212AFD /* Products */;
 					ProjectRef = 78DDF84C9C4440C3BAB67630 /* RealmReact.xcodeproj */;
+				},
+				{
+					ProductGroup = C2EB728E1E505CAC002DD3AD /* Products */;
+					ProjectRef = 6EDF06938EC74B8A9836C99B /* RNImagePicker.xcodeproj */;
 				},
 				{
 					ProductGroup = C26E0BFF1E3AE56700130401 /* Products */;
@@ -920,6 +944,13 @@
 			remoteRef = C26E0C021E3AE56700130401 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C2EB72AD1E505CAD002DD3AD /* libRNImagePicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNImagePicker.a;
+			remoteRef = C2EB72AC1E505CAD002DD3AD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C2FD97771E3F83C0004036A0 /* libRCTCamera.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1086,6 +1117,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SiliconValleyBank.app/SiliconValleyBank";
@@ -1103,6 +1135,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
