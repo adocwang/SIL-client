@@ -15,6 +15,7 @@ import GongShangXinXi from '../../pages/enterprise/GongShangXinXi'
 import TouZiGuanXi from '../../pages/enterprise/TouZiGuanXi'
 import GuQuanJieGou from '../../pages/enterprise/GuQuanJieGou'
 import ChangeRecord from '../../pages/enterprise/ChangeRecord'
+import {ToastShort} from '../../utils/ToastUtils';
 
 class CommonInfo extends React.Component {
     constructor(props) {
@@ -26,6 +27,10 @@ class CommonInfo extends React.Component {
     }
 
     onGSClicked() {
+        if(!this.props.name){
+            ToastShort('暂无相关信息');
+            return
+        }
         const  {navigator} = this.props;
         navigator.push({
             component: GongShangXinXi,
@@ -37,6 +42,10 @@ class CommonInfo extends React.Component {
     }
 
     onTZClicked() {
+        if(!this.props.name){
+            ToastShort('暂无相关信息');
+            return
+        }
         const  {navigator} = this.props;
         navigator.push({
             component: TouZiGuanXi,
@@ -48,6 +57,10 @@ class CommonInfo extends React.Component {
     }
 
     onGQClicked() {
+        if(!this.props.name){
+            ToastShort('暂无相关信息');
+            return
+        }
         const  {navigator} = this.props;
         navigator.push({
             component: GuQuanJieGou,
@@ -59,6 +72,10 @@ class CommonInfo extends React.Component {
     }
 
     onBGClicked() {
+        if(!this.props.name){
+            ToastShort('暂无相关信息');
+            return
+        }
         const  {navigator} = this.props;
         navigator.push({
             component: ChangeRecord,

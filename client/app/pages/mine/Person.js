@@ -69,12 +69,10 @@ class Person extends React.Component {
 
     didClickedMessage() {
          const {navigator} = this.props;
-         InteractionManager.runAfterInteractions(() => {
              navigator.push({
                  component: MessageContainer,
                  name: 'Message',
              });
-         });
     }
 
     render() {

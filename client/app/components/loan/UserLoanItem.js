@@ -61,9 +61,12 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#ffffff',
         padding: 10,
-        marginBottom: 2,
+        marginBottom: 7,
         height: 100,
         paddingLeft: 20,
+        marginLeft:20,
+        marginRight:20,
+        marginTop:5
     },
     img: {
         flex: 1,

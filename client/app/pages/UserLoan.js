@@ -128,7 +128,7 @@ class UserLoan extends BasePage {
               refreshing={userloan.isRefreshing[typeId]}
               onRefresh={this.onRefresh.bind(this, typeId)}
               title="Loading..."
-              colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
+              colors={['#15499A', '#15499A', '#15499A', '#15499A']}
             />
           }
                 >
@@ -158,7 +158,7 @@ class UserLoan extends BasePage {
             refreshing={userloan.isRefreshing[typeId]}
             onRefresh={this.onRefresh.bind(this, typeId)}
             title="Loading..."
-            colors={['#ff0000', '#ff0000', '#ff0000', '#ff0000']}
+            colors={['#15499A', '#15499A', '#15499A', '#15499A']}
           />
         }
             />
@@ -197,7 +197,7 @@ class UserLoan extends BasePage {
             <View style={styles.container}>
                 <ScrollableTabView
                     onChangeTab={(item)=>{this.onTabChanged(item.i)}}
-                    style={{marginTop: 20,flex:1}}
+                    style={{flex:1}}
                     renderTabBar={() => <UserLoanTabBar  />}
                 >
 

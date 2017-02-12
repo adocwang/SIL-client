@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Domain from '../../pages/enterprise/Domain'
+import {ToastShort} from '../../utils/ToastUtils';
 
 class JingYingXinXi extends React.Component {
     constructor(props) {
@@ -26,6 +27,10 @@ class JingYingXinXi extends React.Component {
     }
 
     onYMClicked() {
+        if(!this.props.name){
+            ToastShort('暂无相关信息');
+            return
+        }
         const  {navigator} = this.props;
         navigator.push({
             component: Domain,
