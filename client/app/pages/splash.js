@@ -2,7 +2,8 @@ import React from 'react';
 import {
   Dimensions,
   Image,
-  InteractionManager
+  InteractionManager,
+    StatusBar
   } from 'react-native';
 
 import LoginContainer from '../containers/LoginContainer';
@@ -70,7 +71,14 @@ class Splash extends React.Component {
       <Image
         style={{flex: 1, width: width, height: height}}
         source={require('../img/splash.jpg')}
-      />
+      >
+        <StatusBar
+            backgroundColor='#15499A'
+            translucent={true}
+            hidden={true}
+            animated={true}
+        />
+      </Image>
     );
   }
 }

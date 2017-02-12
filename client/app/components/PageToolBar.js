@@ -10,6 +10,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
+    StatusBar,
     Platform
 } from 'react-native';
 import {NaviGoBack} from '../utils/CommonUtils';
@@ -69,6 +70,12 @@ class PageToolBar extends React.Component {
 
         return (
             <View style={{backgroundColor:'#ffffff',height:60}}>
+                <StatusBar
+                    backgroundColor='#ffffff'
+                    translucent={true}
+                    hidden={true}
+                    animated={true}
+                />
                 <View
                 style={{flexDirection: 'row', marginLeft:26,marginTop:20}}>
 

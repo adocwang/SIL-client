@@ -8,123 +8,132 @@ import {
     Image,
     Text,
     TouchableOpacity,
+    StatusBar
 } from 'react-native';
 import {NaviGoBack} from '../utils/CommonUtils';
 
 const styles = StyleSheet.create({
 
-  bgImage:{
-    height:100,
-    width:null,
-    flexDirection: 'row',
-    resizeMode: Image.resizeMode.stretch
-  },
-  leftView:{
-    flexDirection: 'row',
-    flex:1,
-    alignItems: 'center',
-    marginLeft:26
-  },
-  rightView: {
-    flexDirection: 'row',
-    flex:1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginRight:30
-  },
-  midView:{
-    flex:1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  text:{
-    fontSize: 16,
-    color: '#ffffff',
-    backgroundColor:'transparent'
-  }
+    bgImage: {
+        height: 100,
+        width: null,
+        flexDirection: 'row',
+        resizeMode: Image.resizeMode.stretch
+    },
+    leftView: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        marginLeft: 26
+    },
+    rightView: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        marginRight: 30
+    },
+    midView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    text: {
+        fontSize: 16,
+        color: '#ffffff',
+        backgroundColor: 'transparent'
+    }
 
 });
 
 const propTypes = {
-  title: PropTypes.string,
-  operate: PropTypes.string,
-  actions: PropTypes.array,
-  navigator: PropTypes.object,
-  onIconClicked: PropTypes.func,
-  onOperateClicked: PropTypes.func,
-  navIcon: PropTypes.number,
-  customView: PropTypes.object
+    title: PropTypes.string,
+    operate: PropTypes.string,
+    actions: PropTypes.array,
+    navigator: PropTypes.object,
+    onIconClicked: PropTypes.func,
+    onOperateClicked: PropTypes.func,
+    navIcon: PropTypes.number,
+    customView: PropTypes.object
 }
 
 class CustomToolbar extends React.Component {
 
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.onOperateClicked = this.onOperateClicked.bind(this);
-    this.onIconClicked = this.onIconClicked.bind(this);
-  }
-
-  onIconClicked() {
-    if (this.props.onIconClicked) {
-      this.props.onIconClicked();
-    } else {
-      const {navigator} = this.props;
-      if (navigator) {
-        NaviGoBack(navigator);
-      }
+        this.onOperateClicked = this.onOperateClicked.bind(this);
+        this.onIconClicked = this.onIconClicked.bind(this);
     }
-  }
 
-
-  onOperateClicked() {
-    if (this.props.onOperateClicked) {
-      this.props.onOperateClicked();
+    onIconClicked() {
+        if (this.props.onIconClicked) {
+            this.props.onIconClicked();
+        } else {
+            const {navigator} = this.props;
+            if (navigator) {
+                NaviGoBack(navigator);
+            }
+        }
     }
-  }
-  render() {
 
-    return (
-          <Image source={require('../img/toolbar_bg.png')}
-                 style={styles.bgImage}>
-            <View
 
-                style={styles.leftView}>
-              <TouchableOpacity style ={{width:60,height:100,justifyContent:'center'}}onPress={this.onIconClicked}>
-                <Image
-                    style={{ width: 10, height: 17}}
-                    source={require('../img/back_arrow_white.png')}
-                /></TouchableOpacity>
+    onOperateClicked() {
+        if (this.props.onOperateClicked) {
+            this.props.onOperateClicked();
+        }
+    }
 
-            </View>
-            <View
-                style={styles.midView} >
-              <TouchableOpacity onPress={this.onOperateClicked}>
-                <Text style={styles.text}>{this.props.title}</Text>
-              </TouchableOpacity>
-            </View>
+    render() {
 
-            <View
-                style={styles.rightView}>
-              <TouchableOpacity onPress={this.onOperateClicked}>
-            <Text style={styles.text}>{this.props.operate}</Text>
-                </TouchableOpacity>
-            </View>
+        return (
+                <Image source={require('../img/toolbar_bg.png')}
+                       style={styles.bgImage}>
+                    <StatusBar
+                        backgroundColor='#15499A'
+                        translucent={true}
+                        hidden={true}
+                        animated={true}
+                    />
+                    <View
 
-          </Image>
-    );
-  }
+                        style={styles.leftView}>
+                        <TouchableOpacity style={{width:60,height:100,justifyContent:'center'}}
+                                          onPress={this.onIconClicked}>
+                            <Image
+                                style={{ width: 10, height: 17}}
+                                source={require('../img/back_arrow_white.png')}
+                            /></TouchableOpacity>
+
+                    </View>
+                    <View
+                        style={styles.midView}>
+                        <TouchableOpacity onPress={this.onOperateClicked}>
+                            <Text style={styles.text}>{this.props.title}</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View
+                        style={styles.rightView}>
+                        <TouchableOpacity onPress={this.onOperateClicked}>
+                            <Text style={styles.text}>{this.props.operate}</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </Image>
+        );
+    }
 }
 
 CustomToolbar.propTypes = propTypes;
 
 CustomToolbar.defaultProps = {
-  onActionSelected: function () {
-  },
-  title: '',
-  operate:'',
-  actions: []
+    onActionSelected: function () {
+    },
+    title: '',
+    operate: '',
+    actions: []
 };
 
 

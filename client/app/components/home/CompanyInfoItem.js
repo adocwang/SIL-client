@@ -25,10 +25,12 @@ class CompanyInfoItem extends React.Component {
         return (
             <TouchableOpacity onPress={()=>this.props.onClicked()}>
                 <View style={styles.containerItem}>
+                    <View style={styles.imgContainer}>
                     <Image
                         style={styles.img}
-                        source={require('../../img/default_avatar.png')}
+                        source={require('../../img/default.png')}
                     />
+                        </View>
                     <View style={styles.content}>
                         <View style={styles.catContainer}>
                             <Text style={styles.title}>
@@ -73,8 +75,12 @@ let styles = StyleSheet.create({
         height: 100,
         paddingLeft: 20,
     },
+    imgContainer:{
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center'
+    },
     img: {
-        flex: 1,
         width: 50,
         height: 50,
         borderColor:'#B5B5B5',     //边框颜色

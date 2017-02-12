@@ -11,7 +11,8 @@ import {
     ProgressBarAndroid,
     InteractionManager,
     NativeModules,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    StatusBar
 } from 'react-native';
 import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-view'
 import MainTabBar from '../components/MainTabBar';
@@ -124,6 +125,12 @@ class Main extends BasePage {
         const selectedPerson=(this.state.selectedTab === 'person')
         return (
             <View style={styles.container}>
+                <StatusBar
+                    backgroundColor='#15499A'
+                    translucent={true}
+                    hidden={true}
+                    animated={true}
+                />
                 <Image source={require('../img/toolbar_bg.png')}  style={{height:100,  width:null, flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
                     <View style={{flexDirection: 'row', alignItems: 'flex-start',justifyContent: 'center',marginLeft:26,marginRight:26}}>
                     <Image
