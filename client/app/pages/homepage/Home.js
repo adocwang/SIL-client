@@ -93,20 +93,20 @@ class Home extends BasePage {
 
     onPress (item) {
         const {navigator} = this.props;
-            navigator.push({
-                component: ClaimContainer,
-                name: 'Claim',
-                params: {
-                    item: item,
-                },
-            });
-        //navigator.push({
-        //    component: EnterpriseDetailContainer,
-        //    name: 'EnterpriseDetail',
-        //    params: {
-        //        id: 21,
-        //    },
-        //});
+            //navigator.push({
+            //    component: ClaimContainer,
+            //    name: 'Claim',
+            //    params: {
+            //        item: item,
+            //    },
+            //});
+        navigator.push({
+            component: EnterpriseDetailContainer,
+            name: 'EnterpriseDetail',
+            params: {
+                id: 21,
+            },
+        });
     }
 
     //渲染每页内容
@@ -204,11 +204,12 @@ class Home extends BasePage {
                     <TouchableOpacity onPress={this.onSearchCompany}>
                             <View   style={styles.searchBar}>
                                 <Text style={styles.searchBarInput}>输入企业名称</Text>
-                                <View style={{marginLeft:10,paddingRight:10}}>
-                                    <Icon
-                                        name={'md-search'} size={30}
-                                        color={'#737373'}
-                                    /></View>
+                                <View >
+                                    <Image
+                                        style={{}}
+                                        source={require('../../img/search_icon.png')}
+                                    />
+                                   </View>
                             </View>
                     </TouchableOpacity>
                             <ScrollableTabView
@@ -297,7 +298,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius:30,
-        height: 40,
+        height: 35,
         marginLeft: 10,
         marginRight:10
     },

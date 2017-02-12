@@ -94,15 +94,16 @@ class Search extends BasePage {
                     title="搜索"
                     navigator={navigator}/>
                     <View   style={styles.searchBar}>
-                        <TextInput   onChangeText={(enterprise) => this.setState({enterprise})}
+                        <TextInput   onChangeText={(enterprise) => this.setState({enterprise})} keyboardType="web-search" onSubmitEditing={this.searchCompany}
                                      value={this.state.enterprise} style = {styles.searchBarInput}
                                      placeholder='请输企业名称' underlineColorAndroid="transparent" />
                         <TouchableOpacity onPress={this.searchCompany}>
-                        <View style={{marginLeft:10,paddingRight:10}}>
-                            <Icon
-                                name={'md-search'} size={30}
-                                color={'#737373'}
-                            /></View></TouchableOpacity>
+                            <View >
+                                <Image
+                                    style={{width:78,height:40}}
+                                    source={require('../../img/search_icon.png')}
+                                />
+                            </View></TouchableOpacity>
                     </View>
 
                 <View style={{flex:1}}>

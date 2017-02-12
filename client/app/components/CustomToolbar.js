@@ -12,14 +12,36 @@ import {
 import {NaviGoBack} from '../utils/CommonUtils';
 
 const styles = StyleSheet.create({
-  container: {
+
+  bgImage:{
+    height:100,
+    width:null,
+    flexDirection: 'row',
+    resizeMode: Image.resizeMode.stretch
+  },
+  leftView:{
+    flexDirection: 'row',
+    flex:1,
+    alignItems: 'center',
+    marginLeft:26
   },
   rightView: {
-    marginLeft:200,
-    width: 100,
-    height: 20,
-    backgroundColor: "orange",
+    flexDirection: 'row',
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginRight:30
   },
+  midView:{
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  text:{
+    fontSize: 16,
+    color: '#ffffff',
+    backgroundColor:'transparent'
+  }
 
 });
 
@@ -65,22 +87,28 @@ class CustomToolbar extends React.Component {
 
     return (
           <Image source={require('../img/toolbar_bg.png')}
-                 style={{height:100, width:null, flexDirection: 'row',resizeMode: Image.resizeMode.stretch}}>
+                 style={styles.bgImage}>
             <View
 
-                style={{flexDirection: 'row', alignItems: 'center',marginLeft:26}}>
-              <TouchableOpacity onPress={this.onIconClicked}>
+                style={styles.leftView}>
+              <TouchableOpacity style ={{width:60,height:100,justifyContent:'center'}}onPress={this.onIconClicked}>
                 <Image
                     style={{ width: 10, height: 17}}
                     source={require('../img/back_arrow_white.png')}
                 /></TouchableOpacity>
 
-              <Text style={{fontSize: 16, color: '#ffffff',marginLeft:10,backgroundColor:'transparent'}}>{this.props.title}</Text>
             </View>
             <View
-                style={{flexDirection: 'row', flex:1,alignItems: 'center',justifyContent: 'flex-end',marginRight:30}}>
+                style={styles.midView} >
               <TouchableOpacity onPress={this.onOperateClicked}>
-            <Text style={{fontSize: 16, color: '#ffffff',backgroundColor:'transparent'}}>{this.props.operate}</Text>
+                <Text style={styles.text}>{this.props.title}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View
+                style={styles.rightView}>
+              <TouchableOpacity onPress={this.onOperateClicked}>
+            <Text style={styles.text}>{this.props.operate}</Text>
                 </TouchableOpacity>
             </View>
 

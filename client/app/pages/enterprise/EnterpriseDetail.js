@@ -34,6 +34,7 @@ import {GapYear} from '../../utils/CommonUtils'
 
 import { Col, Row, Grid } from "react-native-easy-grid";
 import BasePage from  '../BasePage'
+import * as types from '../../constants/ActionTypes';
 
 class EnterpriseDetail extends BasePage {
     constructor(props) {
@@ -51,7 +52,12 @@ class EnterpriseDetail extends BasePage {
             });
         }
     }
-
+    componentWillUnmount() {
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch({type:types.CLEAR_LAST_ENTERPRISE_DETAIL});
+        });
+    }
 
     render() {
         const {navigator} = this.props;
@@ -88,7 +94,7 @@ class EnterpriseDetail extends BasePage {
                             <DaiKuanJinDu activeTab={1} backgroundColor='#ffffff'/>
                         </Bar>
 
-                        {this.props.enterprise.detail&&<Bar
+                        <Bar
                             title='常用信息'
                             collapsible={true}
                             show={true}
@@ -98,7 +104,7 @@ class EnterpriseDetail extends BasePage {
                             titleStyle={styles.bar_title}
                         >
                            <CommonInfo navigator={navigator} {...this.props.enterprise.detail}/>
-                        </Bar>}
+                        </Bar>
                         <Bar
                             title='融资资讯'
                             collapsible={true}
@@ -173,7 +179,7 @@ class EnterpriseDetail extends BasePage {
                         >
                             <QiQuanYaoSu />
                         </Bar>
-                        {this.props.enterprise.detail&&<Bar
+                        <Bar
                             title='经营信息'
                             collapsible={true}
                             show={true}
@@ -183,7 +189,7 @@ class EnterpriseDetail extends BasePage {
                             titleStyle={styles.bar_title}
                         >
                             <JingYingXinXi navigator={navigator} {...this.props.enterprise.detail}/>
-                        </Bar>}
+                        </Bar>
                     </ScrollView>}
             </View>
         );
