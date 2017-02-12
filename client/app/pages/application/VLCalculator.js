@@ -55,7 +55,7 @@ export default class VLCalculator extends Component {
         return (
             <TouchableWithoutFeedback onPress={this.didClickedContainerView}>
                 <View style={styles.container}>
-                    <CustomToolbar title="现场采集" navigator={this.props.navigator}/>
+                    <CustomToolbar title="VL计算器" navigator={this.props.navigator}/>
                     <View style={styles.topView}>
                         <Text style={{color: CommonColor.defaultBlackColor}}>融资金额:</Text>
                         <View style={styles.textView}>
