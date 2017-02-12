@@ -76,7 +76,7 @@ let styles = StyleSheet.create({
     content: {
         flex: 7,
         flexDirection: 'column',
-        paddingLeft: 10,
+        paddingLeft: 15,
         alignSelf:'center'
     },
     title: {

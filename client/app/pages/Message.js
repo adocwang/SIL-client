@@ -17,6 +17,7 @@ import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetail
 import {ToastShort} from '../utils/ToastUtils';
 import MessageItem from '../components/home/MessageItem';
 import BasePage from './BasePage'
+import CustomToolbar from '../components/CustomToolbar'
 
 class Message extends BasePage {
     constructor() {
@@ -68,8 +69,12 @@ class Message extends BasePage {
 
 
     render () {
+        const {navigator} = this.props;
         return (
             <View style={styles.container}>
+                <CustomToolbar
+                    title="消息中心"
+                    navigator={navigator}/>
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(this.props.message.messageList)}
                     renderRow={this.renderItem}

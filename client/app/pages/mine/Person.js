@@ -19,6 +19,7 @@ import {
 import * as Color from '../../utils/CommonColor';
 import AccountManagerContainer from "../../containers/AccountManagerContainer"
 import MyStoreContainer from "../../containers/MyStoreContainer"
+import MessageContainer from "../../containers/MessageContainer"
 import {fetchUserGet} from '../../actions/auth'
 import {ToastShort} from '../../utils/ToastUtils';
 
@@ -28,6 +29,7 @@ class Person extends React.Component {
         this.state = {user: {}}
         this.didClickedAccountManager = this.didClickedAccountManager.bind(this)
         this.didClickedMyStore = this.didClickedMyStore.bind(this)
+        this.didClickedMessage = this.didClickedMessage.bind(this)
         this.fetchUserInfo = this.fetchUserInfo.bind(this)
     }
 
@@ -65,6 +67,16 @@ class Person extends React.Component {
         // });
     }
 
+    didClickedMessage() {
+         const {navigator} = this.props;
+         InteractionManager.runAfterInteractions(() => {
+             navigator.push({
+                 component: MessageContainer,
+                 name: 'Message',
+             });
+         });
+    }
+
     render() {
         var headerImg = null
         headerImg = require("../../img/header_default.png")
@@ -89,6 +101,14 @@ class Person extends React.Component {
                         <Text style={styles.childWord}>我的收藏</Text>
                         <Image style={styles.rightArrow} source={require("../../img/right_arrow2.png")}/>
                     </View>
+                    </TouchableOpacity>
+                    <View style={styles.lineView}></View>
+                    <TouchableOpacity onPress={this.didClickedMessage}>
+                        <View style={styles.contentChild}>
+                            <Image style={styles.childImg} source={require("../../img/msg_icon.png")}/>
+                            <Text style={styles.childWord}>消息中心</Text>
+                            <Image style={styles.rightArrow} source={require("../../img/right_arrow2.png")}/>
+                        </View>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -121,7 +141,7 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
     contentBg: {
-        height: 108,
+        height: 162,
         alignSelf: "stretch",
         backgroundColor: "white",
         marginTop: 15
