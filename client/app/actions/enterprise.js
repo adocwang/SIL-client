@@ -40,7 +40,6 @@ export function fetchGetFindingEnterprise (id,token) {
     }
 
     return dispatch => {
-        dispatch(clearLastEnterprise())
         return getRequest(dispatch, host.ENTERPRISE_FINDING_URL + id, token)
             .then((data) => {
                 if (data.code == 0) {
