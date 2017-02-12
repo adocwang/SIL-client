@@ -25,7 +25,7 @@ class Search extends BasePage {
     constructor() {
         super()
         this.state = {
-            enterprise:'测试1科技有限公司',
+            enterprise:'',
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),

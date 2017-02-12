@@ -99,7 +99,6 @@ class UserLoan extends BasePage {
 
     onPress (item) {
         const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: EnterpriseDetailContainer,
                 name: 'EnterpriseDetail',
@@ -107,7 +106,6 @@ class UserLoan extends BasePage {
                     id: item.id,
                 },
             });
-        });
 
     }
 
