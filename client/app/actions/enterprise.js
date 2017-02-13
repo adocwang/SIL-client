@@ -87,6 +87,30 @@ export function fetchEnterpriseList(paramsMap, token){
     }
 }
 
+export function fetchEnterpriseList2(paramsMap, token){
+    console.log('fetchEnterpriseList',paramsMap,token);
+    return dispatch => {
+        return postRequest(dispatch,host.ENTERPRISE_LIST_URL ,paramsMap,token)
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
+                }else if(data.code==0){
+                    dispatch({type:types.FETCH_COMPANY_LIST2,data:data.data})
+                }
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+            })
+    }
+}
+
 
 export function fetchEnterpriseSuccess (data) {
     data.loading = false;

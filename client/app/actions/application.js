@@ -75,7 +75,8 @@ export function uploadImg(uri,token){
                 }
             })
             .catch((error) => {
-                // ToastShort(error.message);
+                ToastShort("图片上传失败")
+                dispatch({type:types.RESOURCE_UPLOAD,data:data.data})
             })
     }
 }

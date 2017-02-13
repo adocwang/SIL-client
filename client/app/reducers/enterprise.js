@@ -73,7 +73,17 @@ export default function enterprise (state = initialState, action) {
 export  function enterpriseList(state = listInitialState,action) {
     switch (action.type) {
         case types.FETCH_COMPANY_LIST:
-            console.log(action.data)
+             console.log("...")
+             console.log(action.data)
+            return Object.assign({}, listInitialState,action.data);
+        default:
+            return state;
+    }
+}
+
+export  function enterpriseList2(state = listInitialState,action) {
+    switch (action.type) {
+        case types.FETCH_COMPANY_LIST2:
             return Object.assign({}, listInitialState,action.data);
         default:
             return state;

@@ -7,7 +7,7 @@ import search from './search';
 import userloan from './userloan';
 import message from './message';
 import enterprise from './enterprise';
-import {enterpriseList,findingEnterprise} from './enterprise';
+import {enterpriseList,findingEnterprise,enterpriseList2} from './enterprise';
 import collection,{uploadImg,commonNet} from './application.js'
 import claimdistribute from './claimdistribute';
 
@@ -23,7 +23,8 @@ const rootReducer = combineReducers({
     uploadImg,
    claimdistribute,
     commonNet,
-    findingEnterprise
+    findingEnterprise,
+    enterpriseList2
 
 });
 

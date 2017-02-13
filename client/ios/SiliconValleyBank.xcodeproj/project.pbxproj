@@ -1161,7 +1161,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.siliconvalley.bank;
+				PRODUCT_BUNDLE_IDENTIFIER = org.zy.aaa;
 				PRODUCT_NAME = SiliconValleyBank;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1181,7 +1181,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.siliconvalley.bank;
+				PRODUCT_BUNDLE_IDENTIFIER = org.zy.aaa;
 				PRODUCT_NAME = SiliconValleyBank;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

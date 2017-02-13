@@ -3,7 +3,7 @@ import {View, StyleSheet, Text, Image, TouchableWithoutFeedback, Navigator, List
 import CustomToolbar from '../../components/CustomToolbar'
 import CommonColor from '../../utils/CommonColor'
 import CollectionCertificateContainer from '../../containers/CollectionCertificeContainer'
-import {fetchEnterpriseList} from '../../actions/enterprise'
+import {fetchEnterpriseList2} from '../../actions/enterprise'
 import Spanner from 'react-native-spinkit'
 import Loading from '../../components/Loading';
 
@@ -30,7 +30,7 @@ class CollectionHome extends Component {
     }
 
     onScroll () {
-            canLoadMore = true;
+        canLoadMore = true;
     }
 
     onEndReached () {
@@ -50,7 +50,7 @@ class CollectionHome extends Component {
     }
 
     onRefresh() {
-        this.state.isRefreshing = true
+        this.setState({isRefreshing: true})
         this.page = 1
         this.canLoadMore = false
         this.fetchEnterprise(1)
@@ -61,7 +61,7 @@ class CollectionHome extends Component {
         this.page = page
         const {dispatch,auth} = this.props
 
-        dispatch(fetchEnterpriseList({page:page,page_limit:10,only_mine:"1"},auth.token))
+        dispatch(fetchEnterpriseList2({page:page,page_limit:10,only_mine:"1"},auth.token))
     }
 
     clickedCell(index) {
@@ -114,23 +114,24 @@ class CollectionHome extends Component {
     }
 
     componentWillReceiveProps (nextProps) {
+        console.log(".....")
         this.setState({showLoading: false})
-        this.state.isRefreshing = false
+        this.setState({isRefreshing: false})
         this.setState({isLoadingMore: false})
         if(this.page == 1) {
-            setTimeout(()=>this.canLoadMore=true,1000)
+            setTimeout(()=>this.canLoadMore=true,200)
         } else {
             this.canLoadMore = true
         }
-        const {enterpriseList} = nextProps
-        if(enterpriseList.page_count > 0) {
-           var netDatas = enterpriseList.enterprises
+        const {enterpriseList2} = nextProps
+        if(enterpriseList2.page_count > 0) {
+            var netDatas = enterpriseList2.enterprises
             netDatas = netDatas.map(data=>{
                 data.selected = false
                 return data
             })
             if(this.page == 1) {
-             this.datas.splice(0,this.datas.length)
+                this.datas.splice(0,this.datas.length)
             }
             this.datas=this.datas.concat(netDatas)
             this.setState({dataSource:this.state.dataSource.cloneWithRows(this.datas)})
@@ -162,7 +163,7 @@ class CollectionHome extends Component {
                           renderFooter={this.renderFooter}
                           refreshControl={
                               <RefreshControl
-                                  refreshing={false}
+                                  refreshing={this.state.isRefreshing}
                                   onRefresh={this.onRefresh}
                                   tintColor="#ff0000"
                                   title="Loading..."

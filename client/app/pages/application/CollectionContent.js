@@ -11,15 +11,13 @@ import {
     Navigator,
     ScrollView
 } from 'react-native'
-import LoanCalculatorContainer from '../../containers/LoanCalculatorContainer'
-import CollectionContainer from '../../containers/CollectionContainer'
 import CustomToolbar from '../../components/CustomToolbar'
 import CommonColor from '../../utils/CommonColor'
-import CollectionTakephoto from "./CollectionTakePhoto.js"
 import Button from '../../components/Button.ios.js'
-import Takephoto from '../TakePhoto'
-import {uploadImg} from '../../actions/application'
 import dismissKeyboard from 'dismissKeyboard'
+import {uploadImage} from '../../utils/HttpServices';
+import * as host from '../../constants/Urls';
+
 import PopupDialog, {
     DialogTitle, DialogButton
 
@@ -31,10 +29,10 @@ import Loading from '../../components/Loading';
 
 const ImgModel = {
     local: "",
-    net:"",
+    net: "",
 }
 
-const newImgModel = ()=>{
+const newImgModel = () => {
     var imgModel = new Object()
     imgModel.local = ""
     imgModel.net = ""
@@ -66,14 +64,19 @@ class CollectionContent extends Component {
         this.didClickedSave = this.didClickedSave.bind(this)
         this.hasUploadImg = this.hasUploadImg.bind(this)
         this.chargeWithOutImg = this.chargeWithOutImg.bind(this)
+        this.uploadImgMethod = this.uploadImgMethod.bind(this)
+        this.receiveImg = this.receiveImg.bind(this)
+        this.chargeFail = this.chargeFail.bind(this)
+        this.selectImgQuality = this.selectImgQuality.bind(this)
+        this.didClickedImgQuality = this.didClickedImgQuality.bind(this)
         this.showDialogType = "select"
-        this.state = {data: null, selectViewIndex: -1,refresh:"refresh",showLoading:false}
-        this.paths = []
+        this.state = {data: null, selectViewIndex: -1, refresh: "refresh", showLoading: false}
         this.netPaths = []
         this.imgIndex = -1
+        this.failIndexs = []
         this.submitData = null
-        this.lastImgId = ""
         this.imgModels = []
+        this.selectImgClosure = null
     }
 
     componentDidMount() {
@@ -83,10 +86,9 @@ class CollectionContent extends Component {
     }
 
     didClickedSave() {
-        if(this.imgIndex != -1 ) {
+        if (this.imgIndex != -1) {
             const result = parseInt(this.hasUploadImg())
-            console.log(result)
-            switch(result) {
+            switch (result) {
                 case 0:
                     ToastShort("上传图片")
                     break;
@@ -102,16 +104,15 @@ class CollectionContent extends Component {
     }
 
     hasUploadImg() { //0 添加图片 1,上传
-        var status  = 2
-        if(this.imgModels.length == 1) {
+        var status = 2
+        if (this.imgModels.length == 1) {
             const model = this.imgModels[0]
-            if(model.local == "" && model.net == "") {
+            if (model.local == "" && model.net == "") {
                 return 0
             }
         }
-        this.imgModels.map(data=>{
-            if(data.local != "") {
-                console.log(data)
+        this.imgModels.map(data => {
+            if (data.local != "") {
                 status = 1
             }
         })
@@ -120,12 +121,12 @@ class CollectionContent extends Component {
 
     chargeWithOutImg() {
         var result = true
-        this.submitData.map(data=>{
-            if(data.value == undefined && data.type != "img") {
+        this.submitData.map(data => {
+            if (data.value == undefined && data.type != "img") {
                 result = false
             }
         })
-        if(!result) {
+        if (!result) {
             ToastShort("信息不完善")
         }
         return result
@@ -134,12 +135,12 @@ class CollectionContent extends Component {
     chargeInputAll() {
 
         var result = true
-        this.submitData.map(data=>{
-            if(data.value == undefined) {
+        this.submitData.map(data => {
+            if (data.value == undefined) {
                 result = false
             }
         })
-        if(!result) {
+        if (!result) {
             ToastShort("信息不完善")
         } else {
             const {navigator} = this.props
@@ -155,43 +156,84 @@ class CollectionContent extends Component {
         dismissKeyboard();
     }
 
-    changePhoto(index,paths) {
+    changePhoto(index, paths) {
         this.imgModels = paths
     }
 
     uploadImg() {
-        if(!this.chargeWithOutImg()) {
+        if (!this.chargeWithOutImg()) {
             return false
         }
-        this.setState({showLoading: true})
-        this.imgModels.map(imgModel=>{
-            if(imgModel.local == "" && imgModel.net != "") {
+        this.netPaths = []
+        this.failIndexs = []
+        this.imgModels.map((imgModel, index) => {
+            if (imgModel.net != "") {
                 this.netPaths.push(imgModel.net)
-            } else if(imgModel.local != ""){
-                    const {dispatch,auth} = this.props
-                    dispatch(uploadImg(imgModel.local,auth.token))
+            } else if (imgModel.local != "" && imgModel.net == "") {
+                this.setState({showLoading: true})
+                const {auth,dispatch} = this.props
+                dispatch(this.uploadImgMethod(index, imgModel.local, auth.token))
             }
         })
+        console.log(this.netPaths)
     }
 
-    componentWillReceiveProps(nextProps) {
+    uploadImgMethod(index, uri, token) {
+        return dispatch => {
+            return uploadImage(dispatch, host.RESOURCE_UPLOAD_URL, token, uri)
+                .then((data) => {
+                    if (data.code == 2007) {
+                        ToastShort('用户不存在');
+                    } else if (data.code == 1003) {
+                        ToastShort('缺少参数');
+                    } else if (data.code == 407) {
+                        ToastShort('无权限');
+                    } else if (data.code == 406) {
+                        ToastShort('用户无权限');
+                    } else if (data.code == 0) {
+                        this.receiveImg(index, data.data)
+                    }
+                })
+                .catch((error) => {
+                this.failIndexs.push(index)
+                    this.chargeFail()
+                })
+        }
+    }
 
-        const {uploadImg} = nextProps
-        if(uploadImg.resourceId != this.lastImgId) {
+    chargeFail() {
 
-            this.lastImgId = uploadImg
-            this.netPaths.push(uploadImg.resourceId)
-            if(this.netPaths.length == this.imgModels.length) {
+        if(this.netPaths.length + this.failIndexs.length == this.imgModels.length) {
+            this.setState({showLoading: false})
+
+            if(this.failIndexs.length > 0) {
+                    const indexString = this.failIndexs.map(index=>{
+                        return index + 1
+                    }).join(",")
+                    const toast = "图片" + indexString + "上传失败"
+                    ToastShort(toast)
+                }
+            }
+
+    }
+
+    receiveImg(index, data) {
+            this.chargeFail()
+            this.netPaths.push(data.resourceId)
+            this.imgModels[index].net = data.resourceId
+            if (this.netPaths.length == this.imgModels.length) {
                 this.setState({showLoading: false})
                 this.submitData[this.imgIndex].value = this.netPaths
                 this.chargeInputAll()
             }
-        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+
     }
 
 
-
-    inputViewChange(index,text) {
+    inputViewChange(index, text) {
         this.submitData[index].value = text
     }
 
@@ -199,6 +241,13 @@ class CollectionContent extends Component {
         this.showDialogType = "checkBox"
         this.setState({selectViewIndex: index})
         this.popupDialog.openDialog()
+    }
+
+    selectImgQuality(closure) {
+        this.showDialogType = "imgQuality"
+        this.setState({refresh:"refresh"})
+        this.popupDialog.openDialog()
+        this.selectImgClosure = closure
     }
 
     selectViewChange(index) {
@@ -211,18 +260,26 @@ class CollectionContent extends Component {
         this.popupDialog.closeDialog()
         const selectIndex = this.state.selectViewIndex
         this.submitData[selectIndex].value = this.submitData[selectIndex].dataSource[index]
-        this.setState({refresh:"refresh"})
+        this.setState({refresh: "refresh"})
+    }
+
+    didClickedImgQuality(index) {
+        this.popupDialog.closeDialog()
+        console.log(this.selectImgClosure)
+        if(this.selectImgClosure != null) {
+           this.selectImgClosure(index)
+       }
     }
 
     didClickedCheckBox(indexs) {
         this.popupDialog.closeDialog()
         const selectIndex = this.state.selectViewIndex
-        const values = indexs.map(index=>{
+        const values = indexs.map(index => {
             const value = this.submitData[selectIndex].dataSource[index]
             return value
         })
         this.submitData[selectIndex].value = values
-        this.setState({refresh:"refresh"})
+        this.setState({refresh: "refresh"})
 
     }
 
@@ -245,16 +302,17 @@ class CollectionContent extends Component {
 
     selectView(obj, index) {
         var value = null
-        if(typeof(this.submitData[index].value) != "undefined") {
+        if (typeof(this.submitData[index].value) != "undefined") {
             value = this.submitData[index].value.name
         }
         return (
-            <SelecteView key={index} title={value} titleHolder={obj.title} selectedClosure={this.selectViewChange.bind(this, index)}/>
+            <SelecteView key={index} title={value} titleHolder={obj.title}
+                         selectedClosure={this.selectViewChange.bind(this, index)}/>
         )
     }
 
     imageView(obj, index) {
-        if(this.imgModels.length == 0) {
+        if (this.imgModels.length == 0) {
             this.imgIndex = index
             var imgModels = []
             if (typeof(this.submitData[index].value) != "undefined") {
@@ -273,18 +331,18 @@ class CollectionContent extends Component {
 
         return (
             <AddPhoto imgModels={imgModels} key={index} changePhoto={this.changePhoto.bind(this, index)}
-                      navigator={this.props.navigator}/>
+                      navigator={this.props.navigator} selectImgQuality={this.selectImgQuality}/>
         )
     }
 
     checkBoxView(obj, index) {
         var value = null
-        if(typeof(this.submitData[index].value) != "undefined") {
+        if (typeof(this.submitData[index].value) != "undefined") {
             value = ""
-            this.submitData[index].value.map(data=>{
+            this.submitData[index].value.map(data => {
                 value += (data.name + ",")
             })
-            value = value.substring(0,value.length -1)
+            value = value.substring(0, value.length - 1)
         }
         return (
             <SelecteView key={index} title={value} titleHolder={obj.title}
@@ -335,11 +393,24 @@ class CollectionContent extends Component {
                 }
             }
         }
+        var diaLogTableView = null
+        switch(this.showDialogType) {
+            case "select":
+                diaLogTableView = <DialogoSelectTableView data={dialogData} closure={this.didClickedSelectDialogItem}/>
+                break
+            case "checkBox":
+                diaLogTableView = <DialogoCheckTableView data={dialogData} closure={this.didClickedCheckBox}/>
+                break
+            case "imgQuality":
+                diaLogTableView = <DialogoImgQualityTableView closure={this.didClickedImgQuality}/>
+                break
+            default:
+        }
+        console.log(this.showDialogType)
 
         return (
             <TouchableWithoutFeedback onPress={this.clickedSelf}>
                 <View style={styles.containers}>
-                    {this.state.showLoading && <Loading/>}
                     <CustomToolbar title="现场采集" navigator={this.props.navigator}/>
                     <View style={styles.topView}>
                         <Text style={styles.title}>{name}</Text>
@@ -348,6 +419,7 @@ class CollectionContent extends Component {
                         {views}
                         <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="保存"
                                 onPress={this.didClickedSave}/>
+                        <View style={{height: 10}}/>
                     </ScrollView>
                     <PopupDialog
                         ref={(popupDialog) => {
@@ -356,12 +428,10 @@ class CollectionContent extends Component {
                         dialogTitle={<DialogTitle title="选择"/>}
                         width={250} height={300}
                     >
-                        {this.showDialogType == "select" ?
-                            <DialogoSelectTableView data={dialogData} closure={this.didClickedSelectDialogItem}/>
-                            : <DialogoCheckTableView data={dialogData} closure={this.didClickedCheckBox}/>
-                        }
+                        {diaLogTableView}
 
                     </PopupDialog>
+                    {this.state.showLoading && <Loading/>}
                 </View>
             </TouchableWithoutFeedback>
         )
@@ -408,46 +478,62 @@ class AddPhoto extends Component {
         this.changeOtherImg = this.changeOtherImg.bind(this)
         this.backPaths = this.backPaths.bind(this)
         this.changePhoto = this.changePhoto.bind(this)
+        this.takePhone = this.takePhone.bind(this)
+        this.takeOtherPhoneExcute = this.takeOtherPhoneExcute.bind(this)
+        this.changePhotoExcute = this.changePhotoExcute.bind(this)
+        this.selectAddMethod = 0
     }
 
     componentDidMount() {
         var imgModels = this.props.imgModels
-        if(imgModels.length == 0) {
+        if (imgModels.length == 0) {
             let imgModel = new Object()
             imgModel.local = ""
             imgModel.net = ""
             imgModels.push(imgModel)
         }
-
         this.setState({otherImgPath: this.props.imgModels})
     }
 
-    haha() {
-
-        navigator.push({
-            name: "Takephoto",
-            component: Takephoto,
-            params: {
-                takephotoClosure: this.addOtherImg,
-            }
-        })
-
-        // this.changeIndex = index
-        // navigator.push({
-        //     name: "Takephoto",
-        //     component: Takephoto,
-        //     params: {
-        //         takephotoClosure: this.changeOtherImg,
-        //     }
-        // })
+    takePhone(index) {
+        console.log("图片质量Index")
+        console.log(index)
+        if(this.selectAddMethod == 0) {
+            this.takeOtherPhoneExcute(index)
+        } else {
+            this.changePhotoExcute(index)
+        }
     }
 
     takeOtherPhoto() {
+        this.selectAddMethod = 0
+        const {selectImgQuality} = this.props
+        selectImgQuality(this.takePhone)
+    }
+
+    takeOtherPhoneExcute(index) {
+        var quality = 1.0
+        switch(parseInt(index)) {
+            case 0:
+                quality = 0.3;
+                break;
+            case 1:
+                quality = 0.6;
+                break;
+            case 2:
+                quality = 1.0
+                break
+            default:
+        }
+        console.log("图片质量")
+        console.log(index)
+        console.log(quality)
+
         var options = {
             title: 'Select Avatar',
-            takePhotoButtonTitle:"拍照",
-            chooseFromLibraryButtonTitle:"相册",
-
+            takePhotoButtonTitle: "拍照",
+            chooseFromLibraryButtonTitle: "相册",
+            quality: quality,
             storageOptions: {
                 skipBackup: true,
                 path: 'images'
@@ -466,6 +552,7 @@ class AddPhoto extends Component {
         });
     }
 
+
     addOtherImg(path) {
         this.setState(prev => {
             var imgModel = newImgModel()
@@ -477,13 +564,35 @@ class AddPhoto extends Component {
     }
 
     changePhoto(index) {
-         this.changeIndex = index
+        this.changeIndex = index
+        this.selectAddMethod = 1
+        const {selectImgQuality} = this.props
+        selectImgQuality(this.takePhone)
+    }
 
+    changePhotoExcute(index) {
+        var quality = 1.0
+        switch(parseInt(index)) {
+            case 0:
+                quality = 0.3;
+                break;
+            case 1:
+                quality = 0.6;
+                break;
+            case 2:
+                quality = 1.0
+                break
+            default:
+        }
+        console.log("图片质量")
+        console.log(index)
+        console.log(quality)
 
         var options = {
             title: 'Select Avatar',
-            takePhotoButtonTitle:"拍照",
-            chooseFromLibraryButtonTitle:"相册",
+            takePhotoButtonTitle: "拍照",
+            chooseFromLibraryButtonTitle: "相册",
+            quality: quality,
 
             storageOptions: {
                 skipBackup: true,
@@ -498,7 +607,7 @@ class AddPhoto extends Component {
             else if (response.customButton) {
             }
             else {
-               this.changeOtherImg(response.uri)
+                this.changeOtherImg(response.uri)
             }
         });
     }
@@ -524,19 +633,19 @@ class AddPhoto extends Component {
         if (count % 2 == 1) {
             lastCellStyle.push(styles.addCellRight)
         }
-        const cells = this.state.otherImgPath.map((imgModel, index) =>{
+        const cells = this.state.otherImgPath.map((imgModel, index) => {
             var imgPath = ""
             var firstNotChange = true
-            if(imgModel.local != "") {
+            if (imgModel.local != "") {
                 imgPath = imgModel.local
                 firstNotChange = false
-            } else if(imgModel.net != "") {
+            } else if (imgModel.net != "") {
                 imgPath = imgRootPath + imgModel.net
                 firstNotChange = false
             }
             return (
-            <AddPhotoCell key={index} path={imgPath} index={index} changePhoto={this.changePhoto}
-                          firstNotChange={firstNotChange}/>)
+                <AddPhotoCell key={index} path={imgPath} index={index} changePhoto={this.changePhoto}
+                              firstNotChange={firstNotChange}/>)
         })
 
         return (
@@ -572,6 +681,7 @@ class AddPhotoCell extends Component {
         var imgPath = {uri: this.props.path}
         var cellImgStyle = styles.mustCellImgS
         var cellStyle = [styles.addCellChild]
+
         if (index % 2 == 1) {
             cellStyle.push(styles.addCellRight)
         }
@@ -583,7 +693,8 @@ class AddPhotoCell extends Component {
             <TouchableWithoutFeedback onPress={this.changePhoto}>
                 <View style={styles.addCell}>
                     <View style={cellStyle}>
-                        <Image style={cellImgStyle} source={imgPath}>
+                        <Image style={cellImgStyle} source={imgPath}
+                               defaultSource={require("../../img/loadingImg.png")}>
                         </Image>
                     </View>
                 </View>
@@ -648,7 +759,6 @@ class DialogoCheckTableView extends Component {
     saveCell(index) {
         this.generateData[index].selected = !(this.generateData[index].selected)
         let newData = JSON.parse(JSON.stringify(this.generateData));
-
         this.setState({dataSource: this.state.dataSource.cloneWithRows(newData)})
 
     }
@@ -666,7 +776,7 @@ class DialogoCheckTableView extends Component {
             }
         }
         const {closure} = this.props
-        if(indexs.length != 0) {
+        if (indexs.length != 0) {
             closure(indexs)
         }
     }
@@ -696,10 +806,39 @@ class DialogoCheckTableView extends Component {
     }
 }
 
+class DialogoImgQualityTableView extends Component {
+    constructor(props) {
+        super(props)
+        const ds = new ListView.DataSource({
+            rowHasChanged: (row1, row2) => row1 !== row2,
+        })
+        this.state = {dataSource: ds.cloneWithRows(["低质量图片","普通质量图片","高质量图片"])}
+    }
+
+    clickedCell(index) {
+        this.props.closure(index)
+    }
+
+    render() {
+        return (
+            <ListView dataSource={this.state.dataSource}
+                      renderRow={(rowData, sectionID, rowID) =>
+                          <TouchableWithoutFeedback onPress={this.clickedCell.bind(this, rowID)}>
+                              <View style={styles.chooseCell}><Text style={styles.chooseTitle}>{rowData}</Text></View>
+                          </TouchableWithoutFeedback>
+                      }
+            />
+        )
+    }
+}
+
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white"
+
     },
     saveButton: {
         width: 160,
@@ -712,6 +851,8 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         height: Dimensions.get('window').height - 100,
+        backgroundColor: "white"
+
     },
     saveTitle: {
         color: CommonColor.defaultBlueColor
@@ -725,17 +866,21 @@ const styles = StyleSheet.create({
         borderColor: CommonColor.defaultLightGray,
         borderRadius: 5,
         flexDirection: "row",
-        paddingLeft: 5
+        paddingLeft: 5,
+
     },
     topView: {
         flexDirection: "row",
-        height: 50,
+        height: 30,
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        backgroundColor: "white"
+
     },
     title: {
         marginLeft: 40,
-        color: CommonColor.defaultBlackColor
+        color: CommonColor.defaultBlackColor,
+        marginTop: 15,
     },
     textArea: {
         alignSelf: "stretch",

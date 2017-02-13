@@ -22,7 +22,7 @@ export default class VLCalculator extends Component {
         super(props)
         this.state = {
             listData: [{multiple: 2}, {multiple: 3}, {multiple: 4}, {multiple: 5},
-                {multiple: 6}, {multiple: 7}, {multiple: 8}, {multiple: 9}, {multiple: 10}]
+                {multiple: 6}, {multiple: 7}, {multiple: 8}, {multiple: 9}, {multiple: 10}],showContent: false
         }
         this.rate = 0.04
         this.rateValue = 0.1
@@ -42,13 +42,14 @@ export default class VLCalculator extends Component {
     }
 
     calculator() {
+
         dismissKeyboard();
         const data = this.state.listData.map((data) => {
             const vcValue = this.money * data.multiple - this.money
             const vlValue = this.money * this.rate + this.shareOption * data.multiple
             return {multiple: data.multiple, vc: vcValue, vl: vlValue}
         })
-        this.setState({listData: data})
+        this.setState({listData: data,showContent:true})
     }
 
     render() {
@@ -66,7 +67,8 @@ export default class VLCalculator extends Component {
                         <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="确定"
                                 onPress={this.calculator}/>
                     </View>
-                    <VLResultTableView listData={this.state.listData}/>
+                    {this.state.showContent && <VLResultTableView listData={this.state.listData}/>}
+
                 </View>
             </TouchableWithoutFeedback>
         )
@@ -82,12 +84,19 @@ class VLResultTableView extends Component {
             dataSource: ds,
         };
         this.renderRow = this.renderRow.bind(this)
+        this.renderFooter = this.renderFooter.bind(this)
     }
 
     componentDidMount() {
         this.state.dataSource.cloneWithRows(this.props.listData)
     }
 
+    renderFooter() {
+        return(
+            <View style={{height: 20}}/>
+
+                )
+    }
 
     renderHeader() {
         return (
@@ -143,6 +152,7 @@ class VLResultTableView extends Component {
                 dataSource={dataSource}
                 renderRow={this.renderRow}
                 renderHeader={this.renderHeader}
+                renderFooter={this.renderFooter}
             />
         )
     }
