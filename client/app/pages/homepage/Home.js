@@ -52,7 +52,7 @@ class Home extends BasePage {
         const {dispatch} = this.props;
         const {home} = this.props;
         InteractionManager.runAfterInteractions(() => {
-             dispatch(fetchHomeEnterpriseList(false,true,false,{page:home.pageAfter[1],bank_name:this.props.auth.bank_name}, this.props.auth.token));
+             dispatch(fetchHomeEnterpriseList(false,true,false,{page:home.pageAfter[1],only_mine:1}, this.props.auth.token));
         });
     }
 
@@ -76,7 +76,7 @@ class Home extends BasePage {
     onRefresh (typeId) {
         const {dispatch} = this.props;
         canLoadMore = false;
-        dispatch(fetchHomeEnterpriseList(true,false,false,{page:1,bank_name:this.props.auth.bank_name}, this.props.auth.token));
+        dispatch(fetchHomeEnterpriseList(true,false,false,{page:1,only_mine:1}, this.props.auth.token));
     }
 
     onScroll () {
@@ -90,7 +90,7 @@ class Home extends BasePage {
         const {home} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
             const {dispatch} = this.props;
-            dispatch(fetchHomeEnterpriseList(false,false,true,{page:home.pageAfter[1],bank_name:this.props.auth.bank_name}, this.props.auth.token));
+            dispatch(fetchHomeEnterpriseList(false,false,true,{page:home.pageAfter[1],only_mine:1}, this.props.auth.token));
             canLoadMore = false;
             loadMoreTime = Date.parse(new Date()) / 1000;
         }

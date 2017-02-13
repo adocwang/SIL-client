@@ -30,8 +30,10 @@ const scaleAnimation = new ScaleAnimation();
 import BasePage from  '../BasePage'
 import {GapYear} from '../../utils/CommonUtils'
 import Loading from '../../components/Loading'
-import {fetchBankList} from '../../actions/home'
+import {fetchBankList,fetchEnterpiseSet} from '../../actions/home'
 import * as types from '../../constants/ActionTypes';
+import {ToastShort} from '../../utils/ToastUtils';
+
 
 class Claim extends BasePage {
     constructor(props) {
@@ -39,17 +41,26 @@ class Claim extends BasePage {
         if (this.props.route.params) {
             this.state = this.props.route.params
         }
-        this.openScaleAnimationDialog = this.openScaleAnimationDialog.bind(this);
+        this.state.clickType = 'bank';
+        this.state.chooseBank ={};
+        this.openChooseConfirmAnimationDialog = this.openChooseConfirmAnimationDialog.bind(this);
+        this.openChooseBankScaleAnimationDialog = this.openChooseBankScaleAnimationDialog.bind(this);
         this.openChooseScaleAnimationDialog = this.openChooseScaleAnimationDialog.bind(this);
         this.onClaimBtnClick = this.onClaimBtnClick.bind(this);
         this.onBankChoose = this.onBankChoose.bind(this);
     }
 
-    openScaleAnimationDialog() {
+    openChooseConfirmAnimationDialog() {
         this.scaleAnimationDialog.openDialog();
     }
 
+    openChooseBankScaleAnimationDialog() {
+        this.setState({clickType: 'bank'});
+        this.chooseBankScaleAnimationDialog.openDialog();
+    }
+
     openChooseScaleAnimationDialog() {
+        this.setState({clickType: 'user'});
         this.chooseScaleAnimationDialog.openDialog();
     }
 
@@ -62,11 +73,14 @@ class Claim extends BasePage {
 
     onClaimBtnClick() {
         this.scaleAnimationDialog.closeDialog();
+
+
     }
 
     onBankChoose(item) {
-        this.chooseScaleAnimationDialog.closeDialog();
-        const {navigator} = this.props;
+        if(this.state.clickType=='user'){
+            this.chooseScaleAnimationDialog.closeDialog();
+            const {navigator} = this.props;
             navigator.push({
                 component: DistributeContainer,
                 name: 'Distribute',
@@ -75,7 +89,20 @@ class Claim extends BasePage {
                     enterprise:this.state.item
                 },
             });
-        //this.chooseScaleAnimationDialog.closeDialog();
+        }else {
+            this.chooseBankScaleAnimationDialog.closeDialog();
+            const {dispatch} = this.props;
+            if(this.state.item && this.state.item.id && item.id){
+                var map = {}
+                map.id = this.state.item.id;
+                map.bank_id = item.id;
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(fetchEnterpiseSet(map,this.props.auth.token));
+                });
+            }else {
+                ToastShort('暂时无法分配,退出重试')
+            }
+        }
     }
 
     onDistributeBtnClick() {
@@ -131,15 +158,15 @@ class Claim extends BasePage {
                 </View>
 
                 <View style={styles.containerOption}>
-                    {/* <TouchableOpacity onPress={this.openScaleAnimationDialog}>
+                     <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
                             <View style={styles.buttonview}>
-                                <Text style={styles.btntext}>认领</Text>
+                                <Text style={styles.btntext}>分配银行</Text>
                             </View>
-                        </TouchableOpacity>*/}
+                        </TouchableOpacity>
 
                     <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
                         <View style={styles.buttonview}>
-                            <Text style={styles.btntext}>分配</Text>
+                            <Text style={styles.btntext}>分配人员</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -148,7 +175,6 @@ class Claim extends BasePage {
                 </View>
                 <PopupDialog
                     ref={(popupDialog) => {this.scaleAnimationDialog = popupDialog;}}
-                    dialogAnimation={scaleAnimation}
                     height={170}
                     dialogTitle={<DialogTitle style={{fontSize:18}} title="确认认领" />}
 
@@ -170,7 +196,6 @@ class Claim extends BasePage {
 
                 <PopupDialog
                     ref={(choosePopupDialog) => {this.chooseScaleAnimationDialog = choosePopupDialog;}}
-                    dialogAnimation={scaleAnimation}
                     height={200}
                     dialogTitle={<DialogTitle style={{fontSize:18}} title="选择支行" />}
 
@@ -184,6 +209,20 @@ class Claim extends BasePage {
                     </View>
                 </PopupDialog>
 
+                <PopupDialog
+                    ref={(choosePopupDialog) => {this.chooseBankScaleAnimationDialog = choosePopupDialog;}}
+                    height={200}
+                    dialogTitle={<DialogTitle style={{fontSize:18}} title="选择支行" />}
+
+                >
+                    <View style={{flex:1}}>
+                        <ScrollView style={{padding:10,marginBottom:20}}>
+                            <View>
+                                {checkBoxList}
+                            </View>
+                        </ScrollView>
+                    </View>
+                </PopupDialog>
 
             </View>
         );
