@@ -34,6 +34,7 @@ export default function claimdistribute (state = initialState, action) {
             return Object.assign({}, state);
         case types.FETCH_ENTERPRISE_SET:
             state.loadingUserList = true;
+            state.loadingBankList = true;
             return Object.assign({}, state);
         case types.REVEIVE_ENTERPRISE_SET:
             state.setEnterpriseInfoSuccess = true;

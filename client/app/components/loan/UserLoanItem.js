@@ -110,7 +110,6 @@ let styles = StyleSheet.create({
         fontSize: 12,
     },
     catContainer: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingRight: 10,
