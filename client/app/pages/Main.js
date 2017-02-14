@@ -126,9 +126,9 @@ class Main extends BasePage {
         return (
             <View style={styles.container}>
                 <StatusBar
-                    backgroundColor='#15499A'
+                    backgroundColor='#2133A7'
                     translucent={true}
-                    hidden={true}
+                    hidden={false}
                     animated={true}
                 />
                 <Image source={require('../img/toolbar_bg.png')}  style={{height:100,  width:null, flexDirection: 'row', resizeMode: Image.resizeMode.stretch}}>
