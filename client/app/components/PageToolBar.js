@@ -18,7 +18,7 @@ import {NaviGoBack} from '../utils/CommonUtils';
 const styles = StyleSheet.create({
 
     bgImage: {
-        height: 80,
+        height: 60,
         flexDirection: 'row',
         backgroundColor:'#ffffff'
     },
@@ -101,17 +101,17 @@ class PageToolBar extends React.Component {
                 <View
 
                     style={styles.leftView}>
-                    <TouchableOpacity style={{width:60,height:60,justifyContent:'center'}}
+                    <TouchableOpacity style={{width:60,height:60,justifyContent:'flex-end'}}
                                       onPress={this.onIconClicked}>
                         <Image
-                            style={{ width: 10, height: 17}}
+                            style={{ width: 10, height: 17,marginBottom:10}}
                             source={{uri:"back_arrow"}}
                         /></TouchableOpacity>
 
                 </View>
                 <View
                     style={styles.midView}>
-                    <TouchableOpacity onPress={this.onOperateClicked}>
+                    <TouchableOpacity style={{flex:1,justifyContent:'flex-end',marginBottom:10}} onPress={this.onOperateClicked}>
                         <Text style={styles.text}>{this.props.title}</Text>
                     </TouchableOpacity>
                 </View>

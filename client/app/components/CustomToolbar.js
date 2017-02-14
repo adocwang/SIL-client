@@ -95,6 +95,7 @@ class CustomToolbar extends React.Component {
                         translucent={true}
                         hidden={false}
                         animated={true}
+                        barStyle='light-content'
                     />
                     <View
 
