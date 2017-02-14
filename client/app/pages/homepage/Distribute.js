@@ -73,8 +73,8 @@ class Distribute extends BasePage {
             const {dispatch} = this.props;
             InteractionManager.runAfterInteractions(() => {
                 var map = {}
-                map.id = this.state.enterprise.id;
-                map.bank_id = this.state.item.id;
+                map.id = this.state.item.id;
+                map.bank_id = this.state.item.bank.id;
                 map.role_a_id = this.state.zhuli.id;
                 if(this.state.xieli.id){
                     map.role_b_id = this.state.xieli.id;

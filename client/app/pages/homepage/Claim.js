@@ -41,8 +41,6 @@ class Claim extends BasePage {
         if (this.props.route.params) {
             this.state = this.props.route.params
         }
-        this.state.clickType = 'bank';
-        this.state.chooseBank ={};
         this.openChooseConfirmAnimationDialog = this.openChooseConfirmAnimationDialog.bind(this);
         this.openChooseBankScaleAnimationDialog = this.openChooseBankScaleAnimationDialog.bind(this);
         this.openChooseScaleAnimationDialog = this.openChooseScaleAnimationDialog.bind(this);
@@ -55,20 +53,29 @@ class Claim extends BasePage {
     }
 
     openChooseBankScaleAnimationDialog() {
-        this.setState({clickType: 'bank'});
         this.chooseBankScaleAnimationDialog.openDialog();
     }
 
     openChooseScaleAnimationDialog() {
-        this.setState({clickType: 'user'});
-        this.chooseScaleAnimationDialog.openDialog();
+        if (this.state.item.bank && this.state.item.bank.id) {
+            const {navigator} = this.props;
+            navigator.push({
+                component: DistributeContainer,
+                name: 'Distribute',
+                params: {
+                    item: this.state.item,
+                },
+            });
+        } else {
+            ToastShort('请先分配银行');
+        }
     }
 
     componentDidMount() {
-         const {dispatch} = this.props;
-         InteractionManager.runAfterInteractions(() => {
-             dispatch(fetchBankList(this.props.auth.token));
-         });
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchBankList(this.props.auth.token));
+        });
     }
 
     onClaimBtnClick() {
@@ -78,30 +85,18 @@ class Claim extends BasePage {
     }
 
     onBankChoose(item) {
-        if(this.state.clickType=='user'){
-            this.chooseScaleAnimationDialog.closeDialog();
-            const {navigator} = this.props;
-            navigator.push({
-                component: DistributeContainer,
-                name: 'Distribute',
-                params: {
-                    item: item,
-                    enterprise:this.state.item
-                },
+
+        this.chooseBankScaleAnimationDialog.closeDialog();
+        const {dispatch} = this.props;
+        if (this.state.item && this.state.item.id && item.id) {
+            var map = {}
+            map.id = this.state.item.id;
+            map.bank_id = item.id;
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(fetchEnterpiseSet(map, this.props.auth.token));
             });
-        }else {
-            this.chooseBankScaleAnimationDialog.closeDialog();
-            const {dispatch} = this.props;
-            if(this.state.item && this.state.item.id && item.id){
-                var map = {}
-                map.id = this.state.item.id;
-                map.bank_id = item.id;
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(fetchEnterpiseSet(map,this.props.auth.token));
-                });
-            }else {
-                ToastShort('暂时无法分配,退出重试')
-            }
+        } else {
+            ToastShort('暂时无法分配,退出重试')
         }
     }
 
@@ -109,7 +104,7 @@ class Claim extends BasePage {
 
     }
 
-    renderCheckBox(item){
+    renderCheckBox(item) {
         return <CheckBox
             style={{flex: 1, padding: 10}}
             onClick={()=>this.onBankChoose(item)}
@@ -125,7 +120,7 @@ class Claim extends BasePage {
         const {navigator} = this.props;
         const {claimdistribute} = this.props;
         var checkBoxList = []
-        claimdistribute.bankList.forEach((item)=>{
+        claimdistribute.bankList.forEach((item)=> {
             checkBoxList.push(this.renderCheckBox(item))
         });
 
@@ -135,42 +130,42 @@ class Claim extends BasePage {
                     title="认领"
                     navigator={navigator}/>
                 <View style={{flex:1}}>
-                <View style={styles.containerInfoItem}>
-                    <Image
-                        style={styles.img}
-                        source={require('../../img/default_avatar.png')}
-                    />
-                    <View style={styles.content}>
-                        <View style={styles.catContainer}>
-                            <Text style={styles.title}>
-                                {this.state.item.name}
+                    <View style={styles.containerInfoItem}>
+                        <Image
+                            style={styles.img}
+                            source={require('../../img/default_avatar.png')}
+                        />
+                        <View style={styles.content}>
+                            <View style={styles.catContainer}>
+                                <Text style={styles.title}>
+                                    {this.state.item.name}
+                                </Text>
+                            </View>
+                            <Text style={styles.desc}>
+                                {this.state.item.legal_man} |
+                                成立{GapYear(this.props.start) > 0 ? GapYear(this.props.start) : '不到1'}年
+                            </Text>
+
+                            <Text style={styles.cat}>
+                                {this.state.item.address}
                             </Text>
                         </View>
-                        <Text style={styles.desc}>
-                            {this.state.item.legal_man} |
-                            成立{GapYear(this.props.start) > 0 ? GapYear(this.props.start) : '不到1'}年
-                        </Text>
-
-                        <Text style={styles.cat}>
-                            {this.state.item.address}
-                        </Text>
                     </View>
-                </View>
 
-                <View style={styles.containerOption}>
-                     <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
+                    <View style={styles.containerOption}>
+                        <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
                             <View style={styles.buttonview}>
                                 <Text style={styles.btntext}>分配银行</Text>
                             </View>
                         </TouchableOpacity>
 
-                    <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
-                        <View style={styles.buttonview}>
-                            <Text style={styles.btntext}>分配人员</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                    {this.props.claimdistribute.loadingBankList&&<Loading backgroundColor = 'rgba(255,255,255,0.5)'/>
+                        <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
+                            <View style={styles.buttonview}>
+                                <Text style={styles.btntext}>分配人员</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    {this.props.claimdistribute.loadingBankList && <Loading backgroundColor='rgba(255,255,255,0.5)'/>
                     }
                 </View>
                 <PopupDialog
@@ -194,20 +189,6 @@ class Claim extends BasePage {
                     </View>
                 </PopupDialog>
 
-                <PopupDialog
-                    ref={(choosePopupDialog) => {this.chooseScaleAnimationDialog = choosePopupDialog;}}
-                    height={200}
-                    dialogTitle={<DialogTitle style={{fontSize:18}} title="选择支行" />}
-
-                >
-                    <View style={{flex:1}}>
-                        <ScrollView style={{padding:10,marginBottom:20}}>
-                            <View>
-                                {checkBoxList}
-                            </View>
-                        </ScrollView>
-                    </View>
-                </PopupDialog>
 
                 <PopupDialog
                     ref={(choosePopupDialog) => {this.chooseBankScaleAnimationDialog = choosePopupDialog;}}
