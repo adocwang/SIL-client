@@ -12,13 +12,14 @@ import {
     InteractionManager,
     TouchableHighlight,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     View
 } from 'react-native';
 import * as Color from '../../utils/CommonColor';
-import Takephoto from '../TakePhoto'
 import Button from '../../components/Button.ios.js'
 import {fetchLogout} from '../../actions/auth'
 import LoginContainer from '../../containers/LoginContainer'
+import ResetPwdContainer from '../../containers/ResetPwdContainer'
 export default class AccountManager extends React.Component {
     constructor(props) {
         super(props)
@@ -27,7 +28,6 @@ export default class AccountManager extends React.Component {
         this.setPassword = this.setPassword.bind(this)
         this.setGesturePassword = this.setGesturePassword.bind(this)
         this.setHeaderImg = this.setHeaderImg.bind(this)
-        this.takephotoClosure = this.takephotoClosure.bind(this)
         this.didClickedLogOut = this.didClickedLogOut.bind(this)
     }
 
@@ -44,24 +44,19 @@ export default class AccountManager extends React.Component {
     }
 
     setHeaderImg() {
-        const {navigator} = this.props
 
-        navigator.push({
-            name: "Takephoto",
-            component: Takephoto,
-            params: {
-                takephotoClosure: this.takephotoClosure,
-            }
-        })
     }
 
-    takephotoClosure(path) {
-        const headerPath = {uri: path}
-        this.setState({headerImg: headerPath})
-    }
 
     setPassword() {
+        const {navigator} = this.props;
 
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                component: ResetPwdContainer,
+                name: 'ResetPwd'
+            });
+        });
     }
 
     setGesturePassword() {
@@ -96,15 +91,15 @@ export default class AccountManager extends React.Component {
         return (
             <View style={styles.container}>
                 <CustomToolbar title="账户管理" navigator={this.props.navigator}/>
-                <TouchableOpacity onPress={this.setHeaderImg}>
+                <TouchableWithoutFeedback onPress={this.setHeaderImg}>
                     <View style={styles.headerBg}>
                         <Image source={headerImg} style={styles.headerImg}/>
                     </View>
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
                 <ContentCell tip="姓名" value={realName} secondColor={Color.defaultBlackColor}/>
-                <ContentCell tip="单位" value={company} secondColor={Color.defaultShallowBlueColor}/>
+                <ContentCell tip="单位" value={company} secondColor={Color.defaultBlackColor}/>
                 <ContentCell tip="手机号" value={phoneNumber} secondColor={Color.defaultBlackColor}/>
-                <ContentCell tip="职位" value={work} secondColor={Color.defaultShallowBlueColor}/>
+                <ContentCell tip="职位" value={work} secondColor={Color.defaultBlackColor}/>
                 <ContentCell index={5} tip="密码" value={password} secondColor={Color.defaultShallowBlueColor} canClick
                              onPress={this.didClickedCell}/>
 
@@ -126,8 +121,11 @@ class ContentCell extends React.Component {
     }
 
     clicked() {
-        const {index, onPress} = this.props
-        onPress(index)
+        const {canClick} = this.props
+        if(canClick) {
+            const {index, onPress} = this.props
+            onPress(index)
+        }
     }
 
     render() {
@@ -137,7 +135,7 @@ class ContentCell extends React.Component {
             arrowImg = require("../../img/right_arrow.png")
         }
         return (
-            <TouchableOpacity onPress={this.clicked}>
+            <TouchableWithoutFeedback onPress={this.clicked}>
                 <View style={styles.cellBg}>
                     <Text style={styles.cellTip}>{tip}</Text>
                     <View style={styles.rightBg}>
@@ -145,7 +143,7 @@ class ContentCell extends React.Component {
                         <Image style={styles.rightArrow} source={arrowImg}/>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
         )
     }
 }

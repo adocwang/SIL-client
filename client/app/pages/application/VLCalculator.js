@@ -13,7 +13,6 @@ import {
 import CustomToolbar from '../../components/CustomToolbar'
 import CommonColor from '../../utils/CommonColor'
 import Button from '../../components/Button.ios.js'
-import AcountCertifice from './AcountCertifice.js'
 import dismissKeyboard from 'dismissKeyboard'
 
 export default class VLCalculator extends Component {

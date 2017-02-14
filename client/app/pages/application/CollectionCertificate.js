@@ -48,7 +48,6 @@ class CollectionCertificate extends Component {
             if (value == null) {
                 dispatch(fetchGetFindingEnterprise(companyId, auth.token))
             } else {
-                console.log("从本地")
                 this.originData = JSON.parse(value)
                 this.initalizeData(this.originData.submitData)
                 this.setState({showLoading: false})
@@ -66,7 +65,6 @@ class CollectionCertificate extends Component {
             navigator.pop()
         } else {
             const {collection, dispatch, findingEnterprise, auth} = nextProps
-            console.log(findingEnterprise.data.id)
             if (typeof(findingEnterprise.data.id) == "undefined") {
                 if (!this.hasFetchFindingNet) {
                     this.hasFetchFindingNet = true
@@ -75,11 +73,10 @@ class CollectionCertificate extends Component {
             } else {
                 const result = findingEnterprise.data.data
                 this.originData = JSON.parse(result)
-
                 this.initalizeData(this.originData.submitData)
             }
             if (collection.length > 0) {
-
+                collection[0].content = collection[0].content.concat(collection[0].content)
                 this.initalizeData(collection)
             }
         }
@@ -93,10 +90,7 @@ class CollectionCertificate extends Component {
 
 
     saveCell(index) {
-        console.log("执行")
         this.submitData[index].selected = true
-        const selected = this.submitData[index].selected
-        console.log(selected)
         let newData = JSON.parse(JSON.stringify(this.datas));
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(newData)
@@ -185,7 +179,6 @@ class CollectionCertificate extends Component {
                 <ListView dataSource={this.state.dataSource} style={styles.listView}
                           renderRow={(rowData, sectionID, rowID) => {
                               const selected = this.submitData[rowID].selected
-                              console.log(selected)
                               return (
                                   <CertificateCell selected={selected} title={rowData.name}
                                                    clickClosure={this.clickedCell} rowID={rowID}

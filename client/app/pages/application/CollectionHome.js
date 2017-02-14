@@ -61,7 +61,7 @@ class CollectionHome extends Component {
         this.page = page
         const {dispatch,auth} = this.props
 
-        dispatch(fetchEnterpriseList2({page:page,page_limit:10,only_mine:"1"},auth.token))
+        dispatch(fetchEnterpriseList2({page:page,page_limit:10,only_mine_a:"1"},auth.token))
     }
 
     clickedCell(index) {
@@ -165,10 +165,8 @@ class CollectionHome extends Component {
                               <RefreshControl
                                   refreshing={this.state.isRefreshing}
                                   onRefresh={this.onRefresh}
-                                  tintColor="#ff0000"
+                                  colors={['#15499A', '#15499A', '#15499A', '#15499A']}
                                   title="Loading..."
-                                  colors={['#ff0000', '#00ff00', '#0000ff']}
-                                  progressBackgroundColor="#ffff00"
                               />
                           }
                 />

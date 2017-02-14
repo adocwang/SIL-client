@@ -88,12 +88,12 @@ class CustomToolbar extends React.Component {
     render() {
 
         return (
-                <Image source={require('../img/toolbar_bg.png')}
-                       style={styles.bgImage}>
+                <Image  source={{uri:"toolbar_bg"}}
+                        style={styles.bgImage}>
                     <StatusBar
                         backgroundColor='#15499A'
                         translucent={true}
-                        hidden={true}
+                        hidden={false}
                         animated={true}
                     />
                     <View
@@ -103,7 +103,7 @@ class CustomToolbar extends React.Component {
                                           onPress={this.onIconClicked}>
                             <Image
                                 style={{ width: 10, height: 17}}
-                                source={require('../img/back_arrow_white.png')}
+                                source={{uri:"back_arrow_white"}}
                             /></TouchableOpacity>
 
                     </View>

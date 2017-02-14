@@ -69,25 +69,26 @@ class CollectionContent extends Component {
         this.chargeFail = this.chargeFail.bind(this)
         this.selectImgQuality = this.selectImgQuality.bind(this)
         this.didClickedImgQuality = this.didClickedImgQuality.bind(this)
+        this.chargeImgCount = this.chargeImgCount.bind(this)
         this.showDialogType = "select"
         this.state = {data: null, selectViewIndex: -1, refresh: "refresh", showLoading: false}
-        this.netPaths = []
-        this.imgIndex = -1
+        this.netPathsContainer = []
         this.failIndexs = []
         this.submitData = null
-        this.imgModels = []
+        this.imgModelsContainer = []
         this.selectImgClosure = null
     }
 
     componentDidMount() {
-        const content = this.props.route.params.content
-        this.submitData = JSON.parse(JSON.stringify(content.content));
-        this.setState({data: content})
+            const content = this.props.route.params.content
+            this.submitData = JSON.parse(JSON.stringify(content.content));
+            this.setState({data: content})
     }
 
     didClickedSave() {
-        if (this.imgIndex != -1) {
+        if (this.imgModelsContainer.length > 0) {
             const result = parseInt(this.hasUploadImg())
+            console.log(result)
             switch (result) {
                 case 0:
                     ToastShort("上传图片")
@@ -105,17 +106,22 @@ class CollectionContent extends Component {
 
     hasUploadImg() { //0 添加图片 1,上传
         var status = 2
-        if (this.imgModels.length == 1) {
-            const model = this.imgModels[0]
-            if (model.local == "" && model.net == "") {
-                return 0
+        for(var i = 0;i<this.imgModelsContainer.length;i++) {
+            const child = this.imgModelsContainer[i]
+            const imgs = child.value
+            if(imgs.length == 1) {
+                const model = imgs[0]
+                if (model.local == "" && model.net == "") {
+                    return 0
+                }
             }
+            imgs.map(data => {
+                if (data.local != "") {
+                    status = 1
+                }
+            })
+            return status
         }
-        this.imgModels.map(data => {
-            if (data.local != "") {
-                status = 1
-            }
-        })
         return status
     }
 
@@ -144,7 +150,7 @@ class CollectionContent extends Component {
             ToastShort("信息不完善")
         } else {
             const {navigator} = this.props
-            ToastShort("提交成功")
+            ToastShort("保存草稿成功")
             navigator.pop()
             const backClosure = this.props.route.params.backClosure
             const index = this.props.route.params.index
@@ -157,28 +163,39 @@ class CollectionContent extends Component {
     }
 
     changePhoto(index, paths) {
-        this.imgModels = paths
+        this.imgModelsContainer.map(child=>{
+            if(index == child.index) {
+                child.value = paths
+            }
+        })
     }
 
     uploadImg() {
         if (!this.chargeWithOutImg()) {
             return false
         }
-        this.netPaths = []
-        this.failIndexs = []
-        this.imgModels.map((imgModel, index) => {
-            if (imgModel.net != "") {
-                this.netPaths.push(imgModel.net)
-            } else if (imgModel.local != "" && imgModel.net == "") {
-                this.setState({showLoading: true})
-                const {auth,dispatch} = this.props
-                dispatch(this.uploadImgMethod(index, imgModel.local, auth.token))
-            }
+        this.netPathsContainer = []
+        this.imgModelsContainer.map(child=>{
+            const imgs = child.value
+            var obj = new Object()
+            obj.index = child.index
+            obj.netPaths = []
+            obj.failIndexs = []
+            this.netPathsContainer.push(obj)
+
+            imgs.map((imgModel, index) => {
+                if (imgModel.net != "") {
+                    obj.netPaths.push(imgModel.net)
+                } else if (imgModel.local != "" && imgModel.net == "") {
+                    this.setState({showLoading: true})
+                    const {auth,dispatch} = this.props
+                    dispatch(this.uploadImgMethod(child.index,index, imgModel.local, auth.token))
+                }
+            })
         })
-        console.log(this.netPaths)
     }
 
-    uploadImgMethod(index, uri, token) {
+    uploadImgMethod(childIndex,index, uri, token) {
         return dispatch => {
             return uploadImage(dispatch, host.RESOURCE_UPLOAD_URL, token, uri)
                 .then((data) => {
@@ -191,39 +208,74 @@ class CollectionContent extends Component {
                     } else if (data.code == 406) {
                         ToastShort('用户无权限');
                     } else if (data.code == 0) {
-                        this.receiveImg(index, data.data)
+                        this.receiveImg(childIndex,index, data.data)
                     }
                 })
                 .catch((error) => {
-                this.failIndexs.push(index)
+                this.netPathsContainer.map(child=>{
+                    if(child.index == childIndex) {
+                        child.failIndexs.push(index)
+                    }
+                })
                     this.chargeFail()
                 })
         }
     }
 
     chargeFail() {
-
-        if(this.netPaths.length + this.failIndexs.length == this.imgModels.length) {
-            this.setState({showLoading: false})
-
-            if(this.failIndexs.length > 0) {
-                    const indexString = this.failIndexs.map(index=>{
+        var status = true
+        for(var i=0;i<this.imgModelsContainer.length;i++) {
+            var netChild = this.netPathsContainer[i]
+            if (netChild.netPaths.length + netChild.failIndexs.length != this.chargeImgCount(i)) {
+                status = false
+            } else {
+                if(netChild.failIndexs.length > 0) {
+                    const indexString = netChild.failIndexs.map(index=>{
                         return index + 1
                     }).join(",")
-                    const toast = "图片" + indexString + "上传失败"
+                    const sectionTitle = this.submitData[netChild.index].title
+
+                    const toast = sectionTitle + "图片"+ indexString + "上传失败"
                     ToastShort(toast)
                 }
             }
+        }
+        if(status) {
+            this.setState({showLoading: false})
+        }
+
+
+        }
+
+    chargeImgCount(index) {
+        var imgModelsChild = this.imgModelsContainer[index].value
+        var count = imgModelsChild.length
+        if(imgModelsChild[0].local == "" && imgModelsChild[0].net == "") {
+            count = count - 1
+        }
+        return count
 
     }
 
-    receiveImg(index, data) {
+    receiveImg(childIndex,index, data) {
             this.chargeFail()
-            this.netPaths.push(data.resourceId)
-            this.imgModels[index].net = data.resourceId
-            if (this.netPaths.length == this.imgModels.length) {
+            var status = true
+            for(var i=0;i<this.imgModelsContainer.length;i++) {
+                var netChild = this.netPathsContainer[i]
+                var imgModelsChild = this.imgModelsContainer[i]
+                if(childIndex == imgModelsChild.index) {
+                    netChild.netPaths.push(data.resourceId)
+                    imgModelsChild.value[index].net = data.resourceId
+                }
+                if(netChild.netPaths.length != this.chargeImgCount(i)) {
+                    status = false
+                }
+            }
+            if(status) {
                 this.setState({showLoading: false})
-                this.submitData[this.imgIndex].value = this.netPaths
+                this.netPathsContainer.map(child=>{
+                    this.submitData[child.index].value = child.netPaths
+                })
                 this.chargeInputAll()
             }
     }
@@ -265,7 +317,6 @@ class CollectionContent extends Component {
 
     didClickedImgQuality(index) {
         this.popupDialog.closeDialog()
-        console.log(this.selectImgClosure)
         if(this.selectImgClosure != null) {
            this.selectImgClosure(index)
        }
@@ -312,11 +363,15 @@ class CollectionContent extends Component {
     }
 
     imageView(obj, index) {
-        if (this.imgModels.length == 0) {
-            this.imgIndex = index
-            var imgModels = []
+        var imgModels = null
+        this.imgModelsContainer.map(child=>{
+            if(child.index == index) {
+                imgModels = child
+            }
+        })
+        if (imgModels == null) {
+            imgModels = []
             if (typeof(this.submitData[index].value) != "undefined") {
-                console.log(this.submitData[index].value)
                 const netImgs = this.submitData[index].value
                 netImgs.map((data, index) => {
                     var imgModel = new Object()
@@ -325,13 +380,20 @@ class CollectionContent extends Component {
                     imgModels.push(imgModel)
                 })
             }
-            console.log(imgModels)
-            this.imgModels = imgModels
+            const childModel = new Object()
+            childModel.index = index
+            childModel.value = imgModels
+            this.imgModelsContainer.push(childModel)
         }
 
         return (
-            <AddPhoto imgModels={imgModels} key={index} changePhoto={this.changePhoto.bind(this, index)}
+            <View key={index}>
+                <View style={[styles.topView,{alignItems:"flex-end",height:30}]}>
+                    <Text style={styles.title}>{obj.title}</Text>
+                </View>
+                <AddPhoto imgModels={imgModels} changePhoto={this.changePhoto.bind(this, index)}
                       navigator={this.props.navigator} selectImgQuality={this.selectImgQuality}/>
+            </View>
         )
     }
 
@@ -406,7 +468,6 @@ class CollectionContent extends Component {
                 break
             default:
         }
-        console.log(this.showDialogType)
 
         return (
             <TouchableWithoutFeedback onPress={this.clickedSelf}>
@@ -415,6 +476,7 @@ class CollectionContent extends Component {
                     <View style={styles.topView}>
                         <Text style={styles.title}>{name}</Text>
                     </View>
+                    <View style={styles.lineView}/>
                     <ScrollView style={styles.scrollView}>
                         {views}
                         <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="保存"
@@ -496,8 +558,6 @@ class AddPhoto extends Component {
     }
 
     takePhone(index) {
-        console.log("图片质量Index")
-        console.log(index)
         if(this.selectAddMethod == 0) {
             this.takeOtherPhoneExcute(index)
         } else {
@@ -525,9 +585,6 @@ class AddPhoto extends Component {
                 break
             default:
         }
-        console.log("图片质量")
-        console.log(index)
-        console.log(quality)
 
         var options = {
             title: 'Select Avatar',
@@ -584,9 +641,6 @@ class AddPhoto extends Component {
                 break
             default:
         }
-        console.log("图片质量")
-        console.log(index)
-        console.log(quality)
 
         var options = {
             title: 'Select Avatar',
@@ -812,7 +866,7 @@ class DialogoImgQualityTableView extends Component {
         const ds = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         })
-        this.state = {dataSource: ds.cloneWithRows(["低质量图片","普通质量图片","高质量图片"])}
+        this.state = {dataSource: ds.cloneWithRows(["质量低","质量中","原图"])}
     }
 
     clickedCell(index) {
@@ -831,8 +885,6 @@ class DialogoImgQualityTableView extends Component {
         )
     }
 }
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -875,7 +927,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         backgroundColor: "white"
-
     },
     title: {
         marginLeft: 40,
@@ -936,7 +987,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingTop: 10,
         paddingBottom: 10,
-        marginTop: 20
+        marginTop: 10
     },
     addCellChild: {
         borderWidth: 1,
@@ -993,7 +1044,13 @@ const styles = StyleSheet.create({
     },
     checkTitle: {
         color: CommonColor.defaultSecondBlackColor
-    }
+    },
+    lineView: {
+        alignSelf: "stretch",
+        backgroundColor: CommonColor.defaultLineColor,
+        height:1,
+        marginTop: 15
+    },
 })
 
 export default CollectionContent
