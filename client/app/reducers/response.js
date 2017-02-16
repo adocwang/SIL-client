@@ -8,7 +8,10 @@ import * as types from '../constants/ActionTypes';
 
 const initialState = {
     responseList:[],
-    responseDetail:'点击左侧菜单查看详情',
+    chooseItem:{
+        id:0,
+        content:'##点击左侧菜单查看详情'
+    },
     loading:false
 };
 
@@ -27,11 +30,13 @@ export default function response (state = initialState, action) {
             state.loading = true;
             return Object.assign({}, state,action.data);
         case types.RECEIVE_RESPONSE_DETAIL:
-            state.responseDetail = action.data.content;
+            state.chooseItem = action.data;
             return Object.assign({}, state,action.data);
         case types.HIDE_RESPONSE_LIST_LOADING:
             state.loading = false;
             return Object.assign({}, state);
+        case types.CLEAR_RESPONSE:
+            return initialState;
         default:
             return state;
     }

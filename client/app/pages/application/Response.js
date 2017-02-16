@@ -21,6 +21,8 @@ import {fetchResponseList,fetchResponseDetail} from '../../actions/application';
 import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
 import Loading from '../../components/Loading'
 import BasePage from  '../BasePage'
+import * as types from '../../constants/ActionTypes';
+
 
 class Response extends BasePage {
     constructor() {
@@ -41,6 +43,13 @@ class Response extends BasePage {
         });
     }
 
+    componentWillUnmount() {
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch({type:types.CLEAR_RESPONSE});
+        });
+    }
+
     componentWillReceiveProps (nextProps) {
 
     }
@@ -53,10 +62,11 @@ class Response extends BasePage {
     }
 
     renderItem (item) {
+        const {response} = this.props;
         return (
-            <TouchableOpacity onPress={this.onPress.bind(this, item)}>
-                <View style={styles.containerItem}>
-                        <Text style={styles.itemText}>
+            <TouchableOpacity key = {item.id} onPress={this.onPress.bind(this, item)}>
+                <View style={response.chooseItem.id == item.id?styles.containerChooseItem:styles.containerItem}>
+                        <Text style={response.chooseItem.id == item.id?styles.itemChooseText:styles.itemText}>
                             {item.title}
                         </Text>
                 </View>
@@ -73,7 +83,7 @@ class Response extends BasePage {
                 <CustomToolbar
                     title="话术"
                     navigator={navigator}/>
-                <View style={{flex:1}}>
+                <View style={{flex:1,marginTop:30}}>
                 {this.props.response.responseList.length >0&&
                 <View style={{flex:1,flexDirection:'row'}}>
                     <ListView
@@ -83,7 +93,7 @@ class Response extends BasePage {
                     />
                     <View style={styles.detailContainer}>
                         <Markdown>
-                            {this.props.response.responseDetail}
+                            {this.props.response.chooseItem.content}
                         </Markdown>
                     </View>
                 </View>
@@ -110,17 +120,30 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor:'#f7f7f7'
+    },
+    containerChooseItem: {
+        flex: 1,
+        height:40,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:'#ffffff'
     },
     itemText:{
         fontSize:14,
         color:'#9B9B9B',
+    },
+    itemChooseText:{
+        fontSize:14,
+        color:'#4a4a4a',
     },
     responseDetail:{
         color:'#9B9B9B',
         fontSize:12
     },
     detailContainer:{
-        flex:4,
+        flex:3,
         paddingTop:10,
         paddingBottom:10,
         paddingLeft:20,
