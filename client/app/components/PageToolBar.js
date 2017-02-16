@@ -16,14 +16,35 @@ import {
 import {NaviGoBack} from '../utils/CommonUtils';
 
 const styles = StyleSheet.create({
-    container: {
+
+    bgImage: {
+        height: 60,
+        flexDirection: 'row',
+        backgroundColor:'#ffffff'
+    },
+    leftView: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        marginLeft: 26,
     },
     rightView: {
-        marginLeft:200,
-        width: 100,
-        height: 20,
-        backgroundColor: "orange",
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        marginRight: 30
     },
+    midView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    text: {
+        fontSize: 16,
+        color: '#9a9a9a',
+        backgroundColor: 'transparent'
+    }
 
 });
 
@@ -69,28 +90,36 @@ class PageToolBar extends React.Component {
     render() {
 
         return (
-            <View style={{backgroundColor:'#ffffff',height:60}}>
+            <View
+                    style={styles.bgImage}>
                 <StatusBar
                     backgroundColor='#ffffff'
                     translucent={true}
-                    hidden={true}
+                    hidden={false}
                     animated={true}
                 />
                 <View
-                style={{flexDirection: 'row', marginLeft:26,marginTop:20}}>
 
-                    <TouchableOpacity onPress={this.onIconClicked}>
+                    style={styles.leftView}>
+                    <TouchableOpacity style={{width:60,height:60,justifyContent:'flex-end'}}
+                                      onPress={this.onIconClicked}>
                         <Image
-                            style={{ marginTop:(Platform.OS === 'ios') ? 10 : 3,}}
-                            source={require('../img/back_arrow.png')}
+                            style={{ width: 10, height: 17,marginBottom:10}}
+                            source={{uri:"back_arrow"}}
                         /></TouchableOpacity>
 
-                    <Text style={{fontSize: 16, color: '#9a9a9a',marginLeft:10,marginTop:(Platform.OS === 'ios') ? 10 : 0,backgroundColor:'transparent'}}>{this.props.title}</Text>
                 </View>
                 <View
-                    style={{flexDirection: 'row', flex:1,alignItems: 'center',justifyContent: 'flex-end',marginRight:30}}>
+                    style={styles.midView}>
+                    <TouchableOpacity style={{flex:1,justifyContent:'flex-end',marginBottom:10}} onPress={this.onOperateClicked}>
+                        <Text style={styles.text}>{this.props.title}</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View
+                    style={styles.rightView}>
                     <TouchableOpacity onPress={this.onOperateClicked}>
-                        <Text style={{fontSize: 16, color: '#ffffff',backgroundColor:'transparent'}}>{this.props.operate}</Text>
+                        <Text style={styles.text}>{this.props.operate}</Text>
                     </TouchableOpacity>
                 </View>
 

@@ -73,9 +73,9 @@ class Splash extends React.Component {
         source={require('../img/splash.jpg')}
       >
         <StatusBar
-            backgroundColor='#15499A'
+            backgroundColor='#2133A7'
             translucent={true}
-            hidden={true}
+            hidden={false}
             animated={true}
         />
       </Image>

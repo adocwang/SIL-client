@@ -91,10 +91,11 @@ class CustomToolbar extends React.Component {
                 <Image  source={{uri:"toolbar_bg"}}
                         style={styles.bgImage}>
                     <StatusBar
-                        backgroundColor='#15499A'
+                        backgroundColor='#2133A7'
                         translucent={true}
                         hidden={false}
                         animated={true}
+                        barStyle='light-content'
                     />
                     <View
 
