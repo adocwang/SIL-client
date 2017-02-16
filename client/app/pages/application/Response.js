@@ -10,6 +10,7 @@ import {
     ScrollView,
     ListView,
     TextInput,
+    WebView,
     TouchableOpacity,
     InteractionManager
 } from 'react-native';
@@ -22,7 +23,7 @@ import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
 import Loading from '../../components/Loading'
 import BasePage from  '../BasePage'
 import * as types from '../../constants/ActionTypes';
-
+import marked from 'marked'
 
 class Response extends BasePage {
     constructor() {
@@ -92,9 +93,19 @@ class Response extends BasePage {
                         renderRow={this.renderItem}
                     />
                     <View style={styles.detailContainer}>
-                        <Markdown>
-                            {this.props.response.chooseItem.content}
-                        </Markdown>
+
+                        <WebView
+                            ref='webview'
+                            automaticallyAdjustContentInsets={false}
+                            style={{flex: 1}}
+                            source={{html: marked(this.props.response.chooseItem.content)}}
+                            javaScriptEnabled={true}
+                            domStorageEnabled={true}
+                            startInLoadingState={true}
+                            scalesPageToFit={true}
+                            decelerationRate="normal"
+                            onShouldStartLoadWithRequest={true}
+                        />
                     </View>
                 </View>
                 }
