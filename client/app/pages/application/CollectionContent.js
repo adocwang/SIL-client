@@ -748,7 +748,7 @@ class AddPhotoCell extends Component {
                 <View style={styles.addCell}>
                     <View style={cellStyle}>
                         <Image style={cellImgStyle} source={imgPath}
-                               defaultSource={require("../../img/loadingImg.png")}>
+                               defaultSource={{uri:"loadingImg"}}>
                         </Image>
                     </View>
                 </View>

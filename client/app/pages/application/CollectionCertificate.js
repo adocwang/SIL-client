@@ -76,7 +76,6 @@ class CollectionCertificate extends Component {
                 this.initalizeData(this.originData.submitData)
             }
             if (collection.length > 0) {
-                collection[0].content = collection[0].content.concat(collection[0].content)
                 this.initalizeData(collection)
             }
         }

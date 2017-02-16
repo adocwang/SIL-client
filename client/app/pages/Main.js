@@ -44,6 +44,7 @@ class Main extends BasePage {
         const {navigator} = this.props;
        DeviceEventEmitter.addListener('MiPushMessage', function(e: Event) {
             console.log('Main MiPushMessage receive',e);
+            ToastShort(".....")
             if(e.type=='1'){
                 try {
                     realm.write(() => {
