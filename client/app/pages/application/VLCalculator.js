@@ -21,7 +21,8 @@ export default class VLCalculator extends Component {
         super(props)
         this.state = {
             listData: [{multiple: 2}, {multiple: 3}, {multiple: 4}, {multiple: 5},
-                {multiple: 6}, {multiple: 7}, {multiple: 8}, {multiple: 9}, {multiple: 10}],showContent: false
+                {multiple: 6}, {multiple: 7}, {multiple: 8}, {multiple: 9}, {multiple: 10}],
+            refresh:"refresh"
         }
         this.rate = 0.04
         this.rateValue = 0.1
@@ -29,7 +30,8 @@ export default class VLCalculator extends Component {
         this.money = 1000
         this.calculator = this.calculator.bind(this)
         this.didClickedContainerView = this.didClickedContainerView.bind(this)
-
+        this.headerValueChange = this.headerValueChange.bind(this)
+        this.changeMoney = this.changeMoney.bind(this)
     }
 
     didClickedContainerView() {
@@ -48,7 +50,20 @@ export default class VLCalculator extends Component {
             const vlValue = this.money * this.rate + this.shareOption * data.multiple
             return {multiple: data.multiple, vc: vcValue, vl: vlValue}
         })
-        this.setState({listData: data,showContent:true})
+        this.setState({listData: data})
+    }
+
+    changeMoney(value) {
+        this.money = value
+        this.setState({refresh:"refresh"})
+    }
+
+    headerValueChange(index,value) {
+      if(index == 0) {
+          this.rate = value * 0.01
+      } else {
+          this.shareOption = value * 0.01
+      }
     }
 
     render() {
@@ -59,14 +74,14 @@ export default class VLCalculator extends Component {
                     <View style={styles.topView}>
                         <Text style={{color: CommonColor.defaultBlackColor}}>融资金额:</Text>
                         <View style={styles.textView}>
-                            <TextInput onChangeText={(text) => this.money = text} style={styles.textInput}
+                            <TextInput onChangeText={this.changeMoney} style={[styles.textInput]}
                                        defaultValue="1000" keyboardType="decimal-pad"  underlineColorAndroid="transparent"/>
                         </View>
                         <Text style={styles.wanyuan}>万元</Text>
                         <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="确定"
                                 onPress={this.calculator}/>
                     </View>
-                    {this.state.showContent && <VLResultTableView listData={this.state.listData}/>}
+                    <VLResultTableView listData={this.state.listData} money={this.money} closure={this.headerValueChange}/>
 
                 </View>
             </TouchableWithoutFeedback>
@@ -81,9 +96,14 @@ class VLResultTableView extends Component {
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: ds,
+            refresh:"refresh"
         };
         this.renderRow = this.renderRow.bind(this)
         this.renderFooter = this.renderFooter.bind(this)
+        this.renderHeader = this.renderHeader.bind(this)
+        this.calculatorshareOptionValue = this.calculatorshareOptionValue.bind(this)
+        this.shareOptionRate = 5
+        this.rate = 4
     }
 
     componentDidMount() {
@@ -97,18 +117,54 @@ class VLResultTableView extends Component {
                 )
     }
 
+    textChange(index,text) {
+        const {closure} = this.props
+        if(index == 0) {
+            if(text == "") {
+                console.log("空")
+                text = "4"
+            }
+            this.rate = parseFloat(text)
+            closure(index,this.rate)
+        } else {
+            if(text == "") {
+                text = "5"
+            }
+            this.shareOptionRate = parseFloat(text)
+            closure(index,this.calculatorshareOptionValue())
+        }
+        this.setState({refresh:"refresh"})
+
+    }
+
+
+    calculatorshareOptionValue() {
+
+        const {money} = this.props
+        return String(money * this.shareOptionRate)
+    }
+
     renderHeader() {
+        const shareOptionValue = this.calculatorshareOptionValue()
         return (
             <View>
                 <View style={styles.rateBgView}>
-                    <Text style={styles.rateTip}>VL年化贷款利率</Text>
-                    <Text style={styles.rateValue}>4%</Text>
-                    <Text style={styles.rateTip}>VL获得期权比率</Text>
-                    <Text style={styles.rateValue}>10%</Text>
+                    <View style={styles.rateBgView}>
+                        <Text style={styles.rateTip}>VL年化贷款利率</Text>
+                        <TextInput  style={styles.rateValue} onChangeText={this.textChange.bind(this,0)}
+                                    placeholder="4"
+                                    keyboardType="decimal-pad" defaultValue={String(this.rate)} underlineColorAndroid="transparent"/>
+                        <Text style={[styles.rateValue,{width: 12,marginLeft: 1}]}>%</Text>
+                        <Text style={styles.rateTip}>VL获得期权比率</Text>
+                        <TextInput  style={styles.rateValue} onChangeText={this.textChange.bind(this,1)}
+                                    placeholder="5"
+                                    keyboardType="decimal-pad" defaultValue={String(this.shareOptionRate)} underlineColorAndroid="transparent"/>
+                        <Text style={[styles.rateValue,{width: 12,marginLeft: 1}]}>%</Text>
+                    </View>
                 </View>
                 <View style={styles.shareOptaionBg}>
                     <Text style={styles.shareOptaionTip}>VL所获期权</Text>
-                    <Text style={styles.shareOptaionValue}>10000</Text>
+                    <Text style={styles.shareOptaionValue}>{String(shareOptionValue)}</Text>
                 </View>
                 <View style={styles.resultHeader}>
                     <Text style={styles.nextYear}>若一年后开始下一轮融资</Text>
@@ -237,6 +293,8 @@ const styles = StyleSheet.create({
     },
     textInput: {
         color: CommonColor.defaultOrangeColor,
+        flex: 1,
+
         alignSelf: "stretch",
     },
 
@@ -274,8 +332,8 @@ const styles = StyleSheet.create({
     rateValue: {
         color: CommonColor.defaultOrangeColor,
         marginLeft: 5,
-        width: 50,
-        fontSize: 18
+        width: 40,
+        fontSize: 15
     },
     shareOptaionBg: {
         flexDirection: "row",

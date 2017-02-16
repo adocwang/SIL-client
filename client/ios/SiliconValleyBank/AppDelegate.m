@@ -9,11 +9,9 @@
 
 #import "AppDelegate.h"
 
-#import <React/RCTBundleURLProvider.h>
-#import <React/RCTRootView.h>
-#import <React/RCTBridge.h>
-#import "NotiEventEmitter.h"
-#import "PushMessageManager.h"
+
+
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -28,7 +26,7 @@
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
+  self.rootView = rootView;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
@@ -56,8 +54,19 @@
   }
   
   [JPUSHService setupWithOption:launchOptions appKey:@"dd19b8ba0c66d03e1ccc23cb" channel:@"App store" apsForProduction:false];
+  self.fromBack = YES;
+  [self performSelector:@selector(backStatusSet) withObject:nil afterDelay:5];
 
   return YES;
+}
+
+- (void)tryPushMessage:(NSString *)type data:(NSDictionary *)data {
+   [self.rootView.bridge.eventDispatcher sendDeviceEventWithName:@"MiPushMessage"                                                body:@{@"params": data,@"type":type}];
+}
+
+- (void)showAlert:(NSString *)index {
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"..." message:index delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+  [alert show];
 }
 
 //配置极光推送
@@ -68,6 +77,15 @@
 
   }
   [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+  self.fromBack = YES;
+}
+
+
+- (void)backStatusSet {
+  self.fromBack = NO;
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -83,7 +101,7 @@
 
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
-  NSLog(@"接受到消息2");
+  [self showAlert:@"2"];
 
   completionHandler();
 }
@@ -93,9 +111,7 @@
   NSDictionary * userInfo = notification.request.content.userInfo;
   if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
     [JPUSHService handleRemoteNotification:userInfo];
-    NSLog(@"接受到消息3");
-    PushMessageManager *pushManager = [PushMessageManager new];
-    [pushManager pushMessage:userInfo];
+    [self tryPushMessage:@"1" data:userInfo];
 
   }
   completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
@@ -107,9 +123,13 @@
   NSDictionary * userInfo = response.notification.request.content.userInfo;
   if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
     [JPUSHService handleRemoteNotification:userInfo];
-    NSLog(@"接受到消息4");
-    PushMessageManager *pushManager = [PushMessageManager new];
-    [pushManager pushMessage:userInfo];
+    if(self.fromBack) {
+      [self tryPushMessage:@"3" data:userInfo];
+    } else {
+      [self tryPushMessage:@"2" data:userInfo];
+
+    }
+    self.fromBack = NO;
   }
 
   completionHandler();  // 系统要求执行这个方法
@@ -120,7 +140,6 @@
   // Required, iOS 7 Support
   [JPUSHService handleRemoteNotification:userInfo];
   completionHandler(UIBackgroundFetchResultNewData);
-  NSLog(@"接受到消息5");
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {

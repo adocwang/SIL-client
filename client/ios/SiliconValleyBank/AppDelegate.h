@@ -11,8 +11,14 @@
 #import "JPUSHService.h"
 #import <UserNotifications/UserNotifications.h>
 
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
+#import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
 @interface AppDelegate : UIResponder <JPUSHRegisterDelegate,UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
+@property (nonatomic,strong)   RCTRootView *rootView;
+@property (nonatomic, assign) BOOL fromBack;
 
 @end

@@ -29,6 +29,7 @@ import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetail
 import MessageContainer from '../containers/MessageContainer'
 import realm from '../components/realm'
 import BasePage from './BasePage'
+import {ToastShort} from '../utils/ToastUtils';
 
 class Main extends BasePage {
     constructor() {
@@ -44,7 +45,6 @@ class Main extends BasePage {
         const {navigator} = this.props;
        DeviceEventEmitter.addListener('MiPushMessage', function(e: Event) {
             console.log('Main MiPushMessage receive',e);
-            ToastShort(".....")
             if(e.type=='1'){
                 try {
                     realm.write(() => {

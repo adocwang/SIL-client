@@ -8,16 +8,18 @@
 
 #import "PushMessageManager.h"
 #import <React/RCTEventDispatcher.h>
-
+#import <React/RCTBridge.h>
 @implementation PushMessageManager
-
-RCT_EXPORT_MODULE();
 
 @synthesize bridge = _bridge;
 
 - (void)pushMessage:(NSDictionary *)userInfo
 {
   NSLog(@"发送消息");
+  RCTEventDispatcher *dispatcher = self.bridge.eventDispatcher;
+  NSLog(dispatcher);
+  NSLog(self.bridge);
+  NSLog(@"%@", dispatcher.description);
 //  [self.bridge.eventDispatcher sendAppEventWithName:@"MiPushMessage"
 //                                               body:@{@"params": userInfo,@"type":@"1"}];
   [self.bridge.eventDispatcher sendDeviceEventWithName:@"MiPushMessage"                                                body:@{@"params": userInfo,@"type":@"2"}];
