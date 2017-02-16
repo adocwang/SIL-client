@@ -80,3 +80,64 @@ export function uploadImg(uri,token){
             })
     }
 }
+
+export function fetchResponseList(params,token){
+    return dispatch => {
+        dispatch({type:types.FETCH_RESPONSE_LIST,data:{}})
+        return postRequest(dispatch,host.RESPONSE_LIST_URL ,params,token)
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
+                }else if(data.code==0){
+                    dispatch({type:types.RECEIVE_RESPONSE_LIST,data:data.data})
+                }
+                dispatch(hideLoading());
+
+            })
+            .catch((error) => {
+                dispatch(hideLoading());
+                ToastShort(error.message);
+            })
+    }
+}
+
+export function fetchResponseDetail(id,token){
+    return dispatch => {
+        dispatch({type:types.FETCH_RESPONSE_DETAIL,data:{}})
+        return getRequest(dispatch,host.RESPONSE_DETAIL_URL + id ,token)
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
+                }else if(data.code==0){
+                    dispatch({type:types.RECEIVE_RESPONSE_DETAIL,data:data.data})
+                }
+                dispatch(hideLoading());
+
+            })
+            .catch((error) => {
+                dispatch(hideLoading());
+                ToastShort(error.message);
+            })
+    }
+}
+
+function hideLoading(){
+    return{
+        type: types.HIDE_RESPONSE_LIST_LOADING,
+        data: {},
+    }
+}
