@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import {getDateDiff} from '../../utils/CommonUtils'
 
 const propTypes = {
     onClicked: PropTypes.func,
@@ -23,27 +24,20 @@ class MessageItem extends React.Component {
 
     render () {
         var icon ;
-        switch (this.props.type){
-            case 1:
-                if(this.props.read){
-                    icon= require('../../img/tips_read.png');
-                }else {
+        if(this.props.type && this.props.type.page){
+            if(this.props.type.page == 'enterprise_detail'){
+                if(this.props.state==0){
                     icon= require('../../img/tips_unread.png');
-                }
-                break;
-            case 2:
-                if(this.props.read){
-                    icon= require('../../img/msg_read.png');
                 }else {
+                    icon= require('../../img/tips_read.png');
+                }
+            }else if(this.props.type.page == 'enterprise_operation'){
+                if(this.props.state==0){
                     icon= require('../../img/msg_unread.png');
-                }
-                break
-            default:
-                if(this.props.read){
-                    icon= require('../../img/tips_read.png');
                 }else {
-                    icon= require('../../img/tips_unread.png');
+                    icon= require('../../img/msg_read.png');
                 }
+            }
         }
         return(
             <TouchableOpacity onPress={()=>this.props.onClicked()}>
@@ -61,11 +55,11 @@ class MessageItem extends React.Component {
                             </Text>
 
                             <Text style={styles.desc}>
-                                {this.props.createTime}
+                                {getDateDiff(this.props.created)}
                             </Text>
                         </View>
                         <Text style={styles.desc}>
-                            {this.props.desc}
+                            {this.props.content}
                         </Text>
                         <View style={styles.divider}/>
                     </View>

@@ -15,11 +15,13 @@ import {
     InteractionManager
 } from 'react-native';
 import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetailContainer'
+import ClaimContainer from '../containers/ClaimContainer'
 import {ToastShort} from '../utils/ToastUtils';
 import MessageItem from '../components/home/MessageItem';
 import BasePage from './BasePage'
 import CustomToolbar from '../components/CustomToolbar'
 import * as types from '../constants/ActionTypes';
+import {fetcMessageSet} from  '../actions/message'
 
 class Message extends BasePage {
     constructor() {
@@ -42,16 +44,36 @@ class Message extends BasePage {
 
 
     onPress (item) {
-        const {navigator} = this.props;
+        const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-                component: EnterpriseDetailContainer,
-                name: 'EnterpriseDetail',
-                params: {
-                    id: item.item_id,
-                },
-            });
+            dispatch(fetcMessageSet(item.id,this.props.auth.token));
         });
+
+        const {navigator} = this.props;
+        if(item.type && item.type.page && item.type.param && item.type.param.id){
+            if(item.type.page == 'enterprise_operation'){
+                InteractionManager.runAfterInteractions(() => {
+                    navigator.push({
+                        component: ClaimContainer,
+                        name: 'Claim',
+                        params: {
+                            item:{id:item.type.param.id},
+                        },
+                    });
+                });
+            }else if(item.type.page == 'enterprise_detail'){
+                InteractionManager.runAfterInteractions(() => {
+                    navigator.push({
+                        component: EnterpriseDetailContainer,
+                        name: 'EnterpriseDetail',
+                        params: {
+                            id: item.type.param.id,
+                        },
+                    });
+                });
+            }
+        }
+
     }
 
 

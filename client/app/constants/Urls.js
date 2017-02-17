@@ -21,3 +21,5 @@ export const LOAN_LIST_URL = 'loan/list/';
 export const RESPONSE_LIST_URL ='cm_tip/list';
 export const RESPONSE_DETAIL_URL = 'cm_tip/get/';
 export const RESPONSE_SEARCH_URL = 'cm_tip/search/';
+export const MESSAGE_LIST_URL = 'message/list';
+export const MESSAGE_SET_URL = 'message/set';
