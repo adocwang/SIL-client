@@ -3,14 +3,15 @@
  */
 import * as types from '../constants/ActionTypes';
 import _ from 'lodash'
-const mockMessageInfo = []
+const mockMessageInfo = [
+]
 
 const initialState = {
     messageList: mockMessageInfo,
     isRefreshing: false,
     isLoadMore: false,
     noMore: false,
-    pageAfter: 1,
+    pageAfter: 2,
     loading:false
 };
 
@@ -42,7 +43,6 @@ export default function home(state = initialState, action) {
                 }
             }
             return Object.assign({}, state);
-
         case types.SET_MESSAGE_READ:
             _.forEach(state.messageList, function (o) {
                 if (o.id = action.data.id) {

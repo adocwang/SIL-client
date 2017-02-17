@@ -58,9 +58,11 @@ class MessageItem extends React.Component {
                                 {getDateDiff(this.props.created)}
                             </Text>
                         </View>
+                        <View style={{marginTop:5}}>
                         <Text style={styles.desc}>
                             {this.props.content}
                         </Text>
+                        </View>
                         <View style={styles.divider}/>
                     </View>
                 </View>
@@ -76,7 +78,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#ffffff',
-        height:80,
+        height:85,
         paddingLeft:20
     },
     imgContainer:{
@@ -99,7 +101,6 @@ let styles = StyleSheet.create({
     desc:{
         color:'#9B9B9B',
         fontSize:14,
-        marginTop:10,
     },
     cat:{
         color:'#4A4A4A',
@@ -119,6 +120,7 @@ let styles = StyleSheet.create({
         justifyContent:'space-between',
         paddingRight:10,
         alignItems:'center',
+        marginTop:10
 
     },
     divider:{

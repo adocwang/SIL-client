@@ -22,7 +22,7 @@ import BasePage from './BasePage'
 import CustomToolbar from '../components/CustomToolbar'
 import * as types from '../constants/ActionTypes';
 import {fetcMessageSet,fetchMessageList} from  '../actions/message'
-
+import Spanner from 'react-native-spinkit'
 var canLoadMore;
 var loadMoreTime = 0;
 
@@ -30,7 +30,6 @@ class Message extends BasePage {
     constructor() {
         super()
         this.state = {
-            enterprise:'测试1科技有限公司',
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
@@ -45,7 +44,7 @@ class Message extends BasePage {
     refreshList(){
         const {dispatch} = this.props;
         canLoadMore = false;
-        dispatch(fetchMessageList(true,false,false,{page:1}, this.props.auth.token));
+        dispatch(fetchMessageList(true,false,false,{page:1,page_limit:50}, this.props.auth.token));
     }
 
 
@@ -98,7 +97,7 @@ class Message extends BasePage {
         const {message} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
             const {dispatch} = this.props;
-            dispatch(fetchMessageList(false,false,true,{page:message.pageAfter}, this.props.auth.token));
+            dispatch(fetchMessageList(false,false,true,{page:message.pageAfter,page_limit:50}, this.props.auth.token));
             canLoadMore = false;
             loadMoreTime = Date.parse(new Date()) / 1000;
         }
