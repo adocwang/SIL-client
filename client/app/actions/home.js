@@ -80,7 +80,7 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
 
 export function fetchBankList(token){
     return dispatch => {
-        //dispatch({type:types.FETCH_BANK_LIST,data:{}})
+        dispatch({type:types.FETCH_BANK_LIST,data:{}})
         return getRequest(dispatch,host.BANK_LIST_URL ,token)
             .then((data) => {
                 console.log('fetchBankList',data);
@@ -140,6 +140,31 @@ export function fetchEnterpiseSet(paramsMap,token){
                    dispatch({type:types.REVEIVE_ENTERPRISE_SET,data:data.data})
                }
 
+            })
+            .catch((error) => {
+                dispatch(hideLoading());
+                ToastShort(error.message);
+            })
+    }
+}
+
+export function fetchEnterprise (id,token) {
+    if(id==undefined || id==''){
+        ToastShort('该企业不存在');
+    }
+
+    return dispatch => {
+         dispatch({type:types.FETCH_ENTERPRISE_INFO})
+        return getRequest(dispatch, host.ENTERPRISE_DETAIL_URL + id, token)
+            .then((data) => {
+                if (data.code == 0) {
+                    console.log(data);
+                    dispatch({type:types.REVEIVE_ENTERPRISE_INFO,data:data.data})
+
+                }else {
+                    dispatch(hideLoading());
+                    ToastShort('该企业不存在');
+                }
             })
             .catch((error) => {
                 dispatch(hideLoading());
