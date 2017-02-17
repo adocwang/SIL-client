@@ -50,6 +50,15 @@ export default function home(state = initialState, action) {
                 }
             })
             return Object.assign({}, state);
+        case types.RECEIVE_PUSH_MESSAGE:
+            console.log(state.messageList,action.data);
+            var unread = _.find(state.messageList, function (item) {
+                return item.id == action.data.id ;
+            })
+            if(unread == undefined){
+                state.messageList.unshift(action.data);
+            }
+            return Object.assign({}, state);
         default:
             return state;
     }

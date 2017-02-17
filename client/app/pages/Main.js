@@ -31,8 +31,9 @@ import MessageContainer from '../containers/MessageContainer'
 import realm from '../components/realm'
 import BasePage from './BasePage'
 import {ToastShort} from '../utils/ToastUtils';
-import {fetchUnReadMessageList} from '../actions/message'
+import {fetchUnReadMessageList,fetcMessageSet} from '../actions/message'
 import _ from 'lodash'
+import * as types from '../constants/ActionTypes';
 
 class Main extends BasePage {
     constructor() {
@@ -46,7 +47,6 @@ class Main extends BasePage {
     }
 
     componentWillReceiveProps (nextProps) {
-        console.log('componentWillReceiveProps',nextProps);
         if(nextProps.message.messageList && nextProps.message.messageList.length > 0){
                 var unread = _.find(nextProps.message.messageList, function (item) {
                     return item.state == 0 ;
@@ -62,30 +62,43 @@ class Main extends BasePage {
     componentDidMount () {
         console.log('Main componentDidMount');
         const {navigator} = this.props;
+        const {dispatch} = this.props;
+        const {auth} = this.props;
        DeviceEventEmitter.addListener('MiPushMessage', function(e: Event) {
             console.log('Main MiPushMessage receive',e);
+            var message = JSON.parse(e.content);
             if(e.type=='1'){
-
-            }else if(e.type=='2'){
-                navigator.push({
-                    component: EnterpriseDetailContainer,
-                    name: 'EnterpriseDetail',
-                    params: {
-                        item: '1',
-                    },
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch({type:types.RECEIVE_PUSH_MESSAGE,data:message});
                 });
-            }else if(e.type=='3'){
-                navigator.push({
-                    component: EnterpriseDetailContainer,
-                    name: 'EnterpriseDetail',
-                    params: {
-                        item: '1',
-                    },
-                });
+            }else {
+                if(message.type && message.type.page && message.type.param && message.type.param.id){
+                    dispatch(fetcMessageSet(message.id,auth.token));
+                    if(message.type.page == 'enterprise_operation'){
+                        InteractionManager.runAfterInteractions(() => {
+                            navigator.push({
+                                component: ClaimContainer,
+                                name: 'Claim',
+                                params: {
+                                    item:{id:message.type.param.id},
+                                },
+                            });
+                        });
+                    }else if(message.type.page == 'enterprise_detail'){
+                        InteractionManager.runAfterInteractions(() => {
+                            navigator.push({
+                                component: EnterpriseDetailContainer,
+                                name: 'EnterpriseDetail',
+                                params: {
+                                    id: message.type.param.id,
+                                },
+                            });
+                        });
+                    }
+                }
             }
 
         });
-        const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
             dispatch(fetchUnReadMessageList(this.props.auth.token));
         });
