@@ -61,49 +61,53 @@ class Main extends BasePage {
 
     componentDidMount () {
         console.log('Main componentDidMount');
-        const {navigator} = this.props;
         const {dispatch} = this.props;
-        const {auth} = this.props;
-       DeviceEventEmitter.addListener('MiPushMessage', function(e: Event) {
-            console.log('Main MiPushMessage receive',e);
-            var message = JSON.parse(e.content);
-            if(e.type=='1'){
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch({type:types.RECEIVE_PUSH_MESSAGE,data:message});
-                });
-            }else {
-                if(message.type && message.type.page && message.type.param && message.type.param.id){
-                    dispatch(fetcMessageSet(message.id,auth.token));
-                    if(message.type.page == 'enterprise_operation'){
-                        InteractionManager.runAfterInteractions(() => {
-                            navigator.push({
-                                component: ClaimContainer,
-                                name: 'Claim',
-                                params: {
-                                    item:{id:message.type.param.id},
-                                },
-                            });
-                        });
-                    }else if(message.type.page == 'enterprise_detail'){
-                        InteractionManager.runAfterInteractions(() => {
-                            navigator.push({
-                                component: EnterpriseDetailContainer,
-                                name: 'EnterpriseDetail',
-                                params: {
-                                    id: message.type.param.id,
-                                },
-                            });
-                        });
-                    }
-                }
-            }
-
-        });
+       DeviceEventEmitter.addListener('MiPushMessage', this.onReceivePushMessage);
         InteractionManager.runAfterInteractions(() => {
             dispatch(fetchUnReadMessageList(this.props.auth.token));
         });
     }
+    onReceivePushMessage = (e)=> {
+        const {navigator} = this.props;
+        const {auth} = this.props;
+        const {dispatch} = this.props;
+        console.log('Main MiPushMessage receive',e);
+        var message = JSON.parse(e.content);
+        if(e.type=='1'){
+            InteractionManager.runAfterInteractions(() => {
+                dispatch({type:types.RECEIVE_PUSH_MESSAGE,data:message});
+            });
+        }else {
+            if(message.type && message.type.page && message.type.param && message.type.param.id){
+                dispatch(fetcMessageSet(message.id,auth.token));
+                if(message.type.page == 'enterprise_operation'){
+                    InteractionManager.runAfterInteractions(() => {
+                        navigator.push({
+                            component: ClaimContainer,
+                            name: 'Claim',
+                            params: {
+                                item:{id:message.type.param.id},
+                            },
+                        });
+                    });
+                }else if(message.type.page == 'enterprise_detail'){
+                    InteractionManager.runAfterInteractions(() => {
+                        navigator.push({
+                            component: EnterpriseDetailContainer,
+                            name: 'EnterpriseDetail',
+                            params: {
+                                id: message.type.param.id,
+                            },
+                        });
+                    });
+                }
+            }
+        }
+    }
 
+    componentWillUnmount(){
+        DeviceEventEmitter.removeListener('MiPushMessage',this.onReceivePushMessage);//移除扫描监听
+    }
 
     render () {
         const selectedPerson=(this.state.selectedTab === 'person')
