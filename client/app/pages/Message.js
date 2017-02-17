@@ -21,7 +21,10 @@ import MessageItem from '../components/home/MessageItem';
 import BasePage from './BasePage'
 import CustomToolbar from '../components/CustomToolbar'
 import * as types from '../constants/ActionTypes';
-import {fetcMessageSet} from  '../actions/message'
+import {fetcMessageSet,fetchMessageList} from  '../actions/message'
+
+var canLoadMore;
+var loadMoreTime = 0;
 
 class Message extends BasePage {
     constructor() {
@@ -34,12 +37,15 @@ class Message extends BasePage {
         };
 
         this.renderItem = this.renderItem.bind(this);
+        this.renderFooter = this.renderFooter.bind(this);
+        this.onScroll = this.onScroll.bind(this);
+        canLoadMore = false;
     }
 
     refreshList(){
         const {dispatch} = this.props;
-        dispatch({type:types.FETCH_MESSAGE_LIST});
-        dispatch({type:types.RECEIVE_MESSAGE_LIST});
+        canLoadMore = false;
+        dispatch(fetchMessageList(true,false,false,{page:1}, this.props.auth.token));
     }
 
 
@@ -81,6 +87,36 @@ class Message extends BasePage {
         return <MessageItem  {...item} onClicked={this.onPress.bind(this, item)}/>
     }
 
+    onScroll () {
+        if (!canLoadMore) {
+            canLoadMore = true;
+        }
+    }
+
+    onEndReached () {
+        let time = Date.parse(new Date()) / 1000;
+        const {message} = this.props;
+        if (canLoadMore && time - loadMoreTime > 1) {
+            const {dispatch} = this.props;
+            dispatch(fetchMessageList(false,false,true,{page:message.pageAfter}, this.props.auth.token));
+            canLoadMore = false;
+            loadMoreTime = Date.parse(new Date()) / 1000;
+        }
+    }
+
+    renderFooter () {
+        const {message} = this.props;
+        if (message.isLoadMore) {
+            return (
+                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Spanner size={30} type='ThreeBounce' color='#c8c8c8'/>
+                    <Text style={{textAlign: 'center', fontSize: 16}}>
+                        加载中…
+                    </Text>
+                </View>
+            );
+        }
+    }
 
 
     render () {
@@ -93,11 +129,16 @@ class Message extends BasePage {
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(this.props.message.messageList)}
                     renderRow={this.renderItem}
+                    onEndReached={this.onEndReached.bind(this)}
+                    onEndReachedThreshold={10}
+                    onScroll={this.onScroll}
+                    style={styles.listView}
+                    renderFooter={this.renderFooter.bind(this)}
                     refreshControl={
                     <RefreshControl
                     refreshing={this.props.message.isRefreshing}
                     onRefresh={this.refreshList.bind(this)}
-                    title="Loading..."
+                    title="加载中..."
                     colors={['#15499A', '#15499A', '#15499A', '#15499A']}
                     />}
                 />
@@ -110,6 +151,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,//可拉伸
         backgroundColor: '#FFFFFF',
+    },
+    listView: {
+        marginTop:20,
     },
 
 });

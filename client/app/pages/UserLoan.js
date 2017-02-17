@@ -78,7 +78,7 @@ class UserLoan extends BasePage {
         const {userloan} = this.props;
         if (canLoadMore && time - loadMoreTime > 1) {
             const {dispatch} = this.props;
-            dispatch(fetchUserLoanList(false,false,true,{page:userloan.pageAfter[1]}, this.props.auth.token,this.state.tabIndex));
+            dispatch(fetchUserLoanList(false,false,true,{page:userloan.pageAfter[typeId]}, this.props.auth.token,this.state.tabIndex));
             canLoadMore = false;
             loadMoreTime = Date.parse(new Date()) / 1000;
         }
@@ -127,7 +127,7 @@ class UserLoan extends BasePage {
             <RefreshControl
               refreshing={userloan.isRefreshing[typeId]}
               onRefresh={this.onRefresh.bind(this, typeId)}
-              title="Loading..."
+              title="加载中..."
               colors={['#15499A', '#15499A', '#15499A', '#15499A']}
             />
           }
@@ -157,7 +157,7 @@ class UserLoan extends BasePage {
           <RefreshControl
             refreshing={userloan.isRefreshing[typeId]}
             onRefresh={this.onRefresh.bind(this, typeId)}
-            title="Loading..."
+            title="加载中..."
             colors={['#15499A', '#15499A', '#15499A', '#15499A']}
           />
         }

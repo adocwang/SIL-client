@@ -105,7 +105,7 @@ class EnterpriseDetail extends BasePage {
                     <RefreshControl
                     refreshing={enterprise.isRefreshing}
                     onRefresh={this.refreshEnterprise.bind(this, this.state.id)}
-                    title="Loading..."
+                    title="加载中..."
                     colors={['#15499A', '#15499A', '#15499A', '#15499A']}
                     />}
                     >

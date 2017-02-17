@@ -36,3 +36,29 @@ export function fetcMessageSet (id,token) {
             })
     }
 }
+
+export function fetchMessageList(isRefreshing, loading, isLoadMore,paramsMap, token) {
+
+    return dispatch => {
+        dispatch({type:types.FETCH_MESSAGE_LIST,
+            data:{
+                isRefreshing:isRefreshing,
+                loading:loading,
+                isLoadMore:isLoadMore,
+            }})
+        return postRequest(dispatch, host.MESSAGE_LIST_URL, paramsMap,token)
+            .then((data) => {
+                if (data.code == 0) {
+                    console.log(data);
+                    data.data.isRefreshing = isRefreshing;
+                    if(isLoadMore && data.data.messages.length == 0){
+                        ToastShort('没有更多数据了');
+                    }
+                    dispatch({type:types.RECEIVE_MESSAGE_LIST,data:data.data})
+                }
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+            })
+    }
+}
