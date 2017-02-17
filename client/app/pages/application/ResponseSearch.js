@@ -10,78 +10,45 @@ import {
     ScrollView,
     ListView,
     TextInput,
+    WebView,
     TouchableOpacity,
     InteractionManager
 } from 'react-native';
 import CustomToolbar from '../../components/CustomToolbar';
-import EnterpriseDetailContainer from '../../containers/enterprise/EnterpriseDetailContainer'
 import {ToastShort} from '../../utils/ToastUtils';
-import {fetchEnterpriseList} from '../../actions/home';
+import {fetchSearchResponse} from '../../actions/application';
 import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
 import Loading from '../../components/Loading'
 import BasePage from  '../BasePage'
+import * as types from '../../constants/ActionTypes';
 
 class ResponseSearch extends BasePage {
     constructor() {
         super()
         this.state = {
-            enterprise:'',
-            dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2,
-            }),
+            keyword:'象',
         };
 
-        this.renderItem = this.renderItem.bind(this);
-        this.searchCompany = this.searchCompany.bind(this);
-    }
-    componentDidMount () {
+        this.searchResponse = this.searchResponse.bind(this);
     }
 
-    componentWillReceiveProps (nextProps) {
 
+    componentWillUnmount() {
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch({type:types.CLEAR_RESPONSE_SEARCH});
+        });
     }
 
-    componentWillUpdate(){
-    }
-
-    componentDidUpdate(){
-    }
-
-    searchCompany(){
-        if(this.state.enterprise==''){
-            ToastShort('请输入企业名称');
+    searchResponse(){
+        if(this.state.keyword==''){
+            ToastShort('请输入话术关键词');
             return false;
         }
         const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            dispatch(fetchEnterpriseList({name:this.state.enterprise},this.props.auth.token));
+            dispatch(fetchSearchResponse(this.state.keyword,this.props.auth.token));
         });
-    }
-
-    onPress (item) {
-        const {navigator} = this.props;
-        navigator.push({
-            component: EnterpriseDetailContainer,
-            name: 'EnterpriseDetail',
-            params: {
-                id: item.id,
-            },
-        });
-    }
-
-
-    renderItem (item) {
-        return (
-            <TouchableOpacity onPress={this.onPress.bind(this, item)}>
-                <View style={styles.containerItem}>
-                    <View style={{flex: 1, flexDirection: 'column'}}>
-                        <Text style={styles.itemText}>
-                            {item.name}
-                        </Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        );
     }
 
 
@@ -94,10 +61,10 @@ class ResponseSearch extends BasePage {
                     title="搜索"
                     navigator={navigator}/>
                 <View   style={styles.searchBar}>
-                    <TextInput   onChangeText={(enterprise) => this.setState({enterprise})} keyboardType="web-search" onSubmitEditing={this.searchCompany}
-                                 value={this.state.enterprise} style = {styles.searchBarInput}
-                                 placeholder='请输企业名称' underlineColorAndroid="transparent" />
-                    <TouchableOpacity onPress={this.searchCompany}>
+                    <TextInput   onChangeText={(keyword) => this.setState({keyword})} keyboardType="web-search" onSubmitEditing={this.searchResponse}
+                                 value={this.state.keyword} style = {styles.searchBarInput}
+                                 placeholder='话术关键词' underlineColorAndroid="transparent" />
+                    <TouchableOpacity onPress={this.searchResponse}>
                         <View >
                             <Image
                                 style={{width:78,height:40}}
@@ -106,13 +73,22 @@ class ResponseSearch extends BasePage {
                         </View></TouchableOpacity>
                 </View>
 
-                <View style={{flex:1}}>
-                    {this.props.search.enterprises.length >0&& <ListView
-                        style={styles.listView}
-                        dataSource={this.state.dataSource.cloneWithRows(this.props.search.enterprises)}
-                        renderRow={this.renderItem}
-                    />}
-                    {this.props.search.loading&&<Loading backgroundColor = 'rgba(255,255,255,0.5)'/>
+                <View style={{flex:1,padding:10}}>
+                    {this.props.responsesearch.searchResult !=''&&
+                    <WebView
+                        ref='webview'
+                        automaticallyAdjustContentInsets={false}
+                        style={{flex: 1}}
+                        source={{html:this.props.responsesearch.searchResult}}
+                        javaScriptEnabled={true}
+                        domStorageEnabled={true}
+                        startInLoadingState={true}
+                        scalesPageToFit={true}
+                        decelerationRate="normal"
+                        onShouldStartLoadWithRequest={true}
+                    />
+                    }
+                    {this.props.responsesearch.loading&&<Loading backgroundColor = 'rgba(255,255,255,0.5)'/>
                     }
                 </View>
             </View>
@@ -149,9 +125,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius:30,
         height: 40,
-        marginLeft: 10,
-        marginRight:10,
-        marginTop:20
+        marginLeft: 20,
+        marginRight:20,
+        marginTop:30,
+
     },
     searchBarInput: {
         flex: 1,

@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import Markdown from '../../components/markdown/Markdown';
 import CustomToolbar from '../../components/CustomToolbar';
-import EnterpriseDetailContainer from '../../containers/enterprise/EnterpriseDetailContainer'
+import ResponseSearchContainer from '../../containers/ResponseSearchContainer'
 import {ToastShort} from '../../utils/ToastUtils';
 import {fetchResponseList,fetchResponseDetail} from '../../actions/application';
 import Icon from '../../../node_modules/react-native-vector-icons/Ionicons';
@@ -55,6 +55,14 @@ class Response extends BasePage {
 
     }
 
+    gotoSearch(){
+        const {navigator} = this.props;
+        navigator.push({
+            component: ResponseSearchContainer,
+            name: 'ResponseSearch',
+        });
+    }
+
     onPress (item) {
         const {dispatch} = this.props;
         InteractionManager.runAfterInteractions(() => {
@@ -83,6 +91,8 @@ class Response extends BasePage {
             <View style={styles.container}>
                 <CustomToolbar
                     title="话术"
+                    searchIcon={true}
+                    onOperateClicked = {()=>this.gotoSearch()}
                     navigator={navigator}/>
                 <View style={{flex:1,marginTop:30}}>
                 {this.props.response.responseList.length >0&&

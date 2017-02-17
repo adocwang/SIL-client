@@ -135,9 +135,45 @@ export function fetchResponseDetail(id,token){
     }
 }
 
+export function fetchSearchResponse(keyword,token){
+    return dispatch => {
+        dispatch({type:types.FETCH_RESPONSE_SEARCH,data:{}})
+        return getRequest(dispatch,host.RESPONSE_SEARCH_URL + keyword ,token)
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
+                }else if(data.code==0){
+                    dispatch({type:types.RECEIVE_RESPONSE_SEARCH,data:data.data})
+                }
+                dispatch(hideSearchLoading());
+
+            })
+            .catch((error) => {
+                dispatch(hideSearchLoading());
+                ToastShort(error.message);
+            })
+    }
+}
+
+
 function hideLoading(){
     return{
         type: types.HIDE_RESPONSE_LIST_LOADING,
+        data: {},
+    }
+}
+
+
+function hideSearchLoading(){
+    return{
+        type: types.HIDE_RESPONSE_SEARCH_LOADING,
         data: {},
     }
 }

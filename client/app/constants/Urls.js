@@ -20,3 +20,4 @@ export const BANK_LIST_URL = 'bank/list';
 export const LOAN_LIST_URL = 'loan/list/';
 export const RESPONSE_LIST_URL ='cm_tip/list';
 export const RESPONSE_DETAIL_URL = 'cm_tip/get/';
+export const RESPONSE_SEARCH_URL = 'cm_tip/search/';
