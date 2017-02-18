@@ -105,7 +105,7 @@ class EnterpriseDetail extends BasePage {
                     <RefreshControl
                     refreshing={enterprise.isRefreshing}
                     onRefresh={this.refreshEnterprise.bind(this, this.state.id)}
-                    title="Loading..."
+                    title="加载中..."
                     colors={['#15499A', '#15499A', '#15499A', '#15499A']}
                     />}
                     >
@@ -132,7 +132,7 @@ class EnterpriseDetail extends BasePage {
                         >
                            <CommonInfo navigator={navigator} {...this.props.enterprise.detail}/>
                         </Bar>
-                        /** <Bar
+                        {/** <Bar
                             title='融资资讯'
                             collapsible={true}
                             iconCollapsed='angle-right'
@@ -216,7 +216,7 @@ class EnterpriseDetail extends BasePage {
                             titleStyle={styles.bar_title}
                         >
                             <JingYingXinXi navigator={navigator} {...this.props.enterprise.detail}/>
-                        </Bar>**/
+                        </Bar>**/}
                     </ScrollView>}
             </View>
         );

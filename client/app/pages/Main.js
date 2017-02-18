@@ -18,6 +18,7 @@ import ScrollableTabView , {DefaultTabBar, } from 'react-native-scrollable-tab-v
 import MainTabBar from '../components/MainTabBar';
 import CustomTabBar from '../components/CustomTabBar';
 import TabNavigator from '../components/bottomtabbar/TabNavigator';
+import CustomBadgeView from '../components/bottomtabbar/Badge'
 import LoadingView from '../components/LoadingView';
 import Spanner from 'react-native-spinkit'
 import ClaimContainer from '../containers/ClaimContainer'
@@ -30,6 +31,9 @@ import MessageContainer from '../containers/MessageContainer'
 import realm from '../components/realm'
 import BasePage from './BasePage'
 import {ToastShort} from '../utils/ToastUtils';
+import {fetchUnReadMessageList,fetcMessageSet} from '../actions/message'
+import _ from 'lodash'
+import * as types from '../constants/ActionTypes';
 
 class Main extends BasePage {
     constructor() {
@@ -37,89 +41,72 @@ class Main extends BasePage {
 
         this.state = {
             selectedTab:'home',
+            messageTips:false
         };
 
     }
-    componentDidMount () {
-        console.log('Main componentDidMount');
-        const {navigator} = this.props;
-       DeviceEventEmitter.addListener('MiPushMessage', function(e: Event) {
-            console.log('Main MiPushMessage receive',e);
-            if(e.type=='1'){
-                try {
-                    realm.write(() => {
-                        realm.create('Message', {
-                            img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-                            title:'深圳能源集团股份有限公司',
-                            desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-                            cat:'能源  投资  >>',
-                            status:'已分配',
-                            read:false
-                        });
-                    });
-                    let messages = realm.objects('Message');
-                    console.log('messages length',messages.length)
-                }catch (err){
-                    console.log('realm error',err);
-                }
-            }else if(e.type=='2'){
-                navigator.push({
-                    component: EnterpriseDetailContainer,
-                    name: 'EnterpriseDetail',
-                    params: {
-                        item: '1',
-                    },
-                });
-            }else if(e.type=='3'){
-                try {
-                    realm.write(() => {
-                        realm.create('Message', {
-                            img:'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg',
-                            title:'深圳能源集团股份有限公司',
-                            desc:'熊佩锦 | 257690.00万美元 | 成立15年以上',
-                            cat:'能源  投资  >>',
-                            status:'已分配',
-                            read:false
-                        });
-                    });
-                    let messages = realm.objects('Message');
-                    console.log('messages length',messages.length)
-                }catch (err){
-                    console.log('realm error',err);
-                }
-                navigator.push({
-                    component: EnterpriseDetailContainer,
-                    name: 'EnterpriseDetail',
-                    params: {
-                        item: '1',
-                    },
-                });
-            }
-
-        });
-    }
-
 
     componentWillReceiveProps (nextProps) {
-        //const {reddit} = this.props;
-        //if (reddit.isLoadMore && !nextProps.reddit.isLoadMore && !nextProps.reddit.isRefreshing) {
-        //    if (nextProps.reddit.noMore) {
-        //        ToastShort('没有更多数据了');
-        //    }
-        //}
-        // 读取
-
+        if(nextProps.message.messageList && nextProps.message.messageList.length > 0){
+                var unread = _.find(nextProps.message.messageList, function (item) {
+                    return item.state == 0 ;
+                })
+            if(unread!=undefined){
+                this.setState({messageTips:true})
+            }else {
+                this.setState({messageTips:false})
+            }
+        }
     }
 
-
-    componentWillUpdate(){
+    componentDidMount () {
+        console.log('Main componentDidMount');
+        const {dispatch} = this.props;
+       DeviceEventEmitter.addListener('MiPushMessage', this.onReceivePushMessage);
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchUnReadMessageList(this.props.auth.token));
+        });
+    }
+    onReceivePushMessage = (e)=> {
+        const {navigator} = this.props;
+        const {auth} = this.props;
+        const {dispatch} = this.props;
+        console.log('Main MiPushMessage receive',e);
+        var message = JSON.parse(e.content);
+        if(e.type=='1'){
+            InteractionManager.runAfterInteractions(() => {
+                dispatch({type:types.RECEIVE_PUSH_MESSAGE,data:message});
+            });
+        }else {
+            if(message.type && message.type.page && message.type.param && message.type.param.id){
+                dispatch(fetcMessageSet(message.id,auth.token));
+                if(message.type.page == 'enterprise_operation'){
+                    InteractionManager.runAfterInteractions(() => {
+                        navigator.push({
+                            component: ClaimContainer,
+                            name: 'Claim',
+                            params: {
+                                item:{id:message.type.param.id},
+                            },
+                        });
+                    });
+                }else if(message.type.page == 'enterprise_detail'){
+                    InteractionManager.runAfterInteractions(() => {
+                        navigator.push({
+                            component: EnterpriseDetailContainer,
+                            name: 'EnterpriseDetail',
+                            params: {
+                                id: message.type.param.id,
+                            },
+                        });
+                    });
+                }
+            }
+        }
     }
 
-    componentDidUpdate(){
-    }
-
-    searchCompany(){
-        console.log('search');
+    componentWillUnmount(){
+        DeviceEventEmitter.removeListener('MiPushMessage',this.onReceivePushMessage);//移除扫描监听
     }
 
     render () {
@@ -182,7 +169,7 @@ class Main extends BasePage {
                         title="我的"
                         renderIcon={() => <Image source={require("../img/person_icon_d.png")} />}
                         renderSelectedIcon={() => <Image source={require("../img/person_icon.png")} />}
-                        //renderBadge={() => <CustomBadgeView />}
+                        renderBadge={this.state.messageTips?() => <CustomBadgeView />:() => <View />}
                         onPress={() => this.setState({ selectedTab: 'person' })}>
                         <PersonContainer navigator={this.props.navigator}/>
                     </TabNavigator.Item>

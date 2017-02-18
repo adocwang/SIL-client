@@ -9,11 +9,19 @@ const initialState = {
     loadingUserList:true,
     zhuliUserList:[],
     xieliUserList:[],
-    setEnterpriseInfoSuccess:false
+    setEnterpriseInfoSuccess:false,
+    enterprise:{}
 };
 
 export default function claimdistribute (state = initialState, action) {
     switch (action.type) {
+        case types.FETCH_ENTERPRISE_INFO:
+            state.loadingBankList = true;
+            return Object.assign({}, state);
+        case types.REVEIVE_ENTERPRISE_INFO:
+            state.loadingBankList = false;
+            state.enterprise = action.data;
+            return Object.assign({}, state);
         case types.REVEIVE_BANK_LIST:
             state.loadingUserList = false
             state.setEnterpriseInfoSuccess = false;

@@ -10,6 +10,8 @@ import enterprise from './enterprise';
 import {enterpriseList, findingEnterprise, enterpriseList2} from './enterprise';
 import collection, {uploadImg, commonNet} from './application.js'
 import claimdistribute from './claimdistribute';
+import response from './response';
+import responsesearch from './responsesearch';
 
 const rootReducer = combineReducers({
     home,
@@ -24,7 +26,9 @@ const rootReducer = combineReducers({
     claimdistribute,
     commonNet,
     findingEnterprise,
-    enterpriseList2
+    enterpriseList2,
+    response,
+    responsesearch
 
 });
 

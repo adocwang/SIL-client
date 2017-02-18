@@ -133,7 +133,7 @@ class Home extends BasePage {
             <RefreshControl
               refreshing={home.isRefreshing[typeId]}
               onRefresh={this.onRefresh.bind(this, typeId)}
-              title="Loading..."
+              title="加载中..."
               colors={['#15499A', '#15499A', '#15499A', '#15499A']}
             />
           }
@@ -169,7 +169,7 @@ class Home extends BasePage {
           <RefreshControl
             refreshing={home.isRefreshing[typeId]}
             onRefresh={this.onRefresh.bind(this, typeId)}
-            title="Loading..."
+            title="加载中..."
             colors={['#15499A', '#15499A', '#15499A', '#15499A']}
           />
         }

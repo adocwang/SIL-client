@@ -16,9 +16,9 @@ class MainContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {home,auth} = state;
+    const {home,auth,message} = state;
     return {
-        home,auth
+        home,auth,message
     }
 }
 

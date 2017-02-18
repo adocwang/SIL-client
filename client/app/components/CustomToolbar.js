@@ -50,6 +50,7 @@ const propTypes = {
     title: PropTypes.string,
     operate: PropTypes.string,
     actions: PropTypes.array,
+    searchIcon:PropTypes.bool,
     navigator: PropTypes.object,
     onIconClicked: PropTypes.func,
     onOperateClicked: PropTypes.func,
@@ -65,6 +66,9 @@ class CustomToolbar extends React.Component {
 
         this.onOperateClicked = this.onOperateClicked.bind(this);
         this.onIconClicked = this.onIconClicked.bind(this);
+    }
+
+    componentDidMount () {
     }
 
     onIconClicked() {
@@ -118,7 +122,10 @@ class CustomToolbar extends React.Component {
                     <View
                         style={styles.rightView}>
                         <TouchableOpacity onPress={this.onOperateClicked}>
-                            <Text style={styles.text}>{this.props.operate}</Text>
+                            {this.props.searchIcon?<Image source = {require('../img/toobar_search_icon.png')} />:
+                                <Text style={styles.text}>{this.props.operate}</Text>
+                            }
+
                         </TouchableOpacity>
                     </View>
 

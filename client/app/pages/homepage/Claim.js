@@ -30,7 +30,7 @@ const scaleAnimation = new ScaleAnimation();
 import BasePage from  '../BasePage'
 import {GapYear} from '../../utils/CommonUtils'
 import Loading from '../../components/Loading'
-import {fetchBankList,fetchEnterpiseSet} from '../../actions/home'
+import {fetchBankList,fetchEnterpiseSet,fetchEnterprise} from '../../actions/home'
 import * as types from '../../constants/ActionTypes';
 import {ToastShort} from '../../utils/ToastUtils';
 
@@ -46,6 +46,16 @@ class Claim extends BasePage {
         this.openChooseScaleAnimationDialog = this.openChooseScaleAnimationDialog.bind(this);
         this.onClaimBtnClick = this.onClaimBtnClick.bind(this);
         this.onBankChoose = this.onBankChoose.bind(this);
+    }
+
+    componentWillReceiveProps (nextProps) {
+        if(!this.state.item.name && nextProps.claimdistribute.enterprise.id){
+            this.setState({item:nextProps.claimdistribute.enterprise});
+            const {dispatch} = this.props;
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(fetchBankList(this.props.auth.token));
+            });
+        }
     }
 
     openChooseConfirmAnimationDialog() {
@@ -73,9 +83,16 @@ class Claim extends BasePage {
 
     componentDidMount() {
         const {dispatch} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(fetchBankList(this.props.auth.token));
-        });
+        if(this.state.item && this.state.item.id && !this.state.item.name){
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(fetchEnterprise(this.state.item.id,this.props.auth.token));
+            });
+        }else {
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(fetchBankList(this.props.auth.token));
+            });
+        }
+
     }
 
     onClaimBtnClick() {

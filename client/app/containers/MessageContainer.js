@@ -16,9 +16,9 @@ class MessageContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {message} = state;
+    const {message,auth} = state;
     return {
-        message
+        message,auth
     }
 }
 

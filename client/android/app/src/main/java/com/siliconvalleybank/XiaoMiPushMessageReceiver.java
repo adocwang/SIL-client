@@ -95,14 +95,14 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
 
         }
 
-        private void openActivity(final Context context,String content) {
+        private void openActivity(final Context context, final String content) {
 
                 Handler handler = new Handler(context.getMainLooper());
                 handler.post(new Runnable() {
                         @Override
                         public void run() {
                                 Intent intent = new Intent(context, MainActivity.class);
-                                intent.putExtra("from", "notify");
+                                intent.putExtra("content", content);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 context.getApplicationContext().startActivity(intent);
                         }

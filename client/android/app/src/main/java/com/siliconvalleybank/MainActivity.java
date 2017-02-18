@@ -31,16 +31,18 @@ public class MainActivity extends ReactActivity {
         mSubscriptions.add(RxBus.getDefault().toObservable().subscribe(new Action1<Object>() {
             @Override
             public void call(Object o) {
-                Log.e("toObservable","receive msg");
                 if (o instanceof PassThroughEvent) {
-                    Log.e("receive MiPushMessage",((PassThroughEvent) o).getMiPushMessage().getContent());
+                    Log.e("send  MiPushMessage ","type 1");
+                    String content = ((PassThroughEvent) o).getMiPushMessage().getContent();
                     WritableMap params = Arguments.createMap();
-                    params.putString("desc","test");
+                    params.putString("content",content);
                     params.putString("type","1");
                     sendEvent("MiPushMessage",params);
                 }else if(o instanceof ForeGroundNotifyEvent){
+                    Log.e("send  MiPushMessage ","type 2");
+                    String content = ((ForeGroundNotifyEvent) o).getMiPushMessage().getContent();
                     WritableMap params = Arguments.createMap();
-                    params.putString("desc","test");
+                    params.putString("content",content);
                     params.putString("type","2");
                     sendEvent("MiPushMessage",params);
                 }
@@ -75,13 +77,15 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(getIntent()!=null && getIntent().getExtras()!=null && getIntent().getExtras().getString("from")!=null && !mSendMsg){
-            Log.e("from",getIntent().getExtras().getString("from"));
+        if(getIntent()!=null && getIntent().getExtras()!=null && getIntent().getExtras().getString("content")!=null && !mSendMsg){
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.e("send  MiPushMessage ","type 3");
+                    String content = getIntent().getExtras().getString("content");
                     WritableMap params = Arguments.createMap();
-                    params.putString("desc","test");
+                    params.putString("content",content);
                     params.putString("type","3");
                     sendEvent("MiPushMessage",params);
                     mSendMsg = true;
