@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "loadingImg的副本 2.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "loadingimg.png",
+      "filename" : "loadingImg的副本.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "loadingImg.png",
       "scale" : "3x"
     }
   ],

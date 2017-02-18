@@ -62,7 +62,7 @@
 
 - (void)tryPushMessage:(NSString *)type data:(NSDictionary *)data {
   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-   [self.rootView.bridge.eventDispatcher sendDeviceEventWithName:@"MiPushMessage"                                                body:@{@"params": data,@"type":type}];
+   [self.rootView.bridge.eventDispatcher sendDeviceEventWithName:@"MiPushMessage"                                                body:@{@"content": data,@"type":type}];
 }
 
 - (void)showAlert:(NSString *)index {
