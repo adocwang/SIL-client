@@ -28,7 +28,6 @@ export function fetchCollectionConfig(token){
                 }
             })
             .catch((error) => {
-
                 ToastShort(error.message);
             })
     }

@@ -66,8 +66,7 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
                     }
                     dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
                 }
-
-
+                
             })
             .catch((error) => {
                 dispatch(hideLoading());

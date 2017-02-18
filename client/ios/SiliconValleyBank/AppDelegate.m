@@ -61,6 +61,7 @@
 }
 
 - (void)tryPushMessage:(NSString *)type data:(NSDictionary *)data {
+  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
    [self.rootView.bridge.eventDispatcher sendDeviceEventWithName:@"MiPushMessage"                                                body:@{@"params": data,@"type":type}];
 }
 
@@ -82,7 +83,6 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   self.fromBack = YES;
 }
-
 
 - (void)backStatusSet {
   self.fromBack = NO;
