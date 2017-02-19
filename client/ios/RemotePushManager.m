@@ -31,5 +31,4 @@ RCT_EXPORT_METHOD(getPlatform:(RCTResponseSenderBlock)callback)
   callback(@[[NSNull null], infos]);
 }
 
-
 @end

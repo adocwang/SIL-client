@@ -10,7 +10,6 @@ const RemotePushManager = NativeModules.RemotePushManager
 export function getPlatform() {
     RemotePushManager.getPlatform((error, infos) => {
         if (error) {
-            console.error(error);
             ToastShort("获取平台失败")
         } else {
             platformString = infos[0]
@@ -23,6 +22,5 @@ export function setPushAlias(phone) {
 }
 
 export function clearAlias() {
-    RemotePushManager.clearPushAlias("")
-
+    RemotePushManager.clearPushAlias()
 }
