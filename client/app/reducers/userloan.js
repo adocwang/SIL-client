@@ -52,6 +52,10 @@ export default function userloan (state = initialState, action) {
             state.loading[tabIndex] = false;
             if(action.data.loans.length == 0){
                 state.noMore = true;
+                if(action.data.isRefreshing){
+                    state.pageList[tabIndex] = [];
+                    state.pageAfter[tabIndex]=1;
+                }
             }else {
                 state.noMore = false;
                 if(action.data.isRefreshing){
