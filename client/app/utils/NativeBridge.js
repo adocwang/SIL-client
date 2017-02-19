@@ -5,6 +5,7 @@ import {NativeModules} from 'react-native'
 import {ToastShort} from "../utils/ToastUtils"
 
 export var platformString = ""
+
 const RemotePushManager = NativeModules.RemotePushManager
 
 export function getPlatform() {
