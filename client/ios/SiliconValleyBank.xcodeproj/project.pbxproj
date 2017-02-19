@@ -48,6 +48,7 @@
 		C253C6021E544DDE00906A33 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C253C6011E544DDE00906A33 /* CoreFoundation.framework */; };
 		C253C6041E544DEC00906A33 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C253C6031E544DEC00906A33 /* CoreGraphics.framework */; };
 		C253C6061E544DF500906A33 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C253C6051E544DF500906A33 /* Security.framework */; };
+		C2590B0A1E595E6C00C03CF4 /* RemotePushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C2590B091E595E6C00C03CF4 /* RemotePushManager.m */; };
 		C8C309FEC21042489596050B /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F524EC3D87849F9ADD94BFE /* Foundation.ttf */; };
 		CEB46BE17ED241FBA1C4F913 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F44FD581C7384A3A9FF50A1D /* MaterialCommunityIcons.ttf */; };
 		DEAB4575AAC34D979D83FDCD /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D59414E930CA42548C647AD5 /* FontAwesome.ttf */; };
@@ -325,6 +326,8 @@
 		C253C6011E544DDE00906A33 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		C253C6031E544DEC00906A33 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		C253C6051E544DF500906A33 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C2590B081E595E6C00C03CF4 /* RemotePushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemotePushManager.h; sourceTree = "<group>"; };
+		C2590B091E595E6C00C03CF4 /* RemotePushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemotePushManager.m; sourceTree = "<group>"; };
 		C840D36B03BA4AD7BD54AA69 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		D1EBC483FA114356A718FB07 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		D59414E930CA42548C647AD5 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -471,6 +474,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				C2590B081E595E6C00C03CF4 /* RemotePushManager.h */,
+				C2590B091E595E6C00C03CF4 /* RemotePushManager.m */,
 			);
 			name = SiliconValleyBank;
 			sourceTree = "<group>";
@@ -1120,6 +1125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2590B0A1E595E6C00C03CF4 /* RemotePushManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);

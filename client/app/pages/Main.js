@@ -34,7 +34,6 @@ import {ToastShort} from '../utils/ToastUtils';
 import {fetchUnReadMessageList,fetcMessageSet} from '../actions/message'
 import _ from 'lodash'
 import * as types from '../constants/ActionTypes';
-
 class Main extends BasePage {
     constructor() {
         super()
@@ -61,6 +60,7 @@ class Main extends BasePage {
 
     componentDidMount () {
         console.log('Main componentDidMount');
+
         const {dispatch} = this.props;
        DeviceEventEmitter.addListener('MiPushMessage', this.onReceivePushMessage);
         InteractionManager.runAfterInteractions(() => {

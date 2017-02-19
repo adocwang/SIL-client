@@ -14,6 +14,7 @@ import EnterpriseDetailContainer from '../containers/enterprise/EnterpriseDetail
 import ResetPwd from '../pages/auth/ResetPwd';
 import {NaviGoBack} from '../utils/CommonUtils';
 import realm from  '../components/realm'
+import {getPlatform} from '../utils/NativeBridge'
 
 import {
     StyleSheet,
@@ -78,6 +79,7 @@ class App extends React.Component {
     }
     componentDidMount () {
         console.log('App componentDidMount');
+        getPlatform()
     }
 
 

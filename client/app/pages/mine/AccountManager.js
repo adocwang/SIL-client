@@ -20,6 +20,7 @@ import Button from '../../components/Button.ios.js'
 import {fetchLogout} from '../../actions/auth'
 import LoginContainer from '../../containers/LoginContainer'
 import ResetPwdContainer from '../../containers/ResetPwdContainer'
+import {clearAlias} from '../../utils/NativeBridge'
 export default class AccountManager extends React.Component {
     constructor(props) {
         super(props)
@@ -68,6 +69,7 @@ export default class AccountManager extends React.Component {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             dispatch(fetchLogout(this.props.auth.token));
+            clearAlias()
             navigator.resetTo({
                 component: LoginContainer,
                 name: 'Login'

@@ -21,7 +21,7 @@ import {fetchLogin} from '../../actions/auth'
 import Spanner from 'react-native-spinkit'
 import ActiveContainer from '../../containers/ActiveContainer'
 import Loading from '../../components/Loading'
-
+import {setPushAlias} from '../../utils/NativeBridge'
 class Login extends React.Component {
     constructor (props) {
         super(props);
@@ -30,6 +30,7 @@ class Login extends React.Component {
             phone:'',
             loading:false
         };
+        this.setUserPushAlias = this.setUserPushAlias.bind(this)
     }
 
     componentDidMount () {
@@ -57,6 +58,7 @@ class Login extends React.Component {
         this.setState({loading:false});
 
         if(nextProps.auth.phone!='' && nextProps.auth.token!=''){
+            this.setUserPushAlias()
             const {navigator} = nextProps;
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
@@ -65,6 +67,10 @@ class Login extends React.Component {
                 });
             });
         }
+    }
+
+    setUserPushAlias() {
+        setPushAlias(this.state.phone)
     }
 
 

@@ -1,6 +1,12 @@
 'use strict';
 import * as host from '../constants/Urls';
 import * as types from '../constants/ActionTypes';
+import {platformString} from '../utils/NativeBridge'
+
+const platform = platformString
+const requestExtra = (token) => {
+    return {'token':token,'platform':platform,'version':types.APP_VERSION}
+}
 
 export function postRequest (dispatch,url,paramsMap,token) {
 
@@ -10,7 +16,7 @@ export function postRequest (dispatch,url,paramsMap,token) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'extra':JSON.stringify({'token':token})
+      'extra':JSON.stringify(requestExtra(token))
     },
     body: JSON.stringify(paramsMap)
   }).then(response=>response.json()).then(responseJson=>{
@@ -29,7 +35,7 @@ export function getRequest (dispatch,url,token) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'extra':JSON.stringify({'token':token})
+        'extra':JSON.stringify(requestExtra(token))
     },
   }).then(response=>response.json()).then(responseJson=>{
     if(responseJson.code==406){
@@ -51,7 +57,7 @@ export function uploadImage(dispatch,url,token,uri){
         headers:{
             'Content-Type':'multipart/form-data',
             'Accept': 'application/json',
-            'extra':JSON.stringify({'token':token})
+            'extra':JSON.stringify(requestExtra(token))
         },
         body:formData,
     }).then(response=>response.json()).then(responseJson=>{
