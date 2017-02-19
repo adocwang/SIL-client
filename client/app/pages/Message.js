@@ -125,6 +125,11 @@ class Message extends BasePage {
                 <CustomToolbar
                     title="消息中心"
                     navigator={navigator}/>
+                {this.props.message.messageList.length==0?<View style={{alignItems: 'center',flex:1,justifyContent:'center'}}>
+                    <Text style={{fontSize: 16}}>
+                        暂无数据
+                    </Text>
+                </View>:
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(this.props.message.messageList)}
                     renderRow={this.renderItem}
@@ -140,7 +145,7 @@ class Message extends BasePage {
                     title="加载中..."
                     colors={['#15499A', '#15499A', '#15499A', '#15499A']}
                     />}
-                />
+                />}
             </View>
         );
     }

@@ -151,17 +151,22 @@ class CollectionHome extends Component {
                 {this.state.showLoading && <Loading/>}
                 <CustomToolbar title="现场采集" navigator={this.props.navigator} operate="选择"
                                onOperateClicked={this.rightTitleClicked}/>
+
                 <Text style={styles.head}>选择采集公司</Text>
                 <View style={styles.lineView}/>
-                <ListView dataSource={this.state.dataSource} style={styles.listView}
-                          renderRow={(rowData, sectionID, rowID) =>
+                {this.datas.length==0?<View style={{alignItems: 'center',flex:1,justifyContent:'center'}}>
+                    <Text style={{fontSize: 16}}>
+                        暂无数据
+                    </Text>
+                </View>: <ListView dataSource={this.state.dataSource} style={styles.listView}
+                                   renderRow={(rowData, sectionID, rowID) =>
                               <CompanyCell data={rowData} clickClosure={this.clickedCell} rowID={rowID}/>
                           }
-                          onEndReached={this.onEndReached}
-                          onEndReachedThreshold={10}
-                          onScroll={this.onScroll}
-                          renderFooter={this.renderFooter}
-                          refreshControl={
+                                   onEndReached={this.onEndReached}
+                                   onEndReachedThreshold={10}
+                                   onScroll={this.onScroll}
+                                   renderFooter={this.renderFooter}
+                                   refreshControl={
                               <RefreshControl
                                   refreshing={this.state.isRefreshing}
                                   onRefresh={this.onRefresh}
@@ -169,7 +174,7 @@ class CollectionHome extends Component {
                                   title="Loading..."
                               />
                           }
-                />
+                />}
             </View>
         )
     }
