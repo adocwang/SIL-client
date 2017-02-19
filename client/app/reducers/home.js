@@ -54,6 +54,8 @@ export default function home (state = initialState, action) {
                 }
             }
             return Object.assign({}, state,newState);
+        case types.CLEAR_AUTH:
+            return initialState;
         default:
             return state;
     }

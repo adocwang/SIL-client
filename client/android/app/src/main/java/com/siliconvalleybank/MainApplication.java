@@ -27,6 +27,11 @@ public class MainApplication extends Application implements ReactApplication {
   public static final String APP_ID = "2882303761517545535";
   public static final String APP_KEY = "5701754572535";
   public static final String TAG = "com.siliconvalleybank";
+  private static MainApplication uniqueInstance;
+
+  public static MainApplication getInstance() {
+    return uniqueInstance;
+  }
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -42,7 +47,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RealmReactPackage(),
               new RCTCameraPackage(),
               new RNSpinkitPackage(),
-              new VectorIconsPackage()
+              new VectorIconsPackage(),
+              new RemotePushManagerPackage()
       );
     }
   };
@@ -56,6 +62,8 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+
+    uniqueInstance = this;
 
     if(shouldInit()) {
       MiPushClient.registerPush(this, APP_ID, APP_KEY);

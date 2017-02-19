@@ -26,7 +26,7 @@ class ResponseSearch extends BasePage {
     constructor() {
         super()
         this.state = {
-            keyword:'象',
+            keyword:'',
         };
 
         this.searchResponse = this.searchResponse.bind(this);
