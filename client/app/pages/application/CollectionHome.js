@@ -61,7 +61,7 @@ class CollectionHome extends Component {
         this.page = page
         const {dispatch,auth} = this.props
 
-        dispatch(fetchEnterpriseList2({page:page,page_limit:10,only_mine_a:"1"},auth.token))
+        dispatch(fetchEnterpriseList2({page:page,page_limit:10,only_role_a:"1"},auth.token))
     }
 
     clickedCell(index) {
