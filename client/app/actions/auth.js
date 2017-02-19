@@ -9,7 +9,7 @@ import * as host from '../constants/Urls';
 
 export function fetchLogin (paramsMap) {
     return dispatch => {
-        return postRequest(dispatch,host.PASSWORD_LOGIN_URL ,paramsMap,'iamsuperman')
+        return postRequest(dispatch,host.PASSWORD_LOGIN_URL ,paramsMap,'')
             .then((data) => {
                 if(data.code == 2007){
                     ToastShort('用户不存在');

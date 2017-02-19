@@ -1,10 +1,6 @@
 package com.siliconvalleybank;
 
-import android.util.Log;
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.*;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 /**
@@ -38,7 +34,9 @@ public class RemotePushManagerModule extends ReactContextBaseJavaModule {
         @ReactMethod
         public void getPlatform(Callback successCallback) {
                 try {
-                        successCallback.invoke(null,"android");
+                        WritableArray list = Arguments.createArray();
+                        list.pushString("android");
+                        successCallback.invoke(null,list);
                 }catch (Exception e){
 
                 }
