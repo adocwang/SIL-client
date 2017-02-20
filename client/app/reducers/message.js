@@ -15,7 +15,7 @@ const initialState = {
     loading:false
 };
 
-export default function home(state = initialState, action) {
+export default function message(state = initialState, action) {
     switch (action.type) {
         case types.RECEIVE_MAIN_MESSAGE_LIST:
             state.messageList = action.data.messages;

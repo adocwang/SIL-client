@@ -16,9 +16,10 @@ class PersonContainer extends Component {
 }
 
 function mapStateToProps (state) {
-    const {auth} = state;
+    const {auth,message} = state;
     return {
-        auth
+        auth,
+        message
     }
 }
 
