@@ -72,36 +72,40 @@ class Main extends BasePage {
         const {auth} = this.props;
         const {dispatch} = this.props;
         console.log('Main MiPushMessage receive',e);
-        var message = JSON.parse(e.content);
-        if(e.type=='1'){
-            InteractionManager.runAfterInteractions(() => {
-                dispatch({type:types.RECEIVE_PUSH_MESSAGE,data:message});
-            });
-        }else {
-            if(message.type && message.type.page && message.type.param && message.type.param.id){
-                dispatch(fetcMessageSet(message.id,auth.token));
-                if(message.type.page == 'enterprise_operation'){
-                    InteractionManager.runAfterInteractions(() => {
-                        navigator.push({
-                            component: ClaimContainer,
-                            name: 'Claim',
-                            params: {
-                                item:{id:message.type.param.id},
-                            },
+        try {
+            var message = JSON.parse(e.content);
+            if(e.type=='1'){
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch({type:types.RECEIVE_PUSH_MESSAGE,data:message});
+                });
+            }else {
+                if(message.type && message.type.page && message.type.param && message.type.param.id){
+                    dispatch(fetcMessageSet(message.id,auth.token));
+                    if(message.type.page == 'enterprise_operation'){
+                        InteractionManager.runAfterInteractions(() => {
+                            navigator.push({
+                                component: ClaimContainer,
+                                name: 'Claim',
+                                params: {
+                                    item:{id:message.type.param.id},
+                                },
+                            });
                         });
-                    });
-                }else if(message.type.page == 'enterprise_detail'){
-                    InteractionManager.runAfterInteractions(() => {
-                        navigator.push({
-                            component: EnterpriseDetailContainer,
-                            name: 'EnterpriseDetail',
-                            params: {
-                                id: message.type.param.id,
-                            },
+                    }else if(message.type.page == 'enterprise_detail'){
+                        InteractionManager.runAfterInteractions(() => {
+                            navigator.push({
+                                component: EnterpriseDetailContainer,
+                                name: 'EnterpriseDetail',
+                                params: {
+                                    id: message.type.param.id,
+                                },
+                            });
                         });
-                    });
+                    }
                 }
             }
+        }catch (e){
+
         }
     }
 

@@ -3,13 +3,11 @@ import * as host from '../constants/Urls';
 import * as types from '../constants/ActionTypes';
 import {platformString} from '../utils/NativeBridge'
 
-const platform = platformString
 const requestExtra = (token) => {
-    return {'token':token,'platform':platform,'version':types.APP_VERSION}
+    return {'token':token,'platform':platformString,'version':types.APP_VERSION}
 }
 
 export function postRequest (dispatch,url,paramsMap,token) {
-
     console.info("url=", url,{'token':token},paramsMap);
    return fetch(host.BASE_URL + url, {
     method: 'POST',

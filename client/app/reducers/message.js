@@ -18,7 +18,7 @@ const initialState = {
 export default function home(state = initialState, action) {
     switch (action.type) {
         case types.RECEIVE_MAIN_MESSAGE_LIST:
-            state.messageList = state.messageList.concat(action.data.messages);
+            state.messageList = action.data.messages;
             return Object.assign({}, state);
         case types.FETCH_MESSAGE_LIST:
             state.isRefreshing = action.data.isRefreshing;
@@ -59,6 +59,8 @@ export default function home(state = initialState, action) {
                 state.messageList.unshift(action.data);
             }
             return Object.assign({}, state);
+        case types.CLEAR_AUTH:
+            return initialState;
         default:
             return state;
     }

@@ -10,6 +10,7 @@ const RemotePushManager = NativeModules.RemotePushManager
 
 export function getPlatform() {
     RemotePushManager.getPlatform((error, infos) => {
+        console.log(error,infos);
         if (error) {
             ToastShort("获取平台失败")
         } else {
