@@ -11,7 +11,7 @@ const initialState = {
     isRefreshing: false,
     isLoadMore: false,
     noMore: false,
-    pageAfter: 2,
+    pageAfter: 1,
     loading:false
 };
 
@@ -51,7 +51,7 @@ export default function message(state = initialState, action) {
             })
             return Object.assign({}, state);
         case types.RECEIVE_PUSH_MESSAGE:
-            console.log(state.messageList,action.data);
+
             var unread = _.find(state.messageList, function (item) {
                 return item.id == action.data.id ;
             })
