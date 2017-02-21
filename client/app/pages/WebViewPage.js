@@ -81,7 +81,7 @@ class WebViewPage extends React.Component {
                 <WebView
                     ref='webview'
                     automaticallyAdjustContentInsets={false}
-                    style={{flex: 1}}
+                    style={{flex: 1,backgroundColor:'#ffffff'}}
                     source={{uri:this.state.url}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
@@ -100,38 +100,9 @@ class WebViewPage extends React.Component {
 let styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column'
-    },
-    spinner: {
-        flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.65)'
+        backgroundColor:'#ffffff'
     },
-    spinnerContent: {
-        justifyContent: 'center',
-        width: Dimensions.get('window').width * (7 / 10),
-        height: Dimensions.get('window').width * (7 / 10) * 0.68,
-        backgroundColor: '#fcfcfc',
-        padding: 20,
-        borderRadius: 5
-    },
-    spinnerTitle: {
-        fontSize: 18,
-        color: '#313131',
-        textAlign: 'center'
-    },
-    shareContent: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    shareIcon: {
-        width: 40,
-        height: 40
-    }
 });
 
 export default WebViewPage;
