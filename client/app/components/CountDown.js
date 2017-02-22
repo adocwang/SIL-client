@@ -84,13 +84,13 @@ var styles = StyleSheet.create({
     },
     wrapper: {
         flex:1,
-        height:30,
+        height:45,
         borderRadius:15,
         borderColor:'#15499A',
         borderWidth: 1,
         backgroundColor:'#ffffff',
         alignItems:'center',
-        justifyContent:'center',
+        justifyContent:'center'
     }
 });
 

@@ -138,7 +138,7 @@ class Login extends React.Component {
                         source={require('../../img/login_logo.png')}
                     />
                 </View>
-                <View style={{height:3, flexDirection:'row'}}>
+                <View style={{height:2, flexDirection:'row'}}>
                     <View
                         style={{flex:3, backgroundColor:'#15499A'}}
                     />
@@ -159,7 +159,7 @@ class Login extends React.Component {
 
                     <TouchableOpacity onPress={this.onResetPwdBtnClick.bind(this)}>
                     <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
-                        <Text style={[styles.lightblue,{marginRight: 38,marginTop: 5}]}>忘记密码？</Text>
+                        <Text style={styles.lightblue}>忘记密码？</Text>
                     </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this.onSubmitBtnClick.bind(this)}>
@@ -207,10 +207,10 @@ let styles = StyleSheet.create({
         alignSelf: 'center'
     },
     inputview: {//用户名/密码区域
-        height: 110,
+        height: 120,
         marginTop:30,
-        marginLeft:50,
-        marginRight:50
+        marginLeft:10,
+        marginRight:10
     },
     rowview:{
         flexDirection:'row'
@@ -218,7 +218,7 @@ let styles = StyleSheet.create({
     textinput: {//用户名/密码输入框
         flex: 1,
         borderWidth: 0,
-        fontSize: 15,
+        fontSize: 16,
 
     },
     sendMsg: {//用户名/密码输入框
@@ -240,11 +240,8 @@ let styles = StyleSheet.create({
     },
     buttonview: {
         flexDirection: 'row',
-        height: 40,
         margin: 10,
-        marginLeft: 50,
-        marginRight: 50,
-        borderRadius: 20,
+        borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
         borderColor:'#15499A',
@@ -283,7 +280,7 @@ let styles = StyleSheet.create({
     },
     lightblue:{
         fontSize: 14,color: '#4A90E2',
-        marginBottom:10,
+        marginBottom:10
     },
     redtxt:{
         fontSize: 14,color: '#D0021B',marginLeft:5
