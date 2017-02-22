@@ -18,6 +18,7 @@ import {
 import CustomToolbar from '../../components/CustomToolbar'
 import CheckBox from 'react-native-check-box'
 import DistributeContainer from '../../containers/DistributeContainer'
+import EnterpriseDetailContainer from '../../containers/enterprise/EnterpriseDetailContainer'
 
 import PopupDialog, {
     DialogTitle,
@@ -44,6 +45,7 @@ class Claim extends BasePage {
         this.openChooseConfirmAnimationDialog = this.openChooseConfirmAnimationDialog.bind(this);
         this.openChooseBankScaleAnimationDialog = this.openChooseBankScaleAnimationDialog.bind(this);
         this.openChooseScaleAnimationDialog = this.openChooseScaleAnimationDialog.bind(this);
+        this.openEnterpriseDetail = this.openEnterpriseDetail.bind(this);
         this.onClaimBtnClick = this.onClaimBtnClick.bind(this);
         this.onBankChoose = this.onBankChoose.bind(this);
     }
@@ -56,6 +58,17 @@ class Claim extends BasePage {
                 dispatch(fetchBankList(this.props.auth.token));
             });
         }
+    }
+
+    openEnterpriseDetail() {
+        const {navigator} = this.props;
+        navigator.push({
+            component: EnterpriseDetailContainer,
+            name: 'EnterpriseDetail',
+            params: {
+                id: this.state.item.id,
+            },
+        });
     }
 
     openChooseConfirmAnimationDialog() {
@@ -144,10 +157,10 @@ class Claim extends BasePage {
         return (
             <View style={styles.container}>
                 <CustomToolbar
-                    title="认领"
+                    title="分配"
                     navigator={navigator}/>
                 <View style={{flex:1}}>
-                    <View style={styles.containerInfoItem}>
+                    <TouchableOpacity style={styles.containerInfoItem} onPress={this.openEnterpriseDetail}>
                         <Image
                             style={styles.img}
                             source={require('../../img/default_avatar.png')}
@@ -167,14 +180,15 @@ class Claim extends BasePage {
                                 {this.state.item.address}
                             </Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={styles.containerOption}>
-                        <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
+                        {this.props.auth.role!='ROLE_END_PRESIDENT' && <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
                             <View style={styles.buttonview}>
                                 <Text style={styles.btntext}>分配银行</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> }
+
 
                         <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
                             <View style={styles.buttonview}>
