@@ -130,7 +130,22 @@ class Claim extends BasePage {
         }
     }
 
-    onDistributeBtnClick() {
+    renderOperate() {
+        return(
+        <View style={styles.containerOption}>
+            {this.props.auth.role=='ROLE_BRANCH_PRESIDENT' && <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
+                <View style={styles.buttonview}>
+                    <Text style={styles.btntext}>分配银行</Text>
+                </View>
+            </TouchableOpacity> }
+
+
+            {this.props.auth.role!='ROLE_CUSTOMER_MANAGER' && <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
+                <View style={styles.buttonview}>
+                    <Text style={styles.btntext}>分配人员</Text>
+                </View>
+            </TouchableOpacity>}
+        </View>);
 
     }
 
@@ -150,9 +165,11 @@ class Claim extends BasePage {
         const {navigator} = this.props;
         const {claimdistribute} = this.props;
         var checkBoxList = []
-        claimdistribute.bankList.forEach((item)=> {
-            checkBoxList.push(this.renderCheckBox(item))
-        });
+        if(claimdistribute.bankList && claimdistribute.bankList.length > 0){
+            claimdistribute.bankList.forEach((item)=> {
+                checkBoxList.push(this.renderCheckBox(item))
+            });
+        }
 
         return (
             <View style={styles.container}>
@@ -182,20 +199,7 @@ class Claim extends BasePage {
                         </View>
                     </TouchableOpacity>
 
-                    <View style={styles.containerOption}>
-                        {this.props.auth.role!='ROLE_END_PRESIDENT' && <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
-                            <View style={styles.buttonview}>
-                                <Text style={styles.btntext}>分配银行</Text>
-                            </View>
-                        </TouchableOpacity> }
-
-
-                        <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
-                            <View style={styles.buttonview}>
-                                <Text style={styles.btntext}>分配人员</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                    {this.renderOperate()}
                     {this.props.claimdistribute.loadingBankList && <Loading backgroundColor='rgba(255,255,255,0.5)'/>
                     }
                 </View>
