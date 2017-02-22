@@ -27,15 +27,18 @@ class CollectionHome extends Component {
         this.onEndReached = this.onEndReached.bind(this)
         this.onScroll = this.onScroll.bind(this)
         this.renderFooter= this.renderFooter.bind(this)
+        this.refreshView = this.refreshView.bind(this)
+        this.canLoadMore = false
     }
 
-    onScroll () {
-        canLoadMore = true;
-    }
+      onScroll () {
+        this.canLoadMore = true;
+      }
 
     onEndReached () {
         let time = Date.parse(new Date()) / 1000;
         if (this.canLoadMore && time - this.loadMoreTime > 1) {
+            console.log("加载更多")
             this.canLoadMore = false;
             this.loadMoreTime = Date.parse(new Date()) / 1000;
             this.page = this.page + 1
@@ -49,10 +52,18 @@ class CollectionHome extends Component {
         this.fetchEnterprise(1)
     }
 
+
+
     onRefresh() {
         this.setState({isRefreshing: true})
         this.page = 1
         this.canLoadMore = false
+        this.fetchEnterprise(1)
+    }
+
+    refreshView() {
+        this.datas.splice(0,this.datas.length)
+        this.setState({showLoading: true})
         this.fetchEnterprise(1)
     }
 
@@ -61,7 +72,7 @@ class CollectionHome extends Component {
         this.page = page
         const {dispatch,auth} = this.props
 
-        dispatch(fetchEnterpriseList2({page:page,page_limit:10,only_role_a:"1"},auth.token))
+        dispatch(fetchEnterpriseList2({page:page,page_limit:10,only_my_finding:"1"},auth.token))
     }
 
     clickedCell(index) {
@@ -72,6 +83,7 @@ class CollectionHome extends Component {
                 dataSource: this.state.dataSource.cloneWithRows(newData)
             }
         )
+
     }
 
     rightTitleClicked() {
@@ -81,7 +93,8 @@ class CollectionHome extends Component {
                 name: "CollectionCertificateContainer",
                 component: CollectionCertificateContainer,
                 params: {
-                    company: this.datas[this.state.selectedIndex]
+                    company: this.datas[this.state.selectedIndex],
+                    refreshView: this.refreshView
                 }
 
             })
@@ -100,17 +113,6 @@ class CollectionHome extends Component {
             );
 
         }
-        if (this.state.isLodingMore) {
-
-            return (
-                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <Spanner size={30} type='ThreeBounce' color='#c8c8c8'/>
-                    <Text style={{textAlign: 'center', fontSize: 16}}>
-                        加载中…
-                    </Text>
-                </View>
-            );
-        }
     }
 
     componentWillReceiveProps (nextProps) {
@@ -119,9 +121,9 @@ class CollectionHome extends Component {
         this.setState({isRefreshing: false})
         this.setState({isLoadingMore: false})
         if(this.page == 1) {
-            setTimeout(()=>this.canLoadMore=true,200)
+            setTimeout(()=>this.canLoadMore=false,200)
         } else {
-            this.canLoadMore = true
+            this.canLoadMore = false
         }
         const {enterpriseList2} = nextProps
         if(enterpriseList2.page_count > 0) {
@@ -145,7 +147,6 @@ class CollectionHome extends Component {
 
     render() {
         const isRefreshing = this.state.isRefreshing
-        console.log(isRefreshing)
         return (
             <View style={styles.container}>
                 {this.state.showLoading && <Loading/>}
@@ -194,6 +195,28 @@ class CompanyCell extends Component {
 
     render() {
         const {data} = this.props
+        const finding = data.finding
+        var tipString = ""
+        var tipStyle = {}
+        if(typeof(finding) == 'undefined' || finding == "") {
+            tipString = "待采集"
+            tipStyle = {backgroundColor: CommonColor.defaultLightGray}
+        }  else {
+            const progress = finding.progress
+
+            if(progress == 0 || progress == 1) {
+                tipString = "待审核"
+                tipStyle = {backgroundColor: CommonColor.defaultBlueColor}
+            } else if(progress == 2) {
+                tipString = "已通过"
+                tipStyle = {backgroundColor: CommonColor.defaultGreenColor}
+            } else if(progress == 3) {
+                tipString = "未通过"
+                tipStyle = {backgroundColor: CommonColor.defaultLightRedColor}
+            }
+
+        }
+
         var imgFile = null
         if (data.selected) {
             imgFile = require("../../img/radioS.png")
@@ -205,6 +228,9 @@ class CompanyCell extends Component {
                 <View style={styles.cell}>
                     <Image source={imgFile} style={styles.cellImage}/>
                     <Text style={styles.cellTitle}>{data.name}</Text>
+                    <View style={[styles.tipStringBg,tipStyle]}>
+                    <Text style={[styles.tipString]}>{tipString}</Text>
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         )
@@ -248,7 +274,21 @@ const styles = StyleSheet.create({
     cellTitle: {
         marginLeft: 10,
         color: CommonColor.defaultBlackColor
-    }
+    },
+    tipStringBg: {
+        alignItems:"center",
+        justifyContent:"center",
+        borderRadius: 8,
+        width: 36,
+        height: 16,
+        marginLeft: 15,
+    },
+
+    tipString: {
+        color: "white",
+        fontSize: 9,
+
+    },
 })
 
 export default CollectionHome

@@ -77,10 +77,13 @@ class CollectionContent extends Component {
         this.submitData = null
         this.imgModelsContainer = []
         this.selectImgClosure = null
+        this.canEdit = true
+
     }
 
     componentDidMount() {
             const content = this.props.route.params.content
+            this.canEdit = this.props.route.params.canEdit
             this.submitData = JSON.parse(JSON.stringify(content.content));
             this.setState({data: content})
     }
@@ -290,12 +293,14 @@ class CollectionContent extends Component {
     }
 
     checkBoxViewChange(index) {
+        if(!this.canEdit) {return}
         this.showDialogType = "checkBox"
         this.setState({selectViewIndex: index})
         this.popupDialog.openDialog()
     }
 
     selectImgQuality(closure) {
+        if(!this.canEdit) {return}
         this.showDialogType = "imgQuality"
         this.setState({refresh:"refresh"})
         this.popupDialog.openDialog()
@@ -303,6 +308,7 @@ class CollectionContent extends Component {
     }
 
     selectViewChange(index) {
+        if(!this.canEdit) {return}
         this.showDialogType = "select"
         this.setState({selectViewIndex: index})
         this.popupDialog.openDialog()
@@ -337,7 +343,7 @@ class CollectionContent extends Component {
     inputView(obj, index) {
         const text = this.submitData[index].value
         return (
-            <TextInput defaultValue={text} key={index} style={styles.textInput} placeholder={obj.title}
+            <TextInput defaultValue={text} key={index} style={styles.textInput} placeholder={obj.title} editable={this.canEdit}
                        onChangeText={this.inputViewChange.bind(this, index)} underlineColorAndroid="transparent"/>
         )
     }
@@ -346,7 +352,7 @@ class CollectionContent extends Component {
         const text = this.submitData[index].value
 
         return (
-            <TextInput defaultValue={text} key={index} multiline style={styles.textArea} placeholder={obj.title}
+            <TextInput defaultValue={text} key={index} multiline style={styles.textArea} placeholder={obj.title} editable={this.canEdit}
                        onChangeText={this.inputViewChange.bind(this, index)} underlineColorAndroid="transparent"/>
         )
     }
@@ -479,8 +485,9 @@ class CollectionContent extends Component {
                     <View style={styles.lineView}/>
                     <ScrollView style={styles.scrollView}>
                         {views}
-                        <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="保存"
-                                onPress={this.didClickedSave}/>
+                        {this.canEdit && <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="保存"
+                                                   onPress={this.didClickedSave}/>}
+
                         <View style={{height: 10}}/>
                     </ScrollView>
                     <PopupDialog

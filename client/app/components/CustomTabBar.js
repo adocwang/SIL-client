@@ -32,7 +32,7 @@ const CustomTabBar = React.createClass({
       inactiveTextColor: 'black',
       underlineColor: 'navy',
       backgroundColor: null,
-      underlineHeight: 4,
+      underlineHeight: 3,
       redCounts:[0,0,0]
     };
   },
@@ -41,7 +41,7 @@ const CustomTabBar = React.createClass({
     const isTabActive = this.props.activeTab === page;
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
-    const fontWeight = isTabActive ? 'bold' : 'normal';
+    const fontWeight =  'normal';
 
     var icon ;
     switch (page){

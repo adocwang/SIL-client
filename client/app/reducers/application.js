@@ -32,7 +32,10 @@ export function uploadImg(state = uploadInitialState, action) {
 export function commonNet(state = {}, action) {
     switch (action.type) {
         case types.SUBMIT_FINDING:
-
+            return Object.assign({}, state, action);
+        case types.PASS_COLLECTION_RESUTL:
+            return Object.assign({}, state, action);
+        case types.DELETE_FINDDING_RESULT:
             return Object.assign({}, state, action);
         default:
             return state;

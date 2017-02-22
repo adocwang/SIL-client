@@ -123,7 +123,7 @@ class Active extends React.Component {
                         source={require('../../img/login_logo.png')}
                     />
                 </View>
-                <View style={{height:2, flexDirection:'row'}}>
+                <View style={{height:3, flexDirection:'row'}}>
                     <View
                         style={{flex:3, backgroundColor:'#15499A'}}
                     />
@@ -131,26 +131,26 @@ class Active extends React.Component {
                         style={{flex:1, backgroundColor:'#D93741'}}
                     />
                 </View>
-
+                    <View style={{flex: 1,marginLeft: 40,marginRight: 40}}>
                 <View style={styles.inputview}>
                     <View style={styles.rowview}>
-                        <View style={{ borderBottomColor: '#15499A', borderBottomWidth: 1,flex:1}}>
+                        <View style={{ borderBottomColor: '#ccc', borderBottomWidth: 1,flex:1.4}}>
                             <TextInput  underlineColorAndroid='transparent'  onChangeText={(phone) => this.setState({phone})} value={this.state.phone} style = {styles.textinput} placeholder='请输入手机号码' underlinecolorandroid='transparent'/>
                         </View>
                         <CountDown
                             onPress={this.onSendMsgCode.bind(this)} //default null
                             text={'发送验证码'} //default ''
                             time={60} //default 60
-                            buttonStyle={{marginTop:10}}
+                            buttonStyle={{marginTop:20}}
                             textStyle={{color:'#15499A'}} //default black
                             disabledTextStyle={{color:'#15499A'}} //default gray
                         />
                     </View>
-                    <View style={{ borderBottomColor: '#15499A', borderBottomWidth: 1,flex:1}}>
-                        <TextInput underlineColorAndroid='transparent'  onChangeText={(code) => this.setState({code})} value={this.state.code} style = {styles.textinput} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                    <View style={{ borderBottomColor: '#ccc', borderBottomWidth: 1,flex:1}}>
+                        <TextInput underlineColorAndroid='transparent'  onChangeText={(code) => this.setState({code})} value={this.state.code} style = {styles.textinput} placeholder='请输入4位验证码' underlinecolorandroid='transparent'/>
                     </View>
-                    <View style={{ borderBottomColor: '#15499A', borderBottomWidth: 1,flex:1}}>
-                        <TextInput underlineColorAndroid='transparent'  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
+                    <View style={{ borderBottomColor: '#ccc', borderBottomWidth: 1,flex:1}}>
+                        <TextInput underlineColorAndroid='transparent'  onChangeText={(password) => this.setState({password})} value={this.state.password} style = {styles.textinput} placeholder='请输入初始密码' secureTextEntry ={true} underlinecolorandroid='transparent'/>
                     </View>
                 </View>
 
@@ -170,6 +170,7 @@ class Active extends React.Component {
                         <Text style={{fontSize:12,color:'#626262'}}>1.手机号码输入错误。</Text>
                         <Text style={{fontSize:12,color:'#626262'}}>2.手机号未被预设置为账号，请联系管理员。</Text>
                     </View>:<View/>}
+                    </View>
                 </ScrollView>
                 {
                     this.state.loading?<Loading/>:<View></View>
@@ -204,19 +205,20 @@ let styles = StyleSheet.create({
         alignSelf: 'center'
     },
     inputview: {//用户名/密码区域
-        height: 200,
-        marginTop:30,
+        height: 160,
+        marginTop:20,
         marginLeft:10,
         marginRight:10
     },
     rowview:{
-        flexDirection:'row'
+        flexDirection:'row',
+        flex: 1,
     },
     textinput: {//用户名/密码输入框
         flex: 2,
         borderWidth: 0,
-        fontSize: 16,
-
+        fontSize: 15,
+        marginTop: 15,
     },
     sendMsg: {//用户名/密码输入框
         flex: 1,
@@ -238,15 +240,16 @@ let styles = StyleSheet.create({
     buttonview: {
         flexDirection: 'row',
         margin: 10,
-        borderRadius: 6,
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
         borderColor:'#15499A',
         borderWidth: 1,
+        height: 40,
     },
     logintext: {
         alignSelf:'center',
-        fontSize: 17,
+        fontSize: 16,
         color: '#15499A',
         marginTop: 10,
         marginBottom: 10,

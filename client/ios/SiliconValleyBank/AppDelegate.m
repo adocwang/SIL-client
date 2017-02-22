@@ -9,16 +9,12 @@
 
 #import "AppDelegate.h"
 
-
-
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-    
-
+  
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
@@ -53,7 +49,7 @@
 
   }
   
-  [JPUSHService setupWithOption:launchOptions appKey:@"dd19b8ba0c66d03e1ccc23cb" channel:@"App store" apsForProduction:false];
+  [JPUSHService setupWithOption:launchOptions appKey:@"fb3e46f0c4cb7ee18df527b7" channel:@"App store" apsForProduction:true];
   self.fromBack = YES;
   [self performSelector:@selector(backStatusSet) withObject:nil afterDelay:5];
 

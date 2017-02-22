@@ -9,7 +9,6 @@ import {getRequest,uploadImage,postRequest} from '../utils/HttpServices';
 import * as host from '../constants/Urls';
 
 export function fetchCollectionConfig(token){
-    console.log("sss")
 
     return dispatch => {
         return getRequest(dispatch,host.COLLECTION_GET_URL,token)
@@ -31,6 +30,52 @@ export function fetchCollectionConfig(token){
                 ToastShort(error.message);
             })
     }
+}
+//id pass(-1,1) un_pass_reason
+export function passCollection(params,token){
+    return dispatch => {
+        return postRequest(dispatch,host.PASS_COLLECTION,params,token)
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
+                }else if(data.code==0){
+                    dispatch({type:types.PASS_COLLECTION_RESUTL,data:data.data})
+                }
+            })
+            .catch((error) => {
+                // ToastShort(error.message);
+            })
+    }
+}
+
+export function delFinding(id,token) {
+    return dispatch => {
+    return postRequest(dispatch,host.DELETE_FINDING,{id:id},token)
+        .then((data) => {
+            console.log(data);
+            if(data.code == 2007){
+                ToastShort('用户不存在');
+            }else  if(data.code == 1003){
+                ToastShort('缺少参数');
+            }else  if(data.code == 407){
+                ToastShort('无权限');
+            }else  if(data.code == 406){
+                ToastShort('用户无权限');
+            }else if(data.code==0){
+                dispatch({type:types.DELETE_FINDDING_RESULT,data:data.data})
+            }
+        })
+        .catch((error) => {
+            // ToastShort(error.message);
+        })
+}
 }
 
 export function submitCollectionConfig(params,token) {

@@ -1,13 +1,21 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, Image, TouchableWithoutFeedback, Navigator, ListView, AsyncStorage} from 'react-native'
+import {View, StyleSheet, Text,TextInput, Image, TouchableWithoutFeedback, Navigator, ListView, AsyncStorage} from 'react-native'
 import CustomToolbar from '../../components/CustomToolbar'
 import CommonColor from '../../utils/CommonColor'
-import {fetchCollectionConfig, submitCollectionConfig} from '../../actions/application'
+import {fetchCollectionConfig, submitCollectionConfig,passCollection,delFinding} from '../../actions/application'
 import CollectionContentContainer from "../../containers/CollectionContentContainer"
 import {ToastShort} from '../../utils/ToastUtils';
 import * as types from '../../constants/ActionTypes';
 import {fetchGetFindingEnterprise} from "../../actions/enterprise"
 import Loading from '../../components/Loading';
+import EventEmitter from "react-native-md5"
+import md5 from "react-native-md5";
+import Button from '../../components/Button.ios.js'
+import PopupDialog, {
+    DialogTitle, DialogButton
+
+} from 'react-native-popup-dialog';
+import dismissKeyboard from 'dismissKeyboard'
 
 class CollectionCertificate extends Component {
 
@@ -17,7 +25,7 @@ class CollectionCertificate extends Component {
             rowHasChanged: (row1, row2) => row1 !== row2,
         })
         this.datas = [];
-        this.state = {dataSource: ds, showLoading: false}
+        this.state = {dataSource: ds, showLoading: false,refresh:"refresh"}
         this.selecteds = []
         this.clickedCell = this.clickedCell.bind(this)
         this.chargeExit = this.chargeExit.bind(this)
@@ -27,10 +35,20 @@ class CollectionCertificate extends Component {
         this.rightTitleClicked = this.rightTitleClicked.bind(this)
         this.initalizeData = this.initalizeData.bind(this)
         this.saveDraft = this.saveDraft.bind(this)
+        this.configureProgressBegin = this.configureProgressBegin.bind(this)
+        this.configureProgressWait = this.configureProgressWait.bind(this)
+        this.renderFooter = this.renderFooter.bind(this)
+        this.didClickedPass = this.didClickedPass.bind(this)
+        this.didClickedNotPass = this.didClickedNotPass.bind(this)
+        this.inputFail = this.inputFail.bind(this)
+        this.reFinding = this.reFinding.bind(this)
+        this.didClickedRefinding = this.didClickedRefinding.bind(this)
+        this.didClickedDialogTop = this.didClickedDialogTop.bind(this)
         this.submitData = null
         this.isSubmiting = false
-        this.hasFetchFindingNet = false
         this.originData = null
+        this.companyProgress = -1
+        this.operateionEnable = "none"//none,check,refinding
     }
 
     componentDidMount() {
@@ -41,43 +59,106 @@ class CollectionCertificate extends Component {
     fetchConfig() {
 
         const {dispatch, auth} = this.props
-        const companyId = this.props.route.params.company.id
+        const company = this.props.route.params.company
+        const companyId = company.id
+        const finding = company.finding
+        if(typeof(finding) != 'undefined' && finding != "") {
+            this.companyProgress = finding.progress
+        }
+        console.log(this.companyProgress)
 
-
-        AsyncStorage.getItem(types.COLLECTION_LOCAL + companyId, (error, value) => {
-            if (value == null) {
-                dispatch(fetchGetFindingEnterprise(companyId, auth.token))
-            } else {
-                this.originData = JSON.parse(value)
-                this.initalizeData(this.originData.submitData)
-                this.setState({showLoading: false})
-            }
-        })
+       if(this.companyProgress == -1) {
+           const {dispatch, auth} = this.props
+           dispatch(fetchCollectionConfig(auth.token))
+           dispatch(fetchGetFindingEnterprise(companyId, auth.token))
+       }
+       if(this.companyProgress == 0 || this.companyProgress == 1) {
+           dispatch(fetchGetFindingEnterprise(companyId, auth.token))
+       }
+       if(this.companyProgress == 2) {
+           dispatch(fetchGetFindingEnterprise(companyId, auth.token))
+       }
+        if(this.companyProgress == 3) {
+            dispatch(fetchGetFindingEnterprise(companyId, auth.token))
+        }
     }
 
-
     componentWillReceiveProps(nextProps) {
-        this.setState({showLoading: false})
-        if (nextProps.commonNet.type == types.SUBMIT_FINDING && this.isSubmiting) {
+        const {collection, dispatch, findingEnterprise, auth} = nextProps
+
+        if(typeof(findingEnterprise.data.operation_enable) != 'undefined') {
+            this.operateionEnable = findingEnterprise.data.operation_enable
+        }
+        if(this.companyProgress == -1) {
+            this.operateionEnable = "none"
+        }
+            if (this.isSubmiting) {
             this.isSubmiting = false
             const {navigator} = this.props
             ToastShort("提交成功")
             navigator.pop()
+            this.clearDraft()
+            const refreshView = this.props.route.params.refreshView
+            refreshView()
         } else {
+            if (this.companyProgress == -1) {
+                this.configureProgressBegin(nextProps)
+            } else if(this.companyProgress == 0 || this.companyProgress == 1 || this.companyProgress == 2 || this.companyProgress == 3) {
+                this.configureProgressWait(nextProps)
+            }
+        }
+        this.setState({showLoading: false})
+    }
+
+    configureProgressBegin(nextProps) {
             const {collection, dispatch, findingEnterprise, auth} = nextProps
-            if (typeof(findingEnterprise.data.id) == "undefined") {
-                if (!this.hasFetchFindingNet) {
-                    this.hasFetchFindingNet = true
-                    dispatch(fetchCollectionConfig(auth.token))
-                }
-            } else {
-                const result = findingEnterprise.data.data
-                this.originData = JSON.parse(result)
-                this.initalizeData(this.originData.submitData)
-            }
-            if (collection.length > 0) {
-                this.initalizeData(collection)
-            }
+        const companyId = this.props.route.params.company.id
+
+            const collectionMd5 = md5.hex_md5(JSON.stringify(collection))
+            if(collection.length > 0) {
+                AsyncStorage.getItem(types.COLLECTION_LOCAL, (error, value) => {
+                    if (value == null) {
+                        this.initalizeData(collection)
+                        AsyncStorage.setItem(types.COLLECTION_LOCAL, collectionMd5)
+                    } else {
+                        if(collectionMd5 == value) {
+                            AsyncStorage.getItem(types.COLLECTION_LOCAL + companyId, (error, value) => {
+                                if (value == null) {
+                                    if(typeof(findingEnterprise.data.data) != 'undefined') {
+                                        const result = findingEnterprise.data.data
+                                        this.originData = JSON.parse(result)
+                                        this.initalizeData(this.originData.submitData)
+                                    } else {
+                                        this.initalizeData(collection)
+                                    }
+                                } else {
+                                    this.originData = JSON.parse(value)
+                                    this.initalizeData(this.originData.submitData)
+                                    this.setState({showLoading: false})
+                                }
+                            })
+                        } else {
+                            this.clearDraft()
+                            AsyncStorage.setItem(types.COLLECTION_LOCAL, collectionMd5)
+                            this.initalizeData(collection)
+                        }
+                    }
+                })
+        }
+    }
+
+    didClickedDialogTop() {
+        dismissKeyboard();
+    }
+
+    configureProgressWait(nextProps) {
+        const {collection, dispatch, findingEnterprise, auth} = nextProps
+        if(typeof(findingEnterprise.data.data) != 'undefined') {
+            const result = findingEnterprise.data.data
+            this.originData = JSON.parse(result)
+            this.initalizeData(this.originData.submitData)
+        } else {
+            this.initalizeData(collection)
         }
     }
 
@@ -96,6 +177,11 @@ class CollectionCertificate extends Component {
         })
     }
 
+    clearDraft() {
+        const companyId = this.props.route.params.company.id
+        AsyncStorage.removeItem(types.COLLECTION_LOCAL + companyId)
+    }
+
     saveDraft() {
 
         const companyId = this.props.route.params.company.id
@@ -106,27 +192,65 @@ class CollectionCertificate extends Component {
         }
 
         realData.submitData = this.submitData
-        realData.lastModifyTiem = Date.parse(new Date());
+        realData.lastModifyTime = Date.parse(new Date());
         const jsonData = JSON.stringify(realData)
         AsyncStorage.setItem(types.COLLECTION_LOCAL + companyId, jsonData)
         return realData
     }
 
+    didClickedPass() {
+        const {dispatch,auth} = this.props
+        const companyId = this.props.route.params.company.id
+        dispatch(passCollection({id:companyId,pass:"1",},auth.token))
+        this.isSubmiting  = true
+        this.setState({showLoading: true})
+    }
+
+    didClickedNotPass() {
+        this.popupDialog.openDialog()
+    }
+
+    inputFail(text) {
+        this.popupDialog.closeDialog()
+        const {dispatch,auth} = this.props
+        const companyId = this.props.route.params.company.id
+        dispatch(passCollection({id:companyId,pass:"-1",un_pass_reason:text},auth.token))
+        this.isSubmiting  = true
+        this.setState({showLoading: true})
+    }
+
+    didClickedRefinding() {
+        this.popupDialog.openDialog()
+    }
+    reFinding() {
+        this.popupDialog.closeDialog()
+        const {dispatch,auth} = this.props
+        const companyId = this.props.route.params.company.id
+        dispatch(delFinding(companyId,auth.token))
+        this.isSubmiting  = true
+        this.setState({showLoading: true})
+    }
+
     clickedCell(index) {
         const {navigator} = this.props
         const content = JSON.parse(JSON.stringify(this.submitData[index]));
+        const canEdit = (this.companyProgress == - 1)
         navigator.push({
             name: "CollectionContentContainer",
             component: CollectionContentContainer,
             params: {
                 content: content,
                 backClosure: this.getChildData,
-                index: index
+                index: index,
+                canEdit: canEdit,
             }
         })
     }
 
     rightTitleClicked() {
+        if(this.companyProgress != -1) {
+            return
+        }
         var status = true
         this.submitData.map((data, index) => {
             if (data.isRequired && !data.selected) {
@@ -165,12 +289,41 @@ class CollectionCertificate extends Component {
         return -1
     }
 
+    renderFooter() {
+        return(
+            <View>
+                {this.operateionEnable == "check" &&
+                <View style={styles.footer}>
+                <Button style={styles.footerButton} titleStyle={styles.footerTitle} title="审核通过"
+                        onPress={this.didClickedPass}/>
+                <Button style={styles.footerButton} titleStyle={styles.footerTitle} title="审核不通过"
+                        onPress={this.didClickedNotPass}/></View>
+                    }
+                {this.operateionEnable == "refinding" &&
+                <View style={styles.footer}>
+                    <Button style={styles.footerButton} titleStyle={styles.footerTitle} title="查看原因"
+                            onPress={this.didClickedRefinding}/>
+                </View>
+                }
+            </View>
+        )
+    }
+
     render() {
+        const {findingEnterprise} = this.props
         const companyName = this.props.route.params.company.name
+        var submitString = ""
+        if(this.companyProgress == -1) {
+            submitString = "提交"
+        }
+        var diaLogTableView = <FailDialogView closure={this.inputFail}/>
+        if(this.operateionEnable == "refinding") {
+              const reason = findingEnterprise.data.un_pass_reason
+            diaLogTableView = <ReFindingDialogView reason={reason} closure={this.reFinding}/>
+        }
         return (
             <View style={styles.container}>
-                {this.state.showLoading && <Loading/>}
-                <CustomToolbar title="现场采集" navigator={this.props.navigator} operate="提交"
+                <CustomToolbar title="现场采集" navigator={this.props.navigator} operate={submitString}
                                onOperateClicked={this.rightTitleClicked}/>
                 <View style={styles.topView}>
                     <Text style={styles.topTitle}>{companyName}</Text>
@@ -183,7 +336,20 @@ class CollectionCertificate extends Component {
                                                    clickClosure={this.clickedCell} rowID={rowID}
                                                    need={rowData.isRequired}/>)
                           }
-                          }/>
+                          }
+                          renderFooter={this.renderFooter}
+                />
+                <PopupDialog
+                    ref={(popupDialog) => {
+                        this.popupDialog = popupDialog;
+                    }}
+                    dialogTitle={<DialogTitle title="原因"/>}
+                    width={250} height={300}
+                >
+                    {diaLogTableView}
+
+                </PopupDialog>
+                {this.state.showLoading && <Loading/>}
             </View>
         )
     }
@@ -231,6 +397,70 @@ class CertificateCell extends Component {
             </TouchableWithoutFeedback>
         )
     }
+}
+
+class FailDialogView extends Component {
+
+    constructor(props) {
+        super(props)
+        this.inputViewChange = this.inputViewChange.bind(this)
+        this.didClickedConfirm = this.didClickedConfirm.bind(this)
+        this.exitKeybord = this.exitKeybord.bind(this)
+        this.text = ""
+    }
+
+    inputViewChange(text) {
+        this.text = text
+    }
+
+    didClickedConfirm() {
+        const {closure} = this.props
+        if(this.text.length > 0) {
+            closure(this.text)
+        }
+    }
+
+    exitKeybord() {
+        dismissKeyboard()
+    }
+
+    render(){return(
+        <View style={{flex:1,alignItems:"center"}}>
+            <Button style={[styles.exitKeybordButton]} titleStyle={{color: CommonColor.defaultLightGray}} title="退出键盘"
+                    onPress={this.exitKeybord}/>
+            <TextInput  multiline style={styles.failArea} placeholder="请输入未通过审核原因"
+                       onChangeText={this.inputViewChange.bind(this)} underlineColorAndroid="transparent"/>
+            <Button style={[styles.confirmButton]} titleStyle={styles.footerTitle} title="确定"
+                    onPress={this.didClickedConfirm}/>
+        </View>
+    )}
+
+    }
+
+class ReFindingDialogView extends Component {
+
+    constructor(props) {
+        super(props)
+        this.didClickedConfirm = this.didClickedConfirm.bind(this)
+        this.text = ""
+    }
+
+    didClickedConfirm() {
+        const {closure} = this.props
+        closure()
+    }
+
+    render(){
+        const {reason} = this.props
+        return(
+        <View style={{flex:1,alignItems:"center"}}>
+            <TextInput  multiline style={styles.failArea} placeholder={reason} editable={false}
+                         underlineColorAndroid="transparent"/>
+            <Button style={[styles.confirmButton]} titleStyle={styles.footerTitle} title="重新采集"
+                    onPress={this.didClickedConfirm}/>
+        </View>
+    )}
+
 }
 
 const styles = StyleSheet.create({
@@ -292,6 +522,50 @@ const styles = StyleSheet.create({
         width: 14,
         height: 11.5,
         marginLeft: 15,
+    },
+    footer: {
+        height: 80,
+        alignItems:"center",
+        justifyContent:"space-around",
+        flexDirection:"row",
+    },
+    footerButton: {
+        width: 100,
+        height: 30,
+        borderWidth: 1,
+        borderColor: CommonColor.defaultBlueColor,
+        borderRadius: 20,
+    },
+    footerTitle: {
+        color: CommonColor.defaultBlueColor
+    },
+    failArea: {
+        flex:1,
+        alignSelf:"stretch",
+        height: 80,
+        backgroundColor: CommonColor.defaultBgColor,
+        borderColor: CommonColor.defaultDarkLineColor,
+        fontSize: 14,
+        paddingLeft: 5,
+        paddingRight: 5,
+    },
+    confirmButton: {
+        width: 100,
+        height: 40,
+        borderWidth: 1,
+        borderColor: CommonColor.defaultBlueColor,
+        borderRadius: 20,
+        marginTop: 15,
+        marginBottom: 15,
+    },
+    exitKeybordButton: {
+        width: 70,
+        height: 25,
+        borderWidth: 1,
+        borderColor: CommonColor.defaultLightGray,
+        borderRadius: 2,
+        marginTop: 10,
+        marginBottom: 10,
     }
 
 })
