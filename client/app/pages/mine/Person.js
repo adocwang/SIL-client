@@ -119,7 +119,7 @@ class Person extends React.Component {
                         <View style={styles.contentChild}>
                             <Image style={styles.childImg} source={require("../../img/msg_icon.png")}/>
                             <Text style={styles.childWord}>消息中心</Text>
-                            {this.state.messageTips && <CustomBadgeView style={{marginRight:10}}/>}
+                            {this.state.messageTips &&<View style={{marginRight:10,width:5,height:5,backgroundColor:'#ff0000',borderRadius:17}}/>}
                             <Image style={styles.rightArrow} source={require("../../img/right_arrow2.png")}/>
                         </View>
                     </TouchableOpacity>
