@@ -11,6 +11,7 @@ import {
     ListView,
     TextInput,
     WebView,
+    Platform,
     TouchableOpacity,
     InteractionManager
 } from 'react-native';
@@ -79,13 +80,14 @@ class ResponseSearch extends BasePage {
                         ref='webview'
                         automaticallyAdjustContentInsets={false}
                         style={{flex: 1}}
-                        source={{html:this.props.responsesearch.searchResult}}
+                        source={{html: Platform.OS === 'android'?this.props.responsesearch.searchResult:
+                            ("<div style='font-size: 50px'>" + this.props.responsesearch.searchResult + "</div>")}}
                         javaScriptEnabled={true}
                         domStorageEnabled={true}
-                        startInLoadingState={true}
+                        startInLoadingState={false}
                         scalesPageToFit={true}
                         decelerationRate="normal"
-                        onShouldStartLoadWithRequest={true}
+                        onShouldStartLoadWithRequest={(event) => {return true}}
                     />
                     }
                     {this.props.responsesearch.loading&&<Loading backgroundColor = 'rgba(255,255,255,0.5)'/>

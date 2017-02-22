@@ -11,6 +11,7 @@ import {
     ListView,
     TextInput,
     WebView,
+    Platform,
     TouchableOpacity,
     InteractionManager
 } from 'react-native';
@@ -108,13 +109,14 @@ class Response extends BasePage {
                             ref='webview'
                             automaticallyAdjustContentInsets={false}
                             style={{flex: 1}}
-                            source={{html: marked(this.props.response.chooseItem.content)}}
+                            source={{html: Platform.OS === 'android'?marked(this.props.response.chooseItem.content):
+                            ("<div style='font-size: 50px'>" + marked(this.props.response.chooseItem.content) + "</div>")}}
                             javaScriptEnabled={true}
                             domStorageEnabled={true}
-                            startInLoadingState={true}
+                            startInLoadingState={false}
                             scalesPageToFit={true}
                             decelerationRate="normal"
-                            onShouldStartLoadWithRequest={true}
+                            onShouldStartLoadWithRequest={(event) => {return true;}}
                         />
                     </View>
                 </View>
