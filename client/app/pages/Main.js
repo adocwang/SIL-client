@@ -67,13 +67,20 @@ class Main extends BasePage {
     }
 
     onBackAndroid = () => {
-        if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
-            //最近2秒内按过back键，可以退出应用。
-            return false;
+        const {navigator} =  this.props;
+        if(navigator.getCurrentRoutes() && navigator.getCurrentRoutes().length ==1){
+            let comp = navigator.getCurrentRoutes()[0];
+            if(comp.name=='Main'){
+                if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+                    //最近2秒内按过back键，可以退出应用。
+                    return false;
+                }
+                this.lastBackPressed = Date.now();
+                ToastShort('再按一次退出应用');
+                return true;
+            }
         }
-        this.lastBackPressed = Date.now();
-        ToastShort('再按一次退出应用');
-        return true;
+        return false;
     };
 
     componentDidMount () {
