@@ -78,7 +78,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#ffffff',
-        height:85,
+        height:90,
         paddingLeft:20
     },
     imgContainer:{

@@ -118,7 +118,7 @@ class EnterpriseDetail extends BasePage {
                             style={styles.bar}
                             titleStyle={styles.bar_title}
                         >
-                            <DaiKuanJinDu activeTab={1} backgroundColor='#ffffff'/>
+                            <DaiKuanJinDu activeTab={-1} backgroundColor='#ffffff'/>
                         </Bar>
 
                         <Bar
@@ -130,7 +130,9 @@ class EnterpriseDetail extends BasePage {
                             style={styles.bar}
                             titleStyle={styles.bar_title}
                         >
-                           <CommonInfo navigator={navigator} {...this.props.enterprise.detail}/>
+                           <CommonInfo navigator={navigator} {...this.props.enterprise.detail}
+                                       link_map = {this.props.enterprise.link_map}
+                                       relation_map = {this.props.enterprise.relation_map}/>
                         </Bar>
                         {/** <Bar
                             title='融资资讯'

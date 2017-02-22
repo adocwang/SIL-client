@@ -22,11 +22,12 @@ import MyStoreContainer from "../../containers/MyStoreContainer"
 import MessageContainer from "../../containers/MessageContainer"
 import {fetchUserGet} from '../../actions/auth'
 import {ToastShort} from '../../utils/ToastUtils';
-
+import CustomBadgeView from '../../components/bottomtabbar/Badge';
+import _ from 'lodash'
 class Person extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {user: {}}
+        this.state = {user: {},messageTips:false}
         this.didClickedAccountManager = this.didClickedAccountManager.bind(this)
         this.didClickedMyStore = this.didClickedMyStore.bind(this)
         this.didClickedMessage = this.didClickedMessage.bind(this)
@@ -37,6 +38,18 @@ class Person extends React.Component {
         this.fetchUserInfo()
     }
 
+    componentWillReceiveProps (nextProps) {
+        if(nextProps.message.messageList && nextProps.message.messageList.length > 0){
+            var unread = _.find(nextProps.message.messageList, function (item) {
+                return item.state == 0 ;
+            })
+            if(unread!=undefined){
+                this.setState({messageTips:true})
+            }else {
+                this.setState({messageTips:false})
+            }
+        }
+    }
 
 
     didClickedAccountManager() {
@@ -106,6 +119,7 @@ class Person extends React.Component {
                         <View style={styles.contentChild}>
                             <Image style={styles.childImg} source={require("../../img/msg_icon.png")}/>
                             <Text style={styles.childWord}>消息中心</Text>
+                            {this.state.messageTips && <CustomBadgeView style={{marginRight:10}}/>}
                             <Image style={styles.rightArrow} source={require("../../img/right_arrow2.png")}/>
                         </View>
                     </TouchableOpacity>

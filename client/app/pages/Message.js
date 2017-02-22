@@ -41,6 +41,15 @@ class Message extends BasePage {
         canLoadMore = false;
     }
 
+    componentDidMount() {
+        const {dispatch} = this.props;
+        const {auth} = this.props;
+        canLoadMore = false;
+        setTimeout(function() {
+            dispatch(fetchMessageList(true,false,false,{page:1,page_limit:50}, auth.token));
+        },500);
+    }
+
     refreshList(){
         const {dispatch} = this.props;
         canLoadMore = false;

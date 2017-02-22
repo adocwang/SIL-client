@@ -15,6 +15,7 @@ import GongShangXinXi from '../../pages/enterprise/GongShangXinXi'
 import TouZiGuanXi from '../../pages/enterprise/TouZiGuanXi'
 import GuQuanJieGou from '../../pages/enterprise/GuQuanJieGou'
 import ChangeRecord from '../../pages/enterprise/ChangeRecord'
+import WebViewPage from '../../pages/WebViewPage'
 import {ToastShort} from '../../utils/ToastUtils';
 
 class CommonInfo extends React.Component {
@@ -24,6 +25,40 @@ class CommonInfo extends React.Component {
         this.onTZClicked = this.onTZClicked.bind(this);
         this.onGQClicked = this.onGQClicked.bind(this);
         this.onBGClicked = this.onBGClicked.bind(this);
+        this.onLTClicked = this.onLTClicked.bind(this);
+        this.onGXClicked = this.onGXClicked.bind(this);
+    }
+
+    onGXClicked() {
+        if(!this.props.name){
+            ToastShort('暂无相关信息');
+            return
+        }
+        const  {navigator} = this.props;
+        navigator.push({
+            component: WebViewPage,
+            name: 'WebViewPage',
+            params: {
+                title: '关系股谱',
+                url:this.props.relation_map,
+            },
+        });
+    }
+
+    onLTClicked() {
+        if(!this.props.name){
+            ToastShort('暂无相关信息');
+            return
+        }
+        const  {navigator} = this.props;
+        navigator.push({
+            component: WebViewPage,
+            name: 'WebViewPage',
+            params: {
+                title: '企业链图',
+                url:this.props.link_map,
+            },
+        });
     }
 
     onGSClicked() {
@@ -99,10 +134,10 @@ class CommonInfo extends React.Component {
                     </Row>
                     <View style={styles.row_divider}/>
                     <Row>
-                        <View style={styles.common_item}>
-                        <Image source = {require('../../img/qiyeliantu.png')}/>
-                        <Text style={styles.common_item_text}>企业链图</Text>
-                        </View>
+                        <TouchableOpacity style={styles.common_item} onPress={this.onLTClicked}>
+                            <Image source = {require('../../img/qiyeliantu.png')}/>
+                            <Text style={styles.common_item_text}>企业链图</Text>
+                        </TouchableOpacity>
                     </Row>
                 </Col>
                 <View style={styles.col_divider}/>
@@ -115,10 +150,10 @@ class CommonInfo extends React.Component {
                     </Row>
                     <View style={styles.row_divider}/>
                     <Row>
-                        <View style={styles.common_item}>
+                        <TouchableOpacity style={styles.common_item} onPress={this.onGXClicked}>
                             <Image source = {require('../../img/guanxigupu.png')}/>
                             <Text style={styles.common_item_text}>关系股谱</Text>
-                        </View>
+                        </TouchableOpacity>
                     </Row>
                 </Col>
                 <View style={styles.col_divider}/>
