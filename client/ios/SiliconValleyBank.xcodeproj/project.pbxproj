@@ -1107,7 +1107,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SiliconValleyBank/SiliconValleyBank.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: hao yang (434LC7W62X)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: hao yang (434LC7W62X)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BBUDV226RF;
 				INFOPLIST_FILE = SiliconValleyBank/Info.plist;
@@ -1126,8 +1126,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.qheedata.sil;
 				PRODUCT_NAME = SiliconValleyBank;
-				PROVISIONING_PROFILE = "ba644f29-36eb-4b3d-b298-72179f4e9a00";
-				PROVISIONING_PROFILE_SPECIFIER = ProviSiliconValley;
+				PROVISIONING_PROFILE = "9c78eb16-7104-4d1f-8ecb-17a2ad96ffb3";
+				PROVISIONING_PROFILE_SPECIFIER = ADCSiliconBank;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
