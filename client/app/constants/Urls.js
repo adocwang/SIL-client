@@ -18,6 +18,7 @@ export const DELETE_FINDING = "enterprise/del_finding"
 export const RESOURCE_UPLOAD_URL = "resource/upload"
 export const USER_LIST_URL = 'user/list';
 export const ENTERPRISE_SET_URL = 'enterprise/set';
+export const ENTERPRISE_SET_DISTRIBUTE_URL = 'enterprise/set_distribute';
 export const BANK_LIST_URL = 'bank/list';
 export const LOAN_LIST_URL = 'loan/list/';
 export const RESPONSE_LIST_URL ='cm_tip/list';

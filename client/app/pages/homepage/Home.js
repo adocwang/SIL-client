@@ -52,7 +52,7 @@ class Home extends BasePage {
         const {dispatch} = this.props;
         const {home} = this.props;
         InteractionManager.runAfterInteractions(() => {
-             dispatch(fetchHomeEnterpriseList(false,true,false,{page:home.pageAfter[1],only_mine:1}, this.props.auth.token));
+             dispatch(fetchHomeEnterpriseList(true,false,false,{page:1,only_mine:1}, this.props.auth.token));
         });
     }
 

@@ -10,7 +10,8 @@ const initialState = {
     zhuliUserList:[],
     xieliUserList:[],
     setEnterpriseInfoSuccess:false,
-    enterprise:{}
+    enterprise:{},
+    claimEnterprise:false
 };
 
 export default function claimdistribute (state = initialState, action) {
@@ -74,6 +75,16 @@ export default function claimdistribute (state = initialState, action) {
         case types.HIDE_LOADING:
             state.loadingBankList = false;
             state.loadingUserList = false;
+            return Object.assign({}, state);
+        case types.FETCH_ENTERPRISE_DISTRIBUTE_SET:
+            state.loadingBankList = true;
+            return Object.assign({}, state);
+        case types.ENTERPRISE_SET_DISTRIBUTE:
+            state.loadingBankList = false;
+            state.claimEnterprise = true;
+            return Object.assign({}, state);
+        case types.HIDE_ENTERPRISE_SET_DISTRIBUTE:
+            state.loadingBankList = false;
             return Object.assign({}, state);
         case types:CLEAR_STATUS:
             return initialState;

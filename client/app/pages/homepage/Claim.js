@@ -18,6 +18,7 @@ import {
 import CustomToolbar from '../../components/CustomToolbar'
 import CheckBox from 'react-native-check-box'
 import DistributeContainer from '../../containers/DistributeContainer'
+import MainContainer from '../../containers/MainContainer'
 import EnterpriseDetailContainer from '../../containers/enterprise/EnterpriseDetailContainer'
 
 import PopupDialog, {
@@ -27,11 +28,10 @@ import PopupDialog, {
     ScaleAnimation,
     DefaultAnimation,
 } from 'react-native-popup-dialog';
-const scaleAnimation = new ScaleAnimation();
 import BasePage from  '../BasePage'
-import {GapYear} from '../../utils/CommonUtils'
+import {GapYear,isRole} from '../../utils/CommonUtils'
 import Loading from '../../components/Loading'
-import {fetchBankList,fetchEnterpiseSet,fetchEnterprise} from '../../actions/home'
+import {fetchBankList,fetchEnterpiseSet,fetchEnterprise,fetchEnterpiseSetDistribute} from '../../actions/home'
 import * as types from '../../constants/ActionTypes';
 import {ToastShort} from '../../utils/ToastUtils';
 
@@ -45,8 +45,10 @@ class Claim extends BasePage {
         this.openChooseConfirmAnimationDialog = this.openChooseConfirmAnimationDialog.bind(this);
         this.openChooseBankScaleAnimationDialog = this.openChooseBankScaleAnimationDialog.bind(this);
         this.openChooseScaleAnimationDialog = this.openChooseScaleAnimationDialog.bind(this);
+        this.openRefuseConfirmAnimationDialog = this.openRefuseConfirmAnimationDialog.bind(this);
         this.openEnterpriseDetail = this.openEnterpriseDetail.bind(this);
         this.onClaimBtnClick = this.onClaimBtnClick.bind(this);
+        this.onRefuseClaimBtnClick = this.onRefuseClaimBtnClick.bind(this);
         this.onBankChoose = this.onBankChoose.bind(this);
     }
 
@@ -58,6 +60,15 @@ class Claim extends BasePage {
                 dispatch(fetchBankList(this.props.auth.token));
             });
         }
+
+        if(nextProps.claimdistribute.claimEnterprise){
+            const {navigator} = this.props;
+            navigator.resetTo({
+                component: MainContainer,
+                name: 'Main',
+            });
+        }
+
     }
 
     openEnterpriseDetail() {
@@ -72,7 +83,11 @@ class Claim extends BasePage {
     }
 
     openChooseConfirmAnimationDialog() {
-        this.scaleAnimationDialog.openDialog();
+        this.confirmDialog.openDialog();
+    }
+
+    openRefuseConfirmAnimationDialog() {
+        this.refuseDialog.openDialog();
     }
 
     openChooseBankScaleAnimationDialog() {
@@ -109,9 +124,19 @@ class Claim extends BasePage {
     }
 
     onClaimBtnClick() {
-        this.scaleAnimationDialog.closeDialog();
+        this.confirmDialog.closeDialog();
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchEnterpiseSetDistribute({id:this.state.item.id,accept:1},this.props.auth.token));
+        });
+    }
 
-
+    onRefuseClaimBtnClick() {
+        this.refuseDialog.closeDialog();
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(fetchEnterpiseSetDistribute({id:this.state.item.id,accept:-1},this.props.auth.token));
+        });
     }
 
     onBankChoose(item) {
@@ -133,16 +158,28 @@ class Claim extends BasePage {
     renderOperate() {
         return(
         <View style={styles.containerOption}>
-            {this.props.auth.role=='ROLE_BRANCH_PRESIDENT' && <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
+            {isRole('ROLE_BRANCH_PRESIDENT',this.props.auth.role) && <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
                 <View style={styles.buttonview}>
                     <Text style={styles.btntext}>分配银行</Text>
                 </View>
             </TouchableOpacity> }
 
 
-            {this.props.auth.role!='ROLE_CUSTOMER_MANAGER' && <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
+            {isRole('ROLE_END_PRESIDENT',this.props.auth.role) && <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
                 <View style={styles.buttonview}>
                     <Text style={styles.btntext}>分配人员</Text>
+                </View>
+            </TouchableOpacity>}
+
+            {isRole('ROLE_CUSTOMER_MANAGER',this.props.auth.role) && <TouchableOpacity onPress={ this.openChooseConfirmAnimationDialog}>
+                <View style={styles.buttonview}>
+                    <Text style={styles.btntext}>认领企业</Text>
+                </View>
+            </TouchableOpacity>}
+
+            {isRole('ROLE_CUSTOMER_MANAGER',this.props.auth.role) && <TouchableOpacity onPress={ this.openRefuseConfirmAnimationDialog}>
+                <View style={styles.buttonview}>
+                    <Text style={styles.btntext}>拒绝认领</Text>
                 </View>
             </TouchableOpacity>}
         </View>);
@@ -204,7 +241,7 @@ class Claim extends BasePage {
                     }
                 </View>
                 <PopupDialog
-                    ref={(popupDialog) => {this.scaleAnimationDialog = popupDialog;}}
+                    ref={(popupDialog) => {this.confirmDialog = popupDialog;}}
                     height={170}
                     dialogTitle={<DialogTitle style={{fontSize:18}} title="确认认领" />}
 
@@ -214,11 +251,32 @@ class Claim extends BasePage {
                         <View style={{flexDirection:'row',flex:1,marginTop:10,justifyContent:'flex-end'}}>
                             <DialogButton style={{fontSize:18}}
                                           text='确认'
-                                          onPress={this.onClaimBtnClick}/>
+                                          onPress={()=>this.onClaimBtnClick()}/>
                             <DialogButton style={{fontSize:18}}
                                           text='取消'
                                           onPress={() => {
-                                        this.scaleAnimationDialog.closeDialog();
+                                        this.confirmDialog.closeDialog();
+                                        }}/>
+                        </View>
+                    </View>
+                </PopupDialog>
+
+                <PopupDialog
+                    ref={(popupDialog) => {this.refuseDialog = popupDialog;}}
+                    height={170}
+                    dialogTitle={<DialogTitle style={{fontSize:18}} title="拒绝认领" />}
+
+                >
+                    <View style={{flex:1}}>
+                        <Text style={{fontSize:18,marginTop:10,marginLeft:10}}>是否认领{this.state.item.title}?</Text>
+                        <View style={{flexDirection:'row',flex:1,marginTop:10,justifyContent:'flex-end'}}>
+                            <DialogButton style={{fontSize:18}}
+                                          text='确认'
+                                          onPress={()=>this.onRefuseClaimBtnClick()}/>
+                            <DialogButton style={{fontSize:18}}
+                                          text='取消'
+                                          onPress={() => {
+                                        this.refuseDialog.closeDialog();
                                         }}/>
                         </View>
                     </View>
@@ -226,7 +284,7 @@ class Claim extends BasePage {
 
 
                 <PopupDialog
-                    ref={(choosePopupDialog) => {this.chooseBankScaleAnimationDialog = choosePopupDialog;}}
+                    ref={(popupDialog) => {this.chooseBankScaleAnimationDialog = popupDialog;}}
                     height={200}
                     dialogTitle={<DialogTitle style={{fontSize:18}} title="选择支行" />}
 
