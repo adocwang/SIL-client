@@ -71,6 +71,13 @@ class Claim extends BasePage {
 
     }
 
+    componentWillUnmount() {
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch({type:types.CLEAR_STATUS});
+        });
+    }
+
     openEnterpriseDetail() {
         const {navigator} = this.props;
         navigator.push({

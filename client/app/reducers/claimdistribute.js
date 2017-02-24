@@ -86,7 +86,7 @@ export default function claimdistribute (state = initialState, action) {
         case types.HIDE_ENTERPRISE_SET_DISTRIBUTE:
             state.loadingBankList = false;
             return Object.assign({}, state);
-        case types:CLEAR_STATUS:
+        case types.CLEAR_STATUS:
             return initialState;
         default:
             return state;
