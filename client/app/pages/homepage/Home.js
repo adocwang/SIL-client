@@ -30,6 +30,7 @@ import RongZiInfoItem from '../../components/home/RongZiInfoItem'
 import BasePage from  '../BasePage'
 import {fetchHomeEnterpriseList} from '../../actions/home'
 import {ToastShort} from '../../utils/ToastUtils'
+import * as types from '../../constants/ActionTypes';
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -56,11 +57,11 @@ class Home extends BasePage {
         });
     }
 
-
-    componentWillUpdate(){
-    }
-
-    componentDidUpdate(){
+    componentWillUnmount() {
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch({type:types.CLEAR_HOME_ENTERPRISE_LIST});
+        });
     }
 
 

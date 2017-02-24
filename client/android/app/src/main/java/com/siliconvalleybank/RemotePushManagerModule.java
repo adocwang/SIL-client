@@ -29,6 +29,7 @@ public class RemotePushManagerModule extends ReactContextBaseJavaModule {
         @ReactMethod
         public void clearPushAlias() {
                 MiPushClient.setAlias(MainApplication.getInstance(),"",null);
+                MiPushClient.clearNotification(MainApplication.getInstance());
         }
 
         @ReactMethod

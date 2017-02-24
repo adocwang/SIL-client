@@ -60,6 +60,8 @@ export default function home (state = initialState, action) {
             return Object.assign({}, state,newState);
         case types.CLEAR_AUTH:
             return initialState;
+        case types.CLEAR_HOME_ENTERPRISE_LIST:
+            return initialState;
         default:
             return state;
     }
