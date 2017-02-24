@@ -36,13 +36,21 @@ class CompanyInfoItem extends React.Component {
                             <Text style={styles.title}>
                                 {this.props.name}
                             </Text>
-                            {this.props.role_a ? <View style={styles.greenContainer}>
+                            {this.props.distribute_state==3 && <View style={styles.greenContainer}>
                                 <Text style={styles.status}>
                                     已认领
                                 </Text>
-                            </View> : <View style={styles.redContainer}>
+                            </View> }
+                            {this.props.distribute_state==2 && <View style={this.props.role_b &&
+                            this.props.role_b.id == this.props.auth.id ? styles.yellowContainer:styles.greenContainer}>
+                                <Text style={styles.status}>
+                                    已分配
+                                </Text>
+                            </View>
+                            }
+                            { this.props.distribute_state==1 &&<View style={styles.redContainer}>
                                 <Text style={styles.red_text}>
-                                    未分配
+                                    待分配
                                 </Text>
                             </View>}
 
@@ -109,6 +117,14 @@ let styles = StyleSheet.create({
     },
     greenContainer: {
         backgroundColor: '#7ED321',
+        borderRadius: 10,
+        justifyContent: 'center',
+        height: 20,
+        width: 60,
+        alignItems: 'center'
+    },
+    yellowContainer: {
+        backgroundColor: '#fecd52',
         borderRadius: 10,
         justifyContent: 'center',
         height: 20,

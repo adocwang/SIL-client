@@ -43,6 +43,10 @@ export default function home (state = initialState, action) {
             state.loading[1] = false;
             if(action.data.enterprises.length == 0){
                 state.noMore = true;
+                if(action.data.isRefreshing){
+                    state.pageList[1] = [];
+                    state.pageAfter[1]= 1;
+                }
             }else {
                 state.noMore = false;
                 if(action.data.isRefreshing){
@@ -55,6 +59,8 @@ export default function home (state = initialState, action) {
             }
             return Object.assign({}, state,newState);
         case types.CLEAR_AUTH:
+            return initialState;
+        case types.CLEAR_HOME_ENTERPRISE_LIST:
             return initialState;
         default:
             return state;

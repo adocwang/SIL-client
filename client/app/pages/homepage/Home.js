@@ -30,6 +30,7 @@ import RongZiInfoItem from '../../components/home/RongZiInfoItem'
 import BasePage from  '../BasePage'
 import {fetchHomeEnterpriseList} from '../../actions/home'
 import {ToastShort} from '../../utils/ToastUtils'
+import * as types from '../../constants/ActionTypes';
 
 var canLoadMore;
 var loadMoreTime = 0;
@@ -52,15 +53,15 @@ class Home extends BasePage {
         const {dispatch} = this.props;
         const {home} = this.props;
         InteractionManager.runAfterInteractions(() => {
-             dispatch(fetchHomeEnterpriseList(false,true,false,{page:home.pageAfter[1],only_mine:1}, this.props.auth.token));
+             dispatch(fetchHomeEnterpriseList(true,false,false,{page:1,only_mine:1}, this.props.auth.token));
         });
     }
 
-
-    componentWillUpdate(){
-    }
-
-    componentDidUpdate(){
+    componentWillUnmount() {
+        const {dispatch} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch({type:types.CLEAR_HOME_ENTERPRISE_LIST});
+        });
     }
 
 
@@ -153,7 +154,7 @@ class Home extends BasePage {
                 dataSource={dataSource}
                 renderRow={(item)=>{
                     if(typeId=='1'){
-                        return <CompanyInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
+                        return <CompanyInfoItem  {...item} auth={this.props.auth} onClicked={this.onPress.bind(this, item)}/>
                     }else if(typeId=='2'){
                         return <RiskInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
                     }else if(typeId=='3'){

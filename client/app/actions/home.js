@@ -172,6 +172,47 @@ export function fetchEnterprise (id,token) {
     }
 }
 
+export function fetchEnterpiseSetDistribute(paramsMap,token){
+    console.log('fetchEnterpiseSetDistribute',paramsMap);
+    return dispatch => {
+        dispatch({type:types.FETCH_ENTERPRISE_DISTRIBUTE_SET,data:{}})
+        return postRequest(dispatch,host.ENTERPRISE_SET_DISTRIBUTE_URL ,paramsMap,token)
+            .then((data) => {
+                console.log('fetchEnterpiseSetDistribute',data);
+                if(data.code==1003){
+                    dispatch(hideDistributeLoading());
+                    ToastShort('缺少参数');
+                }else if(data.code==2007){
+                    dispatch(hideDistributeLoading());
+                    ToastShort('银行不存在');
+                }else if(data.code==2008){
+                    dispatch(hideDistributeLoading());
+                    ToastShort('角色不存在');
+                }else if(data.code==2009){
+                    dispatch(hideDistributeLoading());
+                    ToastShort('角色不是客户经理');
+                }else if(data.code==407){
+                    ToastShort('无权限');
+                    dispatch(hideDistributeLoading());
+                }else if(data.code==0){
+                    dispatch({type:types.ENTERPRISE_SET_DISTRIBUTE,data:data.data})
+                }
+
+            })
+            .catch((error) => {
+                dispatch(hideDistributeLoading());
+                ToastShort(error.message);
+            })
+    }
+}
+
+function hideDistributeLoading(){
+    return{
+        type: types.HIDE_ENTERPRISE_SET_DISTRIBUTE,
+        data: {},
+    }
+}
+
 function hideLoading(){
     return{
         type: types.HIDE_LOADING,

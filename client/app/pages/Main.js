@@ -67,13 +67,20 @@ class Main extends BasePage {
     }
 
     onBackAndroid = () => {
-        if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
-            //最近2秒内按过back键，可以退出应用。
-            return false;
+        const {navigator} =  this.props;
+        if(navigator.getCurrentRoutes() && navigator.getCurrentRoutes().length ==1){
+            let comp = navigator.getCurrentRoutes()[0];
+            if(comp.name=='Main'){
+                if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+                    //最近2秒内按过back键，可以退出应用。
+                    return false;
+                }
+                this.lastBackPressed = Date.now();
+                ToastShort('再按一次退出应用');
+                return true;
+            }
         }
-        this.lastBackPressed = Date.now();
-        ToastShort('再按一次退出应用');
-        return true;
+        return false;
     };
 
     componentDidMount () {
@@ -161,7 +168,7 @@ class Main extends BasePage {
                     <Image style={styles.headerImg} source={require("../img/header_default.png")}/>
                 </View>}
 
-                <TabNavigator  style={{marginTop: 20, }}>
+                <TabNavigator  >
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'home'}
                         title="主页"
@@ -194,7 +201,7 @@ class Main extends BasePage {
                         title="我的"
                         renderIcon={() => <Image source={require("../img/person_icon_d.png")} />}
                         renderSelectedIcon={() => <Image source={require("../img/person_icon.png")} />}
-                        renderBadge={this.state.messageTips?() => <CustomBadgeView />:() => <View />}
+                        renderBadge={this.state.messageTips?() => <View style={{width:5,height:5,backgroundColor:'#ff0000',borderRadius:17}}/>:() => <View />}
                         onPress={() => this.setState({ selectedTab: 'person' })}>
                         <PersonContainer navigator={this.props.navigator}/>
                     </TabNavigator.Item>
