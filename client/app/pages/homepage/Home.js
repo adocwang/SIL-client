@@ -153,7 +153,7 @@ class Home extends BasePage {
                 dataSource={dataSource}
                 renderRow={(item)=>{
                     if(typeId=='1'){
-                        return <CompanyInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
+                        return <CompanyInfoItem  {...item} auth={this.props.auth} onClicked={this.onPress.bind(this, item)}/>
                     }else if(typeId=='2'){
                         return <RiskInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
                     }else if(typeId=='3'){
