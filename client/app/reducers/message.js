@@ -45,7 +45,7 @@ export default function message(state = initialState, action) {
             return Object.assign({}, state);
         case types.SET_MESSAGE_READ:
             _.forEach(state.messageList, function (o) {
-                if (o.id = action.data.id) {
+                if (o.id == action.data.id) {
                     o.state = 1;
                 }
             })

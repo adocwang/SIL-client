@@ -79,7 +79,7 @@ class ResponseSearch extends BasePage {
                     <WebView
                         ref='webview'
                         automaticallyAdjustContentInsets={false}
-                        style={{flex: 1}}
+                        style={{flex: 1,backgroundColor: 'transparent'}}
                         source={{html: Platform.OS === 'android'?this.props.responsesearch.searchResult:
                             ("<div style='font-size: 50px'>" + this.props.responsesearch.searchResult + "</div>")}}
                         javaScriptEnabled={true}

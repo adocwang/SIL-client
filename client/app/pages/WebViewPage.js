@@ -81,7 +81,7 @@ class WebViewPage extends React.Component {
                 <WebView
                     ref='webview'
                     automaticallyAdjustContentInsets={false}
-                    style={{flex: 1,backgroundColor:'#ffffff'}}
+                    style={{flex: 1,backgroundColor: 'transparent'}}
                     source={{uri:this.state.url}}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}

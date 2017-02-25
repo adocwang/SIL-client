@@ -108,7 +108,7 @@ class Response extends BasePage {
                         <WebView
                             ref='webview'
                             automaticallyAdjustContentInsets={false}
-                            style={{flex: 1}}
+                            style={{flex: 1,backgroundColor: 'transparent'}}
                             source={{html: Platform.OS === 'android'?marked(this.props.response.chooseItem.content):
                             ("<div style='font-size: 50px'>" + marked(this.props.response.chooseItem.content) + "</div>")}}
                             javaScriptEnabled={true}
