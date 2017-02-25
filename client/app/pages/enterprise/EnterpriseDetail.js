@@ -90,7 +90,7 @@ class EnterpriseDetail extends BasePage {
                             navigator={navigator}/>
                         <Image
                             style={styles.logo}
-                            source={{uri: 'http://b.thumbs.redditmedia.com/EJAPtfPi82c9uJY5-MkW54HLa_cdeVdQivacIYdjuDI.jpg'}}
+                            source={require('../../img/header_default.png')}
                         />
                     </View>
                     {!this.props.enterprise.loading && enterprise.detail&& <View>

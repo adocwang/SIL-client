@@ -163,6 +163,8 @@ class Claim extends BasePage {
     }
 
     renderOperate() {
+        var isRoleA = isRole('ROLE_CUSTOMER_MANAGER',this.props.auth.role) && this.state.item.distribute_state == 2 && this.state.item.role_a
+            &&  this.state.item.role_a.id == this.props.auth.id
         return(
         <View style={styles.containerOption}>
             {isRole('ROLE_BRANCH_PRESIDENT',this.props.auth.role) && <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
@@ -178,13 +180,13 @@ class Claim extends BasePage {
                 </View>
             </TouchableOpacity>}
 
-            {isRole('ROLE_CUSTOMER_MANAGER',this.props.auth.role) && <TouchableOpacity onPress={ this.openChooseConfirmAnimationDialog}>
+            {isRoleA && <TouchableOpacity onPress={ this.openChooseConfirmAnimationDialog}>
                 <View style={styles.buttonview}>
                     <Text style={styles.btntext}>认领企业</Text>
                 </View>
             </TouchableOpacity>}
 
-            {isRole('ROLE_CUSTOMER_MANAGER',this.props.auth.role) && <TouchableOpacity onPress={ this.openRefuseConfirmAnimationDialog}>
+            {isRoleA && <TouchableOpacity onPress={ this.openRefuseConfirmAnimationDialog}>
                 <View style={styles.buttonview}>
                     <Text style={styles.btntext}>拒绝认领</Text>
                 </View>
