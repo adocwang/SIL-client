@@ -107,7 +107,7 @@ class ResetPwd extends React.Component {
         return (
             <View style={styles.container}>
                 <PageToolbar
-                    title="激活账户"
+                    title="忘记密码"
                     navigator={navigator}
                 />
                 <View style={{height:1}}>
