@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor: CommonColor.defaultBgColor,
-        marginTop:10,
+        marginTop:30,
     },
     headerImg: {
         width: 80,
