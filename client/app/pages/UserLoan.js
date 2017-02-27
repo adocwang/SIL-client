@@ -146,7 +146,7 @@ class UserLoan extends BasePage {
                 initialListSize={1}
                 dataSource={dataSource}
                 renderRow={(item)=>{
-                        return <UserLoanItem  {...item.enterprise} onClicked={this.onPress.bind(this, item.enterprise)}/>
+                        return <UserLoanItem  {...item.enterprise} auth={this.props.auth}  onClicked={this.onPress.bind(this, item.enterprise)}/>
                 }}
                 style={styles.listView}
                 onEndReached={this.onEndReached.bind(this, typeId)}
