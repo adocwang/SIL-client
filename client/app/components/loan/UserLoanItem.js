@@ -36,7 +36,18 @@ class UserLoanItem extends React.Component {
                             <Text style={styles.title}>
                                 {this.props.name}
                             </Text>
-
+                            {this.props.role_a &&
+                            this.props.role_a.id == this.props.auth.id && <View style={styles.buleContainer}>
+                                <Text style={styles.status}>
+                                    主理
+                                </Text>
+                            </View> }
+                            {this.props.role_b &&
+                            this.props.role_b.id == this.props.auth.id && <View style={styles.grayContainer}>
+                                <Text style={styles.status}>
+                                    协理
+                                </Text>
+                            </View> }
                         </View>
                         <Text style={styles.desc}>
                             {this.props.legal_man&&(this.props.legal_man + ' | ')}{this.props.regist_capi&&(this.props.regist_capi + ' | ')}
@@ -112,10 +123,25 @@ let styles = StyleSheet.create({
     catContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingRight: 10,
         alignItems: 'center'
 
-    }
+    },
+    grayContainer: {
+        backgroundColor: '#C8C8C8',
+        borderRadius: 10,
+        justifyContent: 'center',
+        height: 20,
+        width: 40,
+        alignItems: 'center'
+    },
+    buleContainer: {
+        backgroundColor: '#2133A7',
+        borderRadius: 10,
+        justifyContent: 'center',
+        height: 20,
+        width: 40,
+        alignItems: 'center'
+    },
 });
 
 export default UserLoanItem;
