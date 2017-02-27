@@ -17,7 +17,7 @@ import Button from '../../components/Button.ios.js'
 import dismissKeyboard from 'dismissKeyboard'
 import {uploadImage} from '../../utils/HttpServices';
 import * as host from '../../constants/Urls';
-
+import ShowImageGallery from '../ShowImage';
 import PopupDialog, {
     DialogTitle, DialogButton
 
@@ -38,7 +38,6 @@ const newImgModel = () => {
     imgModel.net = ""
     return imgModel
 }
-
 
 const imgRootPath = "http://silapi.adoc.wang/resource/get/"
 
@@ -70,6 +69,7 @@ class CollectionContent extends Component {
         this.selectImgQuality = this.selectImgQuality.bind(this)
         this.didClickedImgQuality = this.didClickedImgQuality.bind(this)
         this.chargeImgCount = this.chargeImgCount.bind(this)
+        this.pushImageGallery = this.pushImageGallery.bind(this)
         this.showDialogType = "select"
         this.state = {data: null, selectViewIndex: -1, refresh: "refresh", showLoading: false}
         this.netPathsContainer = []
@@ -82,10 +82,10 @@ class CollectionContent extends Component {
     }
 
     componentDidMount() {
-            const content = this.props.route.params.content
-            this.canEdit = this.props.route.params.canEdit
-            this.submitData = JSON.parse(JSON.stringify(content.content));
-            this.setState({data: content})
+        const content = this.props.route.params.content
+        this.canEdit = this.props.route.params.canEdit
+        this.submitData = JSON.parse(JSON.stringify(content.content));
+        this.setState({data: content})
     }
 
     didClickedSave() {
@@ -109,10 +109,10 @@ class CollectionContent extends Component {
 
     hasUploadImg() { //0 添加图片 1,上传
         var status = 2
-        for(var i = 0;i<this.imgModelsContainer.length;i++) {
+        for (var i = 0; i < this.imgModelsContainer.length; i++) {
             const child = this.imgModelsContainer[i]
             const imgs = child.value
-            if(imgs.length == 1) {
+            if (imgs.length == 1) {
                 const model = imgs[0]
                 if (model.local == "" && model.net == "") {
                     return 0
@@ -166,8 +166,8 @@ class CollectionContent extends Component {
     }
 
     changePhoto(index, paths) {
-        this.imgModelsContainer.map(child=>{
-            if(index == child.index) {
+        this.imgModelsContainer.map(child => {
+            if (index == child.index) {
                 child.value = paths
             }
         })
@@ -178,7 +178,7 @@ class CollectionContent extends Component {
             return false
         }
         this.netPathsContainer = []
-        this.imgModelsContainer.map(child=>{
+        this.imgModelsContainer.map(child => {
             const imgs = child.value
             var obj = new Object()
             obj.index = child.index
@@ -191,14 +191,14 @@ class CollectionContent extends Component {
                     obj.netPaths.push(imgModel.net)
                 } else if (imgModel.local != "" && imgModel.net == "") {
                     this.setState({showLoading: true})
-                    const {auth,dispatch} = this.props
-                    dispatch(this.uploadImgMethod(child.index,index, imgModel.local, auth.token))
+                    const {auth, dispatch} = this.props
+                    dispatch(this.uploadImgMethod(child.index, index, imgModel.local, auth.token))
                 }
             })
         })
     }
 
-    uploadImgMethod(childIndex,index, uri, token) {
+    uploadImgMethod(childIndex, index, uri, token) {
         return dispatch => {
             return uploadImage(dispatch, host.RESOURCE_UPLOAD_URL, token, uri)
                 .then((data) => {
@@ -211,15 +211,15 @@ class CollectionContent extends Component {
                     } else if (data.code == 406) {
                         ToastShort('用户无权限');
                     } else if (data.code == 0) {
-                        this.receiveImg(childIndex,index, data.data)
+                        this.receiveImg(childIndex, index, data.data)
                     }
                 })
                 .catch((error) => {
-                this.netPathsContainer.map(child=>{
-                    if(child.index == childIndex) {
-                        child.failIndexs.push(index)
-                    }
-                })
+                    this.netPathsContainer.map(child => {
+                        if (child.index == childIndex) {
+                            child.failIndexs.push(index)
+                        }
+                    })
                     this.chargeFail()
                 })
         }
@@ -227,60 +227,60 @@ class CollectionContent extends Component {
 
     chargeFail() {
         var status = true
-        for(var i=0;i<this.imgModelsContainer.length;i++) {
+        for (var i = 0; i < this.imgModelsContainer.length; i++) {
             var netChild = this.netPathsContainer[i]
             if (netChild.netPaths.length + netChild.failIndexs.length != this.chargeImgCount(i)) {
                 status = false
             } else {
-                if(netChild.failIndexs.length > 0) {
-                    const indexString = netChild.failIndexs.map(index=>{
+                if (netChild.failIndexs.length > 0) {
+                    const indexString = netChild.failIndexs.map(index => {
                         return index + 1
                     }).join(",")
                     const sectionTitle = this.submitData[netChild.index].title
 
-                    const toast = sectionTitle + "图片"+ indexString + "上传失败"
+                    const toast = sectionTitle + "图片" + indexString + "上传失败"
                     ToastShort(toast)
                 }
             }
         }
-        if(status) {
+        if (status) {
             this.setState({showLoading: false})
         }
 
 
-        }
+    }
 
     chargeImgCount(index) {
         var imgModelsChild = this.imgModelsContainer[index].value
         var count = imgModelsChild.length
-        if(imgModelsChild[0].local == "" && imgModelsChild[0].net == "") {
+        if (imgModelsChild[0].local == "" && imgModelsChild[0].net == "") {
             count = count - 1
         }
         return count
 
     }
 
-    receiveImg(childIndex,index, data) {
-            this.chargeFail()
-            var status = true
-            for(var i=0;i<this.imgModelsContainer.length;i++) {
-                var netChild = this.netPathsContainer[i]
-                var imgModelsChild = this.imgModelsContainer[i]
-                if(childIndex == imgModelsChild.index) {
-                    netChild.netPaths.push(data.resourceId)
-                    imgModelsChild.value[index].net = data.resourceId
-                }
-                if(netChild.netPaths.length != this.chargeImgCount(i)) {
-                    status = false
-                }
+    receiveImg(childIndex, index, data) {
+        this.chargeFail()
+        var status = true
+        for (var i = 0; i < this.imgModelsContainer.length; i++) {
+            var netChild = this.netPathsContainer[i]
+            var imgModelsChild = this.imgModelsContainer[i]
+            if (childIndex == imgModelsChild.index) {
+                netChild.netPaths.push(data.resourceId)
+                imgModelsChild.value[index].net = data.resourceId
             }
-            if(status) {
-                this.setState({showLoading: false})
-                this.netPathsContainer.map(child=>{
-                    this.submitData[child.index].value = child.netPaths
-                })
-                this.chargeInputAll()
+            if (netChild.netPaths.length != this.chargeImgCount(i)) {
+                status = false
             }
+        }
+        if (status) {
+            this.setState({showLoading: false})
+            this.netPathsContainer.map(child => {
+                this.submitData[child.index].value = child.netPaths
+            })
+            this.chargeInputAll()
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -293,22 +293,50 @@ class CollectionContent extends Component {
     }
 
     checkBoxViewChange(index) {
-        if(!this.canEdit) {return}
+        if (!this.canEdit) {
+            return
+        }
         this.showDialogType = "checkBox"
         this.setState({selectViewIndex: index})
         this.popupDialog.openDialog()
     }
 
-    selectImgQuality(closure) {
-        if(!this.canEdit) {return}
+    selectImgQuality(closure, indexPath) {
+        if (!this.canEdit) {
+            this.pushImageGallery(indexPath)
+            return
+        }
         this.showDialogType = "imgQuality"
-        this.setState({refresh:"refresh"})
+        this.setState({refresh: "refresh"})
         this.popupDialog.openDialog()
         this.selectImgClosure = closure
     }
 
+    pushImageGallery(indexPath) {
+        const {navigator} = this.props
+        this.imgModelsContainer.map(child => {
+            if (child.index == indexPath) {
+                var imgs = []
+                child.value.map(imgModel => {
+                    imgs.push(imgRootPath + imgModel.net)
+                })
+                console.log(imgs)
+                navigator.push({
+                    name: "ShowImageGallery",
+                    component: ShowImageGallery,
+                    params: {
+                        imgs: imgs,
+                    }
+                })
+            }
+        })
+
+    }
+
     selectViewChange(index) {
-        if(!this.canEdit) {return}
+        if (!this.canEdit) {
+            return
+        }
         this.showDialogType = "select"
         this.setState({selectViewIndex: index})
         this.popupDialog.openDialog()
@@ -323,9 +351,9 @@ class CollectionContent extends Component {
 
     didClickedImgQuality(index) {
         this.popupDialog.closeDialog()
-        if(this.selectImgClosure != null) {
-           this.selectImgClosure(index)
-       }
+        if (this.selectImgClosure != null) {
+            this.selectImgClosure(index)
+        }
     }
 
     didClickedCheckBox(indexs) {
@@ -343,7 +371,8 @@ class CollectionContent extends Component {
     inputView(obj, index) {
         const text = this.submitData[index].value
         return (
-            <TextInput defaultValue={text} key={index} style={styles.textInput} placeholder={obj.title} editable={this.canEdit}
+            <TextInput defaultValue={text} key={index} style={styles.textInput} placeholder={obj.title}
+                       editable={this.canEdit}
                        onChangeText={this.inputViewChange.bind(this, index)} underlineColorAndroid="transparent"/>
         )
     }
@@ -352,7 +381,8 @@ class CollectionContent extends Component {
         const text = this.submitData[index].value
 
         return (
-            <TextInput defaultValue={text} key={index} multiline style={styles.textArea} placeholder={obj.title} editable={this.canEdit}
+            <TextInput defaultValue={text} key={index} multiline style={styles.textArea} placeholder={obj.title}
+                       editable={this.canEdit}
                        onChangeText={this.inputViewChange.bind(this, index)} underlineColorAndroid="transparent"/>
         )
     }
@@ -370,8 +400,8 @@ class CollectionContent extends Component {
 
     imageView(obj, index) {
         var imgModels = null
-        this.imgModelsContainer.map(child=>{
-            if(child.index == index) {
+        this.imgModelsContainer.map(child => {
+            if (child.index == index) {
                 imgModels = child
             }
         })
@@ -394,11 +424,11 @@ class CollectionContent extends Component {
 
         return (
             <View key={index}>
-                <View style={[styles.topView,{alignItems:"flex-end",height:30}]}>
+                <View style={[styles.topView, {alignItems: "flex-end", height: 30}]}>
                     <Text style={styles.title}>{obj.title}</Text>
                 </View>
-                <AddPhoto imgModels={imgModels} changePhoto={this.changePhoto.bind(this, index)}
-                      navigator={this.props.navigator} selectImgQuality={this.selectImgQuality}/>
+                <AddPhoto indexPath={index} imgModels={imgModels} changePhoto={this.changePhoto.bind(this, index)}
+                          navigator={this.props.navigator} selectImgQuality={this.selectImgQuality}/>
             </View>
         )
     }
@@ -462,7 +492,7 @@ class CollectionContent extends Component {
             }
         }
         var diaLogTableView = null
-        switch(this.showDialogType) {
+        switch (this.showDialogType) {
             case "select":
                 diaLogTableView = <DialogoSelectTableView data={dialogData} closure={this.didClickedSelectDialogItem}/>
                 break
@@ -486,7 +516,7 @@ class CollectionContent extends Component {
                     <ScrollView style={styles.scrollView}>
                         {views}
                         {this.canEdit && <Button style={styles.saveButton} titleStyle={styles.saveTitle} title="保存"
-                                                   onPress={this.didClickedSave}/>}
+                                                 onPress={this.didClickedSave}/>}
 
                         <View style={{height: 10}}/>
                     </ScrollView>
@@ -565,7 +595,7 @@ class AddPhoto extends Component {
     }
 
     takePhone(index) {
-        if(this.selectAddMethod == 0) {
+        if (this.selectAddMethod == 0) {
             this.takeOtherPhoneExcute(index)
         } else {
             this.changePhotoExcute(index)
@@ -574,13 +604,13 @@ class AddPhoto extends Component {
 
     takeOtherPhoto() {
         this.selectAddMethod = 0
-        const {selectImgQuality} = this.props
-        selectImgQuality(this.takePhone)
+        const {selectImgQuality, indexPath} = this.props
+        selectImgQuality(this.takePhone, indexPath)
     }
 
     takeOtherPhoneExcute(index) {
         var quality = 1.0
-        switch(parseInt(index)) {
+        switch (parseInt(index)) {
             case 0:
                 quality = 0.3;
                 break;
@@ -630,13 +660,13 @@ class AddPhoto extends Component {
     changePhoto(index) {
         this.changeIndex = index
         this.selectAddMethod = 1
-        const {selectImgQuality} = this.props
-        selectImgQuality(this.takePhone)
+        const {selectImgQuality, indexPath} = this.props
+        selectImgQuality(this.takePhone, indexPath)
     }
 
     changePhotoExcute(index) {
         var quality = 1.0
-        switch(parseInt(index)) {
+        switch (parseInt(index)) {
             case 0:
                 quality = 0.3;
                 break;
@@ -755,7 +785,7 @@ class AddPhotoCell extends Component {
                 <View style={styles.addCell}>
                     <View style={cellStyle}>
                         <Image style={cellImgStyle} source={imgPath}
-                               defaultSource={{uri:"loading_img"}}>
+                               defaultSource={{uri: "loading_img"}}>
                         </Image>
                     </View>
                 </View>
@@ -873,7 +903,7 @@ class DialogoImgQualityTableView extends Component {
         const ds = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         })
-        this.state = {dataSource: ds.cloneWithRows(["质量低","质量中","原图"])}
+        this.state = {dataSource: ds.cloneWithRows(["质量低", "质量中", "原图"])}
     }
 
     clickedCell(index) {
@@ -1055,7 +1085,7 @@ const styles = StyleSheet.create({
     lineView: {
         alignSelf: "stretch",
         backgroundColor: CommonColor.defaultLineColor,
-        height:1,
+        height: 1,
         marginTop: 15
     },
 })

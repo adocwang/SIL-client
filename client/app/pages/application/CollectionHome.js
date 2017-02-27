@@ -96,7 +96,6 @@ class CollectionHome extends Component {
                     company: this.datas[this.state.selectedIndex],
                     refreshView: this.refreshView
                 }
-
             })
         }
     }
@@ -198,13 +197,13 @@ class CompanyCell extends Component {
         const finding = data.finding
         var tipString = ""
         var tipStyle = {}
-        if(typeof(finding) == 'undefined' || finding == "") {
+        const progress = finding.progress
+        if(typeof(finding) == 'undefined' || finding == "" || progress == -1 ) {
             tipString = "待采集"
             tipStyle = {backgroundColor: CommonColor.defaultLightGray}
         }  else {
-            const progress = finding.progress
 
-            if(progress == 0 || progress == 1) {
+            if(progress == 1 || progress == 0) {
                 tipString = "待审核"
                 tipStyle = {backgroundColor: CommonColor.defaultBlueColor}
             } else if(progress == 2) {

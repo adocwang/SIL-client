@@ -30,7 +30,8 @@
 		"redux-thunk": "^1.0.3",
 		"rn-grid-view": "^1.1.0",
 		"simple-markdown": "git://github.com/lwansbrough/simple-markdown.git",
-		"react-native-md5": "^1.0.0"
+		"react-native-md5": "^1.0.0",
+		"react-native-gallery": "^0.0.17"
 	},
 	"devDependencies": {
 		"babel-jest": "18.0.0",

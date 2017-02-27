@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text,TextInput, Image, TouchableWithoutFeedback, Navigator, ListView, AsyncStorage} from 'react-native'
 import CustomToolbar from '../../components/CustomToolbar'
 import CommonColor from '../../utils/CommonColor'
-import {fetchCollectionConfig, submitCollectionConfig,passCollection,delFinding} from '../../actions/application'
+import {fetchCollectionConfig, submitCollectionConfig,passCollection,delFinding,reFinding} from '../../actions/application'
 import CollectionContentContainer from "../../containers/CollectionContentContainer"
 import {ToastShort} from '../../utils/ToastUtils';
 import * as types from '../../constants/ActionTypes';
@@ -62,10 +62,12 @@ class CollectionCertificate extends Component {
         const company = this.props.route.params.company
         const companyId = company.id
         const finding = company.finding
-        if(typeof(finding) != 'undefined' && finding != "") {
-            this.companyProgress = finding.progress
+        const progress = finding.progress
+        if(typeof(finding) == 'undefined' || finding == "" || progress == -1 ) {
+            this.companyProgress = - 1
+        }  else {
+            this.companyProgress = progress
         }
-        console.log(this.companyProgress)
 
        if(this.companyProgress == -1) {
            const {dispatch, auth} = this.props
@@ -129,6 +131,7 @@ class CollectionCertificate extends Component {
                                         this.originData = JSON.parse(result)
                                         this.initalizeData(this.originData.submitData)
                                     } else {
+
                                         this.initalizeData(collection)
                                     }
                                 } else {
@@ -226,14 +229,14 @@ class CollectionCertificate extends Component {
         this.popupDialog.closeDialog()
         const {dispatch,auth} = this.props
         const companyId = this.props.route.params.company.id
-        dispatch(delFinding(companyId,auth.token))
+        dispatch(reFinding(companyId,auth.token))
         this.isSubmiting  = true
         this.setState({showLoading: true})
     }
 
     clickedCell(index) {
         const {navigator} = this.props
-        const content = JSON.parse(JSON.stringify(this.submitData[index]));
+        const  content = JSON.parse(JSON.stringify(this.submitData[index]));
         const canEdit = (this.companyProgress == - 1)
         navigator.push({
             name: "CollectionContentContainer",

@@ -55,9 +55,9 @@ export function passCollection(params,token){
     }
 }
 
-export function delFinding(id,token) {
+export function reFinding(id,token) {
     return dispatch => {
-    return postRequest(dispatch,host.DELETE_FINDING,{id:id},token)
+    return postRequest(dispatch,host.RE_FINDING,{id:id},token)
         .then((data) => {
             console.log(data);
             if(data.code == 2007){
@@ -76,6 +76,29 @@ export function delFinding(id,token) {
             // ToastShort(error.message);
         })
 }
+}
+
+export function delFinding(id,token) {
+    return dispatch => {
+        return postRequest(dispatch,host.DELETE_FINDING,{id:id},token)
+            .then((data) => {
+                console.log(data);
+                if(data.code == 2007){
+                    ToastShort('用户不存在');
+                }else  if(data.code == 1003){
+                    ToastShort('缺少参数');
+                }else  if(data.code == 407){
+                    ToastShort('无权限');
+                }else  if(data.code == 406){
+                    ToastShort('用户无权限');
+                }else if(data.code==0){
+                    dispatch({type:types.DELETE_FINDDING_RESULT,data:data.data})
+                }
+            })
+            .catch((error) => {
+                // ToastShort(error.message);
+            })
+    }
 }
 
 export function submitCollectionConfig(params,token) {

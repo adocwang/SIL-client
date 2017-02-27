@@ -15,6 +15,7 @@ export const COLLECTION_GET_URL = "client_config/get_special/finding.template"
 export const COLLECTION_PUT_URL = "enterprise/set_finding"
 export const PASS_COLLECTION = "enterprise/set_finding_pass"
 export const DELETE_FINDING = "enterprise/del_finding"
+export const RE_FINDING = "enterprise/re_finding"
 export const RESOURCE_UPLOAD_URL = "resource/upload"
 export const USER_LIST_URL = 'user/list';
 export const ENTERPRISE_SET_URL = 'enterprise/set';
