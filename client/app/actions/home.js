@@ -76,6 +76,24 @@ export function fetchHomeEnterpriseList(isRefreshing, loading, isLoadMore,params
 
 }
 
+export function fetchHomeEnterpriseListBg(paramsMap, token){
+    return dispatch => {
+        return postRequest(dispatch,host.ENTERPRISE_LIST_URL ,paramsMap,token)
+            .then((data) => {
+                console.log('fetchHomeEnterpriseListBg',data);
+               if(data.code==0){
+                    data.data.isRefreshing = true;
+                    dispatch({type:types.REVEIVE_COMPANY_LIST,data:data.data})
+                }
+
+            })
+            .catch((error) => {
+                ToastShort(error.message);
+            })
+    }
+
+}
+
 
 export function fetchBankList(token){
     return dispatch => {

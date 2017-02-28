@@ -76,8 +76,8 @@ let styles = StyleSheet.create({
         marginBottom: 7,
         height: 100,
         paddingLeft: 20,
-        marginLeft:20,
-        marginRight:20,
+        marginLeft:10,
+        marginRight:10,
         marginTop:5
     },
     imgContainer:{

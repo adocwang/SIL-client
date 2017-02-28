@@ -34,6 +34,8 @@ import realm from '../components/realm'
 import BasePage from './BasePage'
 import {ToastShort} from '../utils/ToastUtils';
 import {fetchUnReadMessageList,fetcMessageSet} from '../actions/message'
+import {fetchHomeEnterpriseListBg} from '../actions/home'
+
 import _ from 'lodash'
 import * as types from '../constants/ActionTypes';
 class Main extends BasePage {
@@ -92,6 +94,12 @@ class Main extends BasePage {
             dispatch(fetchUnReadMessageList(this.props.auth.token));
         });
     }
+
+    componentWillUnmount() {
+        console.log('Main componentWillUnmount is here');
+    }
+
+
     onReceivePushMessage = (e)=> {
         const {navigator} = this.props;
         const {auth} = this.props;
@@ -102,6 +110,7 @@ class Main extends BasePage {
             if(e.type=='1'){
                 InteractionManager.runAfterInteractions(() => {
                     dispatch({type:types.RECEIVE_PUSH_MESSAGE,data:message});
+                    dispatch(fetchHomeEnterpriseListBg({page:1,only_mine:1}, this.props.auth.token));
                 });
             }else {
                 if(message.type && message.type.page && message.type.param && message.type.param.id){

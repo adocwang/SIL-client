@@ -163,35 +163,37 @@ class Claim extends BasePage {
     }
 
     renderOperate() {
-        var isRoleA = isRole('ROLE_CUSTOMER_MANAGER',this.props.auth.role) && this.state.item.distribute_state == 2 && this.state.item.role_a
-            &&  this.state.item.role_a.id == this.props.auth.id
-        return(
-        <View style={styles.containerOption}>
-            {isRole('ROLE_BRANCH_PRESIDENT',this.props.auth.role) && <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
-                <View style={styles.buttonview}>
-                    <Text style={styles.btntext}>分配银行</Text>
-                </View>
-            </TouchableOpacity> }
+        if(this.props.claimdistribute.enterprise.id){
+            return(
+                <View style={styles.containerOption}>
+                    {this.props.claimdistribute.enterprise.operation_enable.indexOf('distribute_bank')!=-1&& <TouchableOpacity onPress={this.openChooseBankScaleAnimationDialog}>
+                        <View style={styles.buttonview}>
+                            <Text style={styles.btntext}>分配银行</Text>
+                        </View>
+                    </TouchableOpacity> }
 
+                    {this.props.claimdistribute.enterprise.operation_enable.indexOf('distribute_cm')!=-1 && <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
+                        <View style={styles.buttonview}>
+                            <Text style={styles.btntext}>分配人员</Text>
+                        </View>
+                    </TouchableOpacity>}
 
-            {isRole('ROLE_END_PRESIDENT',this.props.auth.role) && <TouchableOpacity onPress={ this.openChooseScaleAnimationDialog}>
-                <View style={styles.buttonview}>
-                    <Text style={styles.btntext}>分配人员</Text>
-                </View>
-            </TouchableOpacity>}
+                    {this.props.claimdistribute.enterprise.operation_enable.indexOf('accept')!=-1 && <TouchableOpacity onPress={ this.openChooseConfirmAnimationDialog}>
+                        <View style={styles.buttonview}>
+                            <Text style={styles.btntext}>认领企业</Text>
+                        </View>
+                    </TouchableOpacity>}
 
-            {isRoleA && <TouchableOpacity onPress={ this.openChooseConfirmAnimationDialog}>
-                <View style={styles.buttonview}>
-                    <Text style={styles.btntext}>认领企业</Text>
-                </View>
-            </TouchableOpacity>}
+                    {this.props.claimdistribute.enterprise.operation_enable.indexOf('refuse')!=-1 && <TouchableOpacity onPress={ this.openRefuseConfirmAnimationDialog}>
+                        <View style={styles.buttonview}>
+                            <Text style={styles.btntext}>拒绝认领</Text>
+                        </View>
+                    </TouchableOpacity>}
+                </View>);
+        }else {
+            return (<View></View>);
+        }
 
-            {isRoleA && <TouchableOpacity onPress={ this.openRefuseConfirmAnimationDialog}>
-                <View style={styles.buttonview}>
-                    <Text style={styles.btntext}>拒绝认领</Text>
-                </View>
-            </TouchableOpacity>}
-        </View>);
 
     }
 
@@ -277,7 +279,7 @@ class Claim extends BasePage {
 
                 >
                     <View style={{flex:1}}>
-                        <Text style={{fontSize:18,marginTop:10,marginLeft:10}}>是否认领{this.state.item.title}?</Text>
+                        <Text style={{fontSize:18,marginTop:10,marginLeft:10}}>是否拒绝认领{this.state.item.title}?</Text>
                         <View style={{flexDirection:'row',flex:1,marginTop:10,justifyContent:'flex-end'}}>
                             <DialogButton style={{fontSize:18}}
                                           text='确认'
@@ -336,7 +338,7 @@ let styles = StyleSheet.create({
     buttonview: {
         flexDirection: 'row',
         margin: 10,
-        width: 120,
+        width: 90,
         borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
@@ -345,7 +347,7 @@ let styles = StyleSheet.create({
     },
     btntext: {
         alignSelf: 'center',
-        fontSize: 17,
+        fontSize: 15,
         color: '#15499A',
         marginTop: 10,
         marginBottom: 10,

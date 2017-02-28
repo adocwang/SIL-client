@@ -55,6 +55,7 @@ class Home extends BasePage {
         InteractionManager.runAfterInteractions(() => {
              dispatch(fetchHomeEnterpriseList(true,false,false,{page:1,only_mine:1}, this.props.auth.token));
         });
+        console.log('Home componentDidMount');
     }
 
     componentWillUnmount() {
@@ -62,7 +63,9 @@ class Home extends BasePage {
         InteractionManager.runAfterInteractions(() => {
             dispatch({type:types.CLEAR_HOME_ENTERPRISE_LIST});
         });
+        console.log('Home componentWillUnmount is here');
     }
+
 
 
     onSearchCompany(){
@@ -104,7 +107,7 @@ class Home extends BasePage {
                 component: ClaimContainer,
                 name: 'Claim',
                 params: {
-                    item: item,
+                    item: {id:item.id},
                 },
             });
         //navigator.push({
@@ -146,13 +149,12 @@ class Home extends BasePage {
                     </View>
                 </ScrollView>
             );
-        }
-
-        return (
-            <ListView
-                initialListSize={1}
-                dataSource={dataSource}
-                renderRow={(item)=>{
+        }else{
+            return (
+                <ListView
+                    initialListSize={1}
+                    dataSource={dataSource}
+                    renderRow={(item)=>{
                     if(typeId=='1'){
                         return <CompanyInfoItem  {...item} auth={this.props.auth} onClicked={this.onPress.bind(this, item)}/>
                     }else if(typeId=='2'){
@@ -161,12 +163,12 @@ class Home extends BasePage {
                         return <RongZiInfoItem  {...item} onClicked={this.onPress.bind(this, item)}/>
                     }
                 }}
-                style={styles.listView}
-                onEndReached={this.onEndReached.bind(this, typeId)}
-                onEndReachedThreshold={10}
-                onScroll={this.onScroll}
-                renderFooter={this.renderFooter.bind(this, typeId)}
-                refreshControl={
+                    style={styles.listView}
+                    onEndReached={this.onEndReached.bind(this, typeId)}
+                    onEndReachedThreshold={10}
+                    onScroll={this.onScroll}
+                    renderFooter={this.renderFooter.bind(this, typeId)}
+                    refreshControl={
           <RefreshControl
             refreshing={home.isRefreshing[typeId]}
             onRefresh={this.onRefresh.bind(this, typeId)}
@@ -174,8 +176,9 @@ class Home extends BasePage {
             colors={['#15499A', '#15499A', '#15499A', '#15499A']}
           />
         }
-            />
-        );
+                />
+            );
+        }
     }
 
     renderFooter (typeId) {

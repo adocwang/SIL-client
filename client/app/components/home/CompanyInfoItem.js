@@ -21,6 +21,34 @@ class CompanyInfoItem extends React.Component {
         super(props);
     }
 
+    renderTag(type,text){
+        if(type=='red'){
+            return (<View style={styles.redContainer}>
+                <Text style={styles.red_text}>
+                    {text}
+                </Text>
+            </View>);
+        }else if(type=='yellow'){
+            return (<View style={styles.yellowContainer}>
+                <Text style={styles.status}>
+                    {text}
+                </Text>
+            </View>);
+        }else if(type=='green'){
+            return (<View style={styles.greenContainer}>
+                <Text style={styles.status}>
+                    {text}
+                </Text>
+            </View>);
+        }else if(type=='gray'){
+            return (<View style={styles.grayContainer}>
+                <Text style={styles.status}>
+                    {text}
+                </Text>
+            </View>);
+        }
+    }
+
     render() {
         return (
             <TouchableOpacity onPress={()=>this.props.onClicked()}>
@@ -36,23 +64,7 @@ class CompanyInfoItem extends React.Component {
                             <Text style={styles.title}>
                                 {this.props.name}
                             </Text>
-                            {this.props.distribute_state==3 && <View style={styles.greenContainer}>
-                                <Text style={styles.status}>
-                                    已认领
-                                </Text>
-                            </View> }
-                            {this.props.distribute_state==2 && <View style={this.props.role_b &&
-                            this.props.role_b.id == this.props.auth.id ? styles.yellowContainer:styles.greenContainer}>
-                                <Text style={styles.status}>
-                                    已分配
-                                </Text>
-                            </View>
-                            }
-                            { this.props.distribute_state==1 &&<View style={styles.redContainer}>
-                                <Text style={styles.red_text}>
-                                    待分配
-                                </Text>
-                            </View>}
+                            {this.props.distribute_state_type && this.renderTag(this.props.distribute_state_type,this.props.distribute_state_text)}
 
                         </View>
                         <Text style={styles.desc}>
@@ -136,6 +148,22 @@ let styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         borderColor: '#F21B35',
+        height: 20,
+        width: 60,
+        alignItems: 'center'
+    },
+    grayContainer: {
+        backgroundColor: '#C8C8C8',
+        borderRadius: 10,
+        justifyContent: 'center',
+        height: 20,
+        width: 60,
+        alignItems: 'center'
+    },
+    buleContainer: {
+        backgroundColor: '#2133A7',
+        borderRadius: 10,
+        justifyContent: 'center',
         height: 20,
         width: 60,
         alignItems: 'center'
