@@ -139,7 +139,7 @@ class Active extends React.Component {
                    style={{resizeMode: Image.resizeMode.stretch,flex:2,justifyContent:'center',alignItems:'center',}}>
                 <Image source = {require('../../img/espe_logo.png')} style={{marginBottom:30}}/>
                 <TextInput underlineColorAndroid='transparent' onChangeText={(phone) => this.setState({phone})}
-                           value={this.state.phone} style={styles.authInput} placeholder='请输入手机号码'/>
+                           value={this.state.phone} style={textPhone==''?styles.authInput:styles.authInputWrong} placeholder='请输入手机号码'/>
                 <Text style={{color:'black',backgroundColor:'transparent'}} >{textPhone}</Text>
                 <CountDown
                     onPress={this.onSendMsgCode.bind(this)} //default null
@@ -148,7 +148,7 @@ class Active extends React.Component {
                     buttonStyle={{marginTop:10}}
                     textStyle={{color:'#000000'}} //default black
                 />
-                <TextInput underlineColorAndroid='transparent'  onChangeText={(code) => this.setState({code})} value={this.state.code} style ={[styles.authInput,{marginTop:10}]} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                <TextInput underlineColorAndroid='transparent'  onChangeText={(code) => this.setState({code})} value={this.state.code} style ={[textCode==''?styles.authInput:styles.authInputWrong,{marginTop:10}]} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
                 <Text style={{marginTop:10,color:'black',backgroundColor:'transparent'}} >{textCode}</Text>
                 <TextInput underlineColorAndroid='transparent'
                            onChangeText={(password) => this.setState({password})} value={this.state.password}

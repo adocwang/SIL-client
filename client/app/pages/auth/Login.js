@@ -127,11 +127,11 @@ class Login extends React.Component {
                     <Image source = {require('../../img/espe_logo.png')} style={{marginBottom:60}}/>
 
                     <TextInput underlineColorAndroid='transparent' onChangeText={(phone) => this.setState({phone})}
-                               value={this.state.phone} style={styles.authInput} placeholder='请输入手机号码'/>
+                               value={this.state.phone} style={textPhone==''?styles.authInput:styles.authInputWrong} placeholder='请输入手机号码'/>
                     <Text style={{marginTop:10,color:'black',backgroundColor:'transparent'}} >{textPhone}</Text>
                     <TextInput underlineColorAndroid='transparent'
                                onChangeText={(password) => this.setState({password})} value={this.state.password}
-                               style={[styles.authInput,{marginTop:20}]} placeholder='请输入密码' secureTextEntry={true}/>
+                               style={[textPwd==''?styles.authInput:styles.authInputWrong,{marginTop:20}]} placeholder='请输入密码' secureTextEntry={true}/>
                     <Text style={{marginTop:10,color:'black',backgroundColor:'transparent'}}>{textPwd}</Text>
                 </Image>
 
