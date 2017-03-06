@@ -119,14 +119,28 @@ class Active extends React.Component {
 
     render () {
         const {navigator} = this.props;
+        var textPhone = '';
+        var textCode = '';
+        var textPwd = '';
+        if(this.props.auth.smsCode==2003){
+            textPwd = '密码错误';
+        }else if(this.props.auth.smsCode==2005){
+            textCode = '短信验证码错误';
+        }else if(this.props.auth.smsCode==2006){
+            textCode = '短信验证码已用';
+        }else if(this.props.auth.smsCode==2007){
+            textPhone = '用户不存在';
+        }
+
         return (
         <View style={styles.container}>
 
             <Image source={require('../../img/auth_bg.png')}
                    style={{resizeMode: Image.resizeMode.stretch,flex:2,justifyContent:'center',alignItems:'center',}}>
-                <Image source = {require('../../img/espe_logo.png')} style={{marginBottom:60}}/>
+                <Image source = {require('../../img/espe_logo.png')} style={{marginBottom:30}}/>
                 <TextInput underlineColorAndroid='transparent' onChangeText={(phone) => this.setState({phone})}
                            value={this.state.phone} style={styles.authInput} placeholder='请输入手机号码'/>
+                <Text style={{color:'black',backgroundColor:'transparent'}} >{textPhone}</Text>
                 <CountDown
                     onPress={this.onSendMsgCode.bind(this)} //default null
                     text={'发送验证码'} //default ''
@@ -134,10 +148,12 @@ class Active extends React.Component {
                     buttonStyle={{marginTop:10}}
                     textStyle={{color:'#000000'}} //default black
                 />
-                <TextInput underlineColorAndroid='transparent'  onChangeText={(code) => this.setState({code})} value={this.state.code} style ={[styles.authInput,{marginTop:20}]} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                <TextInput underlineColorAndroid='transparent'  onChangeText={(code) => this.setState({code})} value={this.state.code} style ={[styles.authInput,{marginTop:10}]} placeholder='请输入四位验证码' underlinecolorandroid='transparent'/>
+                <Text style={{marginTop:10,color:'black',backgroundColor:'transparent'}} >{textCode}</Text>
                 <TextInput underlineColorAndroid='transparent'
                            onChangeText={(password) => this.setState({password})} value={this.state.password}
-                           style={[styles.authInput,{marginTop:40}]} placeholder='请输入密码' secureTextEntry={true}/>
+                           style={[styles.authInput,{marginTop:10}]} placeholder='请输入密码' secureTextEntry={true}/>
+                <Text style={{marginTop:10,color:'black',backgroundColor:'transparent'}}>{textPwd}</Text>
             </Image>
 
             <View style={{paddingTop:30,flex:1,alignItems:'center'}}>

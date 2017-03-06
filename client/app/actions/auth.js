@@ -11,12 +11,10 @@ export function fetchLogin (paramsMap) {
     return dispatch => {
         return postRequest(dispatch,host.PASSWORD_LOGIN_URL ,paramsMap,'')
             .then((data) => {
-                if(data.code == 2007){
-                    ToastShort('用户不存在');
-                }else if(data.code ==2003){
-                    ToastShort('密码错误');
-                }else if(data.code ==0){
+                if(data.code ==0){
                     dispatch(loginSuccess(data.data));
+                }else {
+                    dispatch(LoginFailed({code:data.code}));
                 }
                 dispatch(hideLoading());
             })
@@ -45,6 +43,10 @@ export function fetchSmsCode (phone) {
         return postRequest(dispatch,host.SEND_LOGIN_SMS_URL ,{phone:phone},'')
             .then((data) => {
                 console.log(data);
+                if(data.code ==0){
+                }else {
+                    dispatch(LoginFailed({smsCode:data.code}));
+                }
             })
             .catch((error) => {
                 ToastShort(error.message);
@@ -59,14 +61,10 @@ export function fetchSmsLogin(paramsMap){
         return postRequest(dispatch,host.SMS_LOGIN_URL ,paramsMap,'')
             .then((data) => {
                 console.log(data);
-                if(data.code == 2007){
-                    ToastShort('用户不存在');
-                }else if(data.code == 2006){
-                    ToastShort('短信验证码已用');
-                }else if(data.code == 2005){
-                    ToastShort('短信验证码错误');
-                }else if(data.code ==0){
+                if(data.code ==0){
                     dispatch(smsLoginSuccess(data.data));
+                }else {
+                    dispatch(LoginFailed({smsCode:data.code}));
                 }
                 dispatch(hideLoading());
             })
@@ -151,6 +149,12 @@ function loginSuccess (data) {
 function smsLoginSuccess(data){
     return {
         type: types.LOGIN_SUCCESS,
+        data: data,
+    }
+}
+function LoginFailed(data){
+    return {
+        type: types.LOGIN_FAILED,
         data: data,
     }
 }

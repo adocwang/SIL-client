@@ -107,6 +107,18 @@ class Login extends React.Component {
 
     render() {
         const {navigator} = this.props;
+        var textPhone = '';
+        var textCode = '';
+        var textPwd = '';
+        if(this.props.auth.code==2003){
+            textPwd = '密码错误';
+        }else if(this.props.auth.code==2005){
+            textCode = '短信验证码错误';
+        }else if(this.props.auth.code==2006){
+            textCode = '短信验证码已用';
+        }else if(this.props.auth.code==2007){
+            textPhone = '用户不存在';
+        }
         return (
             <View style={styles.container}>
 
@@ -116,9 +128,11 @@ class Login extends React.Component {
 
                     <TextInput underlineColorAndroid='transparent' onChangeText={(phone) => this.setState({phone})}
                                value={this.state.phone} style={styles.authInput} placeholder='请输入手机号码'/>
+                    <Text style={{marginTop:10,color:'black',backgroundColor:'transparent'}} >{textPhone}</Text>
                     <TextInput underlineColorAndroid='transparent'
                                onChangeText={(password) => this.setState({password})} value={this.state.password}
-                               style={[styles.authInput,{marginTop:40}]} placeholder='请输入密码' secureTextEntry={true}/>
+                               style={[styles.authInput,{marginTop:20}]} placeholder='请输入密码' secureTextEntry={true}/>
+                    <Text style={{marginTop:10,color:'black',backgroundColor:'transparent'}}>{textPwd}</Text>
                 </Image>
 
                 <View style={{paddingTop:30,flex:1,alignItems:'center'}}>

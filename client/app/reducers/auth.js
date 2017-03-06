@@ -12,7 +12,9 @@ const initialState = {
     role: '',
     bank: '',
     role_name:'',
-    bank_name:''
+    bank_name:'',
+    code:0,
+    smsCode:0,
 };
 
 export default function auth (state = initialState, action) {
@@ -36,6 +38,8 @@ export default function auth (state = initialState, action) {
             return Object.assign({}, state, action.data);
         case types.LOGIN_LOADING:
             return Object.assign({}, state, action.data);
+        case types.LOGIN_FAILED:
+            return Object.assign({}, state, action.data);
         case types.LOAD_LOCAL_USER:
             return Object.assign({}, state, action.data);
         case types.SET_USER_INFO_SUCCESS:
@@ -46,7 +50,18 @@ export default function auth (state = initialState, action) {
             return Object.assign({}, state, action.data);
         case types.CLEAR_AUTH:
             console.log('CLEAR_AUTH',initialState);
-            return initialState;
+            return {
+                id: 0,
+                phone:'',
+                true_name: '',
+                token: '',
+                role: '',
+                bank: '',
+                role_name:'',
+                bank_name:'',
+                code:0,
+                smsCode:0
+            };
         default:
             return state;
     }
