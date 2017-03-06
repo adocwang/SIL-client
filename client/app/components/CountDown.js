@@ -83,14 +83,10 @@ var styles = StyleSheet.create({
         color: 'black'
     },
     wrapper: {
-        flex:1,
-        height:45,
-        borderRadius:15,
-        borderColor:'#15499A',
-        borderWidth: 1,
-        backgroundColor:'#ffffff',
+        height:20,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        backgroundColor:'transparent'
     }
 });
 

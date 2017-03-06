@@ -82,8 +82,11 @@ class Login extends React.Component {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
-                component: ResetPwdContainer,
-                name: 'ResetPwd'
+                component: ActiveContainer,
+                name: 'Active',
+                params: {
+                    type: 'reset',
+                },
             });
         });
     }
@@ -93,7 +96,10 @@ class Login extends React.Component {
         InteractionManager.runAfterInteractions(() => {
             navigator.push({
                 component: ActiveContainer,
-                name: 'Active'
+                name: 'Active',
+                params: {
+                    type: 'active',
+                },
             });
         });
     }
