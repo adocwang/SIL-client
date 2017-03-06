@@ -70,7 +70,7 @@ class Splash extends React.Component {
     return (
       <Image
         style={{flex: 1, width: width, height: height}}
-        source={require('../img/splash.jpg')}
+        source={require('../img/splash.png')}
       >
         <StatusBar
             backgroundColor='#2133A7'

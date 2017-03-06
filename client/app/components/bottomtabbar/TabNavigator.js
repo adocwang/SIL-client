@@ -184,10 +184,10 @@ let styles = StyleSheet.create({
     opacity: 0,
   },
   defaultSelectedTitle: {
-    color: '#2520AA',
+    color: '#000000',
   },
   defaultSelectedIcon: {
-    tintColor: '#2520AA',
+    tintColor: '#000000',
   },
 });
 

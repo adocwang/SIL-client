@@ -188,7 +188,7 @@ class Main extends BasePage {
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === 'company'}
-                        title="我的企业"
+                        title="企业"
                         renderIcon={() => <Image source={require("../img/company_icon_d.png")} />}
                         renderSelectedIcon={() => <Image source={require("../img/company_icon.png")} />}
                         //renderBadge={() => <CustomBadgeView />}
