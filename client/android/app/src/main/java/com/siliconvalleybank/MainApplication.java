@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import android.os.Process;
+import com.baidu.mapapi.SDKInitializer;
 import com.facebook.react.ReactApplication;
 import com.imagepicker.ImagePickerPackage;
 import io.realm.react.RealmReactPackage;
@@ -62,6 +63,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    SDKInitializer.initialize(this);
 
     uniqueInstance = this;
 

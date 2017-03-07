@@ -136,7 +136,7 @@ class Active extends React.Component {
         <View style={styles.container}>
 
             <Image source={require('../../img/auth_bg.png')}
-                   style={{resizeMode: Image.resizeMode.stretch,flex:2,justifyContent:'center',alignItems:'center',}}>
+                   style={{resizeMode: Image.resizeMode.stretch,flex:2,width: null,justifyContent:'center',alignItems:'center',}}>
                 <Image source = {require('../../img/espe_logo.png')} style={{marginBottom:30}}/>
                 <TextInput underlineColorAndroid='transparent' onChangeText={(phone) => this.setState({phone})}
                            value={this.state.phone} style={textPhone==''?styles.authInput:styles.authInputWrong} placeholder='请输入手机号码'/>
@@ -168,7 +168,7 @@ class Active extends React.Component {
                     <View style={{flexDirection:'row',marginTop:20}}><Text style={styles.textGray14}>已经激活,直接</Text>
                 <TouchableOpacity onPress={this.onLoginBtnClick.bind(this)}>
                     <View >
-                        <Text style={[styles.textBlue14,{marginTop:1}]}>登录</Text>
+                        <Text style={[styles.textBlue14,{marginTop:0}]}>登录</Text>
                     </View>
                 </TouchableOpacity></View>}
 

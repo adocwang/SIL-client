@@ -123,7 +123,7 @@ class Login extends React.Component {
             <View style={styles.container}>
 
                 <Image source={require('../../img/auth_bg.png')}
-                       style={{resizeMode: Image.resizeMode.stretch,flex:2,justifyContent:'center',alignItems:'center',}}>
+                       style={{resizeMode: Image.resizeMode.stretch,flex:2,width: null,justifyContent:'center',alignItems:'center',}}>
                     <Image source = {require('../../img/espe_logo.png')} style={{marginBottom:60}}/>
 
                     <TextInput underlineColorAndroid='transparent' onChangeText={(phone) => this.setState({phone})}
